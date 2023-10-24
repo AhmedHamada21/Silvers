@@ -14,6 +14,7 @@ use App\Http\Resources\Drivers\{CarsCaptionResources, CaptainProfileResources, C
 class CaptainProfileController extends Controller
 {
     use ApiResponseTrait, ImageUploadTrait;
+
     public function __construct(protected CaptainService $captainService)
     {
         $this->captainService = $captainService;
@@ -29,7 +30,8 @@ class CaptainProfileController extends Controller
         }
     }
 
-    public function uploadProfile(Request $request) {
+    public function uploadProfile(Request $request)
+    {
         try {
             $user = auth('captain-api')->user();
 
@@ -47,6 +49,10 @@ class CaptainProfileController extends Controller
                 'number_car' => $request->input('number_car'),
                 'color_car' => $request->input('color_car'),
                 'year_car' => $request->input('year_car'),
+                'car_make_id' => $request->input('car_make_id'),
+                'car_model_id' => $request->input('car_model_id'),
+                'car_type_id' => $request->input('car_type_id'),
+                'category_car_id' => checkYears($request->input('year_car')),
             ];
 
             CarsCaption::updateOrInsert(['captain_id' => $user->id], $carData);
@@ -93,7 +99,8 @@ class CaptainProfileController extends Controller
     }
 
 
-    public function updateUploadProfile(Request $request) {
+    public function updateUploadProfile(Request $request)
+    {
 
         $user = auth('captain-api')->user();
         if (!$user) {
@@ -160,6 +167,7 @@ class CaptainProfileController extends Controller
         return $this->successResponse('Profile images updated successfully');
 
     }
+
     public function getRejectMedia(Request $request)
     {
         try {
@@ -233,7 +241,8 @@ class CaptainProfileController extends Controller
         }
     }
 
-    public function checkImg(Request $request) {
+    public function checkImg(Request $request)
+    {
         try {
             $user = auth('captain-api')->user();
             $captainFolderName = str_replace(' ', '_', $user->name) . '_' . $user->captainProfile->uuid;
@@ -282,7 +291,9 @@ class CaptainProfileController extends Controller
             return $this->errorResponse('An error occurred while checking media: ' . $e->getMessage());
         }
     }
-    private function storeImage(Request $request, $field, $type, $imageable) {
+
+    private function storeImage(Request $request, $field, $type, $imageable)
+    {
         $image = new Image();
         $image->photo_type = $field;
         $image->imageable_type = 'App\Models\Captain';
