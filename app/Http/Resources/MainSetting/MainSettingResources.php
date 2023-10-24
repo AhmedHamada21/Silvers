@@ -20,6 +20,7 @@ class MainSettingResources extends JsonResource {
             'ocean' => $this->ocean,
             'company_commission' => $this->company_commission,
             'company_tax' => $this->company_tax,
+            'price_day' => $this->price_day,
             'peek_time_fees' => SettingPeekTimeFeeResource::collection($this->peekTimeFees),
             'name' => $this->translations->keyBy('locale')->map->only('name'),
             'author' => $this->translations->keyBy('locale')->map->only('author'),

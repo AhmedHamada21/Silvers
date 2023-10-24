@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             'ocean' => 2,
             'company_commission' => 5,
             'company_tax' => 6,
+            'price_day' => 100,
         ]);
 
         $this->call([

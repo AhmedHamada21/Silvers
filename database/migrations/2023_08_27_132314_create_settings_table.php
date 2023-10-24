@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('ocean')->nullable();
             $table->string('company_commission')->nullable();
             $table->string('company_tax')->nullable();
+            $table->string('price_day')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
