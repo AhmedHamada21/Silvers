@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\Captain;
+use App\Models\CaptainProfile;
 use App\Models\Notification;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Carbon;
 
@@ -83,7 +85,7 @@ if (!function_exists('sendNotificationCaptain')) {
     function sendNotificationCaptain($fcm, $body, $title, $store = false)
     {
         $captain = Captain::where('fcm_token', $fcm)->first();
-      
+
         $url = Http::withHeaders([
             "Content-Type" => "application/json",
             "Authorization" => "key=AAAA5dxbfSs:APA91bH6P3jOhcvNzYL9u-9n9J8Zm_PhOmSDhJu-IfPiH7ofh7IWf8nRl-xNd_TMlIB_0jDuGu4swGYk3MYxZ2B_NXGbO8NPZJcL0d4UtDRqHnDGIcoSqDlkGYp8RPazQdnLhZWV3T4u"
@@ -211,11 +213,11 @@ if (!function_exists('getTotalAmountDay')) {
     {
         $commissionPercentage = optional(\App\Models\Settings::first())->company_commission ?? 0;
         $commission = $commissionPercentage / 100;
-        
+
         $ordersTotal = \App\Models\Order::where('status', 'done')
-        ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'),Carbon::now()->format('Y-m-d'))
-        ->where('captain_id', $id_caption)
-        ->sum('total_price');
+            ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))
+            ->where('captain_id', $id_caption)
+            ->sum('total_price');
 
 
         return number_format($ordersTotal - ($ordersTotal * $commission), 2);
@@ -265,7 +267,7 @@ if (!function_exists('DeletedInFirebase')) {
         $response_caption = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
-        ]); 
+        ]);
         $response_Order = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/' . $order->order_code . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
@@ -274,5 +276,17 @@ if (!function_exists('DeletedInFirebase')) {
             return true;
         }
         return false;
+    }
+}
+
+
+if (!function_exists('getImageCaption')) {
+    function getImageCaption($id)
+    {
+        $caption = Captain::findorfail($id);
+        $name_image = DB::table('imageable_type', 'App\Models\Captain')->where('photo_type', 'personal_avatar')->where('imageable_id', $id)->first();
+        $captainFolderName = str_replace(' ', '_', $caption->name) . '_' . $caption->captainProfile->uuid;
+        return asset('dashboard/img/' . $captainFolderName . '/' . 'personal' .'/' .$name_image->filename);
+
     }
 }

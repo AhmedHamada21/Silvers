@@ -16,13 +16,13 @@ return new class extends Migration {
             $table->string('number_car')->nullable();
             $table->string('color_car')->nullable();
             $table->year('year_car')->nullable();
-            $table->string('car_photo_before')->nullable()->comment('صوره السياره امام');
-            $table->string('car_photo_behind')->nullable()->comment('صوره السياره خلف');
-            $table->string('car_photo_right')->nullable()->comment('صوره السياره يمين');
-            $table->string('car_photo_north')->nullable()->comment('صوره السياره شمال');
-            $table->string('car_photo_inside')->nullable()->comment('صوره السياره بالداخل');
-            $table->string('car_license_before')->nullable()->comment('صوره الرخصه امام');
-            $table->string('car_license_behind')->nullable()->comment('صوره الرخصه خلف');
+//            $table->string('car_photo_before')->nullable()->comment('صوره السياره امام');
+//            $table->string('car_photo_behind')->nullable()->comment('صوره السياره خلف');
+//            $table->string('car_photo_right')->nullable()->comment('صوره السياره يمين');
+//            $table->string('car_photo_north')->nullable()->comment('صوره السياره شمال');
+//            $table->string('car_photo_inside')->nullable()->comment('صوره السياره بالداخل');
+//            $table->string('car_license_before')->nullable()->comment('صوره الرخصه امام');
+//            $table->string('car_license_behind')->nullable()->comment('صوره الرخصه خلف');
             $table->timestamps();
         });
     }

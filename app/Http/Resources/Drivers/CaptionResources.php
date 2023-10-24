@@ -5,6 +5,7 @@ namespace App\Http\Resources\Drivers;
 use App\Http\Resources\CountryResources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class CaptionResources extends JsonResource
 {
@@ -26,6 +27,7 @@ class CaptionResources extends JsonResource
             'country' => new CountryResources($this->country),
             'fcm_token' => $this->fcm_token,
             'status' => $this->status,
+            'avatar' => getImageCaption($this->id),
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

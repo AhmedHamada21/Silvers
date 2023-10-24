@@ -20,12 +20,12 @@ return new class extends Migration
             $table->tinyInteger('number_trips')->default(0);
             $table->tinyInteger('number_trips_cansel')->nullable();
             $table->foreignId('captain_id')->index()->constrained()->cascadeOnDelete();
-            $table->string('photo_id_before')->comment('صوره البطاقه امام')->nullable();
-            $table->string('photo_id_behind')->comment('صوره البطاقه خلف')->nullable();
-            $table->string('photo_driving_before')->comment('صوره الرخصه امام')->nullable();
-            $table->string('photo_driving_behind')->comment('صوره الرخصه خلف')->nullable();
-            $table->string('photo_criminal')->comment('صوره فيش جنائي')->nullable();
-            $table->string('photo_personal')->comment('صوره شخصيه')->default('image.jpg');
+//            $table->string('photo_id_before')->comment('صوره البطاقه امام')->nullable();
+//            $table->string('photo_id_behind')->comment('صوره البطاقه خلف')->nullable();
+//            $table->string('photo_driving_before')->comment('صوره الرخصه امام')->nullable();
+//            $table->string('photo_driving_behind')->comment('صوره الرخصه خلف')->nullable();
+//            $table->string('photo_criminal')->comment('صوره فيش جنائي')->nullable();
+//            $table->string('photo_personal')->comment('صوره شخصيه')->default('image.jpg');
             $table->string('number_personal')->unique()->comment('رقم البطاقه')->nullable();
             $table->timestamps();
         });
