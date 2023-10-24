@@ -18,6 +18,7 @@ class HoursResources extends JsonResource
             'id' => $this->id,
             'number_hours' => $this->number_hours,
             'discount_hours' => $this->discount_hours,
+            'offer_price' => $this->offer_price,
             'price_hours' => $this->price_hours,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
