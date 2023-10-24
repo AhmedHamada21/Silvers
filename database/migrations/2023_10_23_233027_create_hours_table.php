@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('hours', function (Blueprint $table) {
             $table->id();
             $table->string('number_hours');
-            $table->string('discount_hours');
+            $table->string('offer_price')->comment('السعر قبل الخصم');
+            $table->string('discount_hours')->comment('السعر بعد الخصم');
             $table->string('price_hours');
             $table->timestamps();
         });
