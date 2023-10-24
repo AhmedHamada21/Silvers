@@ -284,7 +284,7 @@ if (!function_exists('getImageCaption')) {
     function getImageCaption($id)
     {
         $caption = Captain::findorfail($id);
-        $name_image = DB::table('imageable_type', 'App\Models\Captain')->where('photo_type', 'personal_avatar')->where('imageable_id', $id)->first();
+        $name_image = DB::table('images')->where('imageable_type', 'App\Models\Captain')->where('photo_type', 'personal_avatar')->where('imageable_id', $id)->first();
         $captainFolderName = str_replace(' ', '_', $caption->name) . '_' . $caption->captainProfile->uuid;
         return asset('dashboard/img/' . $captainFolderName . '/' . 'personal' .'/' .$name_image->filename);
 
