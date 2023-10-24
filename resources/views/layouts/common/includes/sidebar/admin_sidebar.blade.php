@@ -119,8 +119,6 @@
                         <li><a href="">Reposts employees</a></li>
                     </ul>
                 </li>
-                <!-- End Admin Managment Menu-->
-
 
                 <!-- Start Admin Managment Menu-->
                 <li class="pl-4 mt-10 mb-10 font-medium text-muted menu-title">orders</li>
@@ -134,13 +132,12 @@
                         <div class="clearfix"></div>
                     </a>
                     <ul id="orders" class="collapse" data-parent="#sidebarnav">
-                        <li><a href="">All orders</a></li>
-                        <li><a href="">list orders</a></li>
-                        <li><a href="">orders waiting</a></li>
-                        <li><a href="">orders pending</a></li>
-                        <li><a href="">orders cancel</a></li>
-                        <li><a href="">orders accepted</a></li>
-                        <li><a href="">orders done</a></li>
+                        <li><a href="{{route('orders.index')}}">All orders</a></li>
+                        <li><a href="{{ route('orders.index', ['status' => 'waiting']) }}">orders waiting</a></li>
+                        <li><a href="{{ route('orders.index', ['status' => 'pending']) }}">orders pending</a></li>
+                        <li><a href="{{ route('orders.index', ['status' => 'cancel']) }}">orders cancel</a></li>
+                        <li><a href="{{ route('orders.index', ['status' => 'accepted']) }}">orders accepted</a></li>
+                        <li><a href="{{ route('orders.index', ['status' => 'done']) }}">orders done</a></li>
                     </ul>
                 </li>
                 <!-- End Admin Managment Menu-->

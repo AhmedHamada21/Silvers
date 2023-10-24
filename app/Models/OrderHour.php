@@ -23,7 +23,7 @@ class OrderHour extends Model
         'address_now',
         'data',
         'hours_from',
-        'hours_to',
+        'hour_id',
     ];
 
     public function user()
@@ -39,5 +39,9 @@ class OrderHour extends Model
     public function trip_type()
     {
         return $this->belongsTo(TripType::class,'trip_type_id');
+    }
+    public function hour()
+    {
+        return $this->belongsTo(Hour::class,'hour');
     }
 }

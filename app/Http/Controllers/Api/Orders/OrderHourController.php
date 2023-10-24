@@ -40,7 +40,8 @@ class OrderHourController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
             'captain_id' => 'required|exists:captains,id',
-            'trip_type_id' => 'required|exists:trip_types,id',
+
+            'hour_id' => 'required|exists:hours,id',
             'total_price' => 'required|numeric',
             'payments' => 'required|in:cash,masterCard,wallet',
             'lat_user' => 'required',
@@ -48,7 +49,6 @@ class OrderHourController extends Controller
             'address_now' => 'required',
             'data' => 'required',
             'hours_from' => 'required',
-            'hours_to' => 'required',
 
         ]);
 
@@ -73,7 +73,7 @@ class OrderHourController extends Controller
                 'address_now' => $request->address_now,
                 'user_id' => $request->user_id,
                 'captain_id' => $request->captain_id,
-                'trip_type_id' => $request->trip_type_id,
+                'trip_type_id' => 2,
                 'order_code' => $orderCode,
                 'total_price' => $request->total_price,
                 'chat_id' => $chatId,
@@ -83,7 +83,6 @@ class OrderHourController extends Controller
                 'long_user' => $request->long_user,
                 'data' => $request->long_user,
                 'hours_from' => $request->long_user,
-                'hours_to' => $request->long_user,
 
             ]);
 

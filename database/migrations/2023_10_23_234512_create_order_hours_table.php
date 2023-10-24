@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('captain_id')->constrained('captains')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('trip_type_id')->constrained('trip_types')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('hour_id')->constrained('hours')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('order_code');
             $table->string('total_price');
             $table->string('lat_user');
@@ -26,7 +27,6 @@ return new class extends Migration
             $table->string('address_now');
             $table->string('data');
             $table->string('hours_from');
-            $table->string('hours_to');
             $table->timestamps();
         });
     }

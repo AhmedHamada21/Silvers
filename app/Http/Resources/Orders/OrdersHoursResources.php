@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Orders;
 
 use App\Http\Resources\Drivers\CaptionResources;
+use App\Http\Resources\HoursResources;
 use App\Http\Resources\TripTypeResources;
 use App\Http\Resources\Users\RateCommentUserResources;
 use App\Http\Resources\Users\UsersResources;
@@ -22,6 +23,7 @@ class OrdersHoursResources extends JsonResource
             'user_id' => new UsersResources($this->user),
             'captain_id' => new CaptionResources($this->captain),
             'trip_type_id' => new TripTypeResources($this->trip_type),
+            'hour_id' => new HoursResources($this->hour),
             'order_code' => $this->order_code,
             'total_price' => $this->total_price,
             'chat_id' => $this->chat_id,
@@ -32,7 +34,7 @@ class OrdersHoursResources extends JsonResource
             'address_now' => $this->address_now,
             'data' => $this->data,
             'hours_from' => $this->hours_from,
-            'hours_to' => $this->hours_to,
+
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at
