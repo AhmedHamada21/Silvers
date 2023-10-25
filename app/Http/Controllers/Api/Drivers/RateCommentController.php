@@ -109,32 +109,74 @@ class RateCommentController extends Controller
             return $this->errorResponse($validator->errors(), 400);
         }
 
+
+
 //        try {
-            $findOrder = Order::where('order_code', $request->order_code)->exists();
-            $findOrderHours = OrderHour::where('order_code', $request->order_code)->exists();
-            $findOrderDay = OrderDay::where('order_code', $request->order_code)->exists();
+            $findOrder = Order::where('order_code', $request->order_code)->first();
+            $findOrderHours = OrderHour::where('order_code', $request->order_code)->first();
+            $findOrderDay = OrderDay::where('order_code', $request->order_code)->first();
 
-//            if (!$findOrder || !$findOrderHours || !$findOrderDay) {
-//                return $this->errorResponse('Order not found', 404);
-//            }
+            if ($findOrder){
+                $data = RateComment::create([
+                    'order_day_id' => null,
+                    'order_hour_id' => null,
+                    'order_id' => optional($findOrder)->id,
+                    'captain_id' => $findOrder->captain_id,
+                    'user_id' => $findOrder->user_id,
+                    'rate' => $request->rate,
+                    'comment' => $request->comment ?? null,
+                    'type' => 'caption',
+                ]);
 
-            $data = RateComment::create([
-                'order_day_id' => optional($findOrderDay)->id,
-                'order_hour_id' => optional($findOrderHours)->id,
-                'order_id' => optional($findOrder)->id,
-                'captain_id' => $findOrder->captain_id,
-                'user_id' => $findOrder->user_id,
-                'rate' => $request->rate,
-                'comment' => $request->comment ?? null,
-                'type' => 'caption',
-            ]);
+                if ($data) {
+                    $this->sendNotificationToCaptain($findOrder->captain_id);
+                    $this->updateCaptainRating($findOrder->captain_id);
 
-            if ($data) {
-                $this->sendNotificationToCaptain($findOrder->captain_id);
-                $this->updateCaptainRating($findOrder->captain_id);
-
-                return $this->successResponse(new RateCommentUserResources($data), 'Data returned successfully');
+                    return $this->successResponse(new RateCommentUserResources($data), 'Data returned successfully');
+                }
             }
+
+            if ($findOrderHours){
+                $data = RateComment::create([
+                    'order_day_id' => null,
+                    'order_hour_id' => $findOrderHours->id,
+                    'order_id' => null,
+                    'captain_id' => $findOrderHours->captain_id,
+                    'user_id' => $findOrderHours->user_id,
+                    'rate' => $request->rate,
+                    'comment' => $request->comment ?? null,
+                    'type' => 'caption',
+                ]);
+
+                if ($data) {
+                    $this->sendNotificationToCaptain($findOrder->captain_id);
+                    $this->updateCaptainRating($findOrder->captain_id);
+
+                    return $this->successResponse(new RateCommentUserResources($data), 'Data returned successfully');
+                }
+            }
+            if ($findOrderDay){
+                $data = RateComment::create([
+                    'order_day_id' => $findOrderDay->id,
+                    'order_hour_id' => null,
+                    'order_id' => null,
+                    'captain_id' => $findOrderDay->captain_id,
+                    'user_id' => $findOrderDay->user_id,
+                    'rate' => $request->rate,
+                    'comment' => $request->comment ?? null,
+                    'type' => 'caption',
+                ]);
+
+                if ($data) {
+                    $this->sendNotificationToCaptain($findOrder->captain_id);
+                    $this->updateCaptainRating($findOrder->captain_id);
+
+                    return $this->successResponse(new RateCommentUserResources($data), 'Data returned successfully');
+                }
+            }
+
+
+
 //        } catch (\Exception $exception) {
 //            return $this->errorResponse('Something went wrong, please try again later');
 //        }
