@@ -86,13 +86,13 @@ class OrderHourController extends Controller
 
             ]);
 
-//            if ($data) {
-////                sendNotificationCaptain($request->captain_id, 'Trips Created Successfully', 'New Trips Hours', true);
-////                sendNotificationUser($request->user_id, 'Trips Created Successfully', 'New Trips Hours', true);
-////                createInFirebase($request->user_id, $request->captain_id, $data->id);
-//
-//
-//            }
+            if ($data) {
+                sendNotificationCaptain($request->captain_id, 'Trips Created Successfully', 'New Trips Hours', true);
+                sendNotificationUser($request->user_id, 'Trips Created Successfully', 'New Trips Hours', true);
+                createInFirebaseHours($request->user_id, $request->captain_id, $data->id);
+
+
+            }
             return $this->successResponse(new OrdersHoursResources($data), 'Data created successfully');
 
 //        } catch (\Exception $exception) {
@@ -138,7 +138,7 @@ class OrderHourController extends Controller
         $order->update(['status' => 'done']);
         sendNotificationUser($order->user->fcm_token, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده', true);
         sendNotificationCaptain($order->captain->fcm_token, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده كابتن', true);
-        DeletedInFirebase($order->user_id, $order->captain_id, $order->id);
+        DeletedInFirebaseHours($order->user_id, $order->captain_id, $order->id);
     }
 
     private function updateOrderStatus(OrderHour $order, $status)

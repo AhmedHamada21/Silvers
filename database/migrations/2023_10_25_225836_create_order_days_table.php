@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -23,9 +22,10 @@ return new class extends Migration
             $table->enum('status', ['done', 'waiting', 'pending', 'cancel', 'accepted'])->default('pending');
             $table->enum('payments', ['cash', 'masterCard', 'wallet']);
             $table->string('chat_id');
+            $table->string('start_day')->nullable()->comment('بدايه اليوم');
+            $table->string('end_day')->nullable()->comment('نهايه اليوم');
             $table->string('number_day')->nullable()->comment('عدد الايام');
-            $table->string('day')->nullable()->comment('اليوم');
-            $table->string('from_day')->nullable()->comment('اليوم');
+            $table->string('start_time')->nullable()->comment('وقت البدايه');
             $table->timestamps();
         });
     }
