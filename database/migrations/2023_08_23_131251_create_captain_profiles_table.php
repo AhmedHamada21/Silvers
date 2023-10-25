@@ -19,6 +19,8 @@ return new class extends Migration
             $table->float('rate')->default(0.00);
             $table->tinyInteger('number_trips')->default(0);
             $table->tinyInteger('number_trips_cansel')->nullable();
+            $table->tinyInteger('number_trips_cansel_hours')->nullable();
+            $table->tinyInteger('number_trips_cansel_day')->nullable();
             $table->foreignId('captain_id')->index()->constrained()->cascadeOnDelete();
 //            $table->string('photo_id_before')->comment('صوره البطاقه امام')->nullable();
 //            $table->string('photo_id_behind')->comment('صوره البطاقه خلف')->nullable();

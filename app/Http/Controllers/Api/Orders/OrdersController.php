@@ -9,6 +9,7 @@ use App\Models\Captain;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
 use App\Models\Order;
+use App\Models\OrderDay;
 use App\Models\OrderHour;
 use App\Models\TakingOrder;
 use App\Models\Traits\Api\ApiResponseTrait;
@@ -28,6 +29,7 @@ class OrdersController extends Controller
     {
         Order::query()->delete();
         OrderHour::query()->delete();
+        OrderDay::query()->delete();
         CanselOrder::query()->delete();
         TakingOrder::query()->delete();
         CaptionActivity::where('captain_id', 3)->update([
@@ -82,6 +84,7 @@ class OrdersController extends Controller
 
         $orderQuery = Order::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
         $orderQuery2 = OrderHour::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
+        $orderQuery3 = OrderDay::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
 
         $orderCode = $orderQuery->when($type == "captains", function ($query) use ($request) {
             return $query->where('captain_id', $request->captain_id);
@@ -113,7 +116,25 @@ class OrdersController extends Controller
             $orderCodeValue = optional($orderCode2)->order_code;
             $trip_type_id = optional($orderCode2)->trip_type_id;
             $responseData = [
-                'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue"  : "",
+                'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue" : "",
+                'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
+            ];
+            return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
+        }
+
+        $orderCode3 = $orderQuery3->when($type == "captains", function ($query) use ($request) {
+            return $query->where('captain_id', $request->captain_id);
+        }, function ($query) use ($request) {
+            return $query->where('user_id', $request->user_id);
+        })->firstOr(function () {
+            return null;
+        });
+
+        if ($orderCode3) {
+            $orderCodeValue = optional($orderCode2)->order_code;
+            $trip_type_id = optional($orderCode2)->trip_type_id;
+            $responseData = [
+                'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue" : "",
                 'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
             ];
             return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');

@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('total_price');
             $table->string('lat_user');
             $table->string('long_user');
+            $table->string('address_now');
             $table->enum('status', ['done', 'waiting', 'pending', 'cancel', 'accepted'])->default('pending');
             $table->enum('payments', ['cash', 'masterCard', 'wallet']);
             $table->string('chat_id');

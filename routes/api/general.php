@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\complaint\ComplaintController;
+
+use App\Http\Controllers\Api\Orders\OrderDayController;
 use App\Http\Controllers\Api\Orders\OrderHourController;
 use App\Http\Controllers\Api\Orders\OrdersController;
 use App\Http\Controllers\Api\Wallet\WalletController;
@@ -20,11 +22,21 @@ Route::group(['prefix' => 'order', 'middleware' => 'auth:users-api,captain-api']
     Route::get('sendNotationsCalculator', [OrdersController::class, 'sendNotationsCalculator']);
     Route::post('OrderExiting', [OrdersController::class, 'OrderExiting']);
 
+
     ################# Create Orders Hours #########################
     Route::prefix('hours')->as('hours')->group(function () {
         Route::post('getOrder',[OrderHourController::class,'index']);
         Route::post('createOrder', [OrderHourController::class, 'store']);
         Route::post('updateStatus', [OrderHourController::class, 'update']);
+        Route::post('canselOrder', [OrderHourController::class, 'canselOrder']);
+    });
+
+    ################# Create Orders Hours #########################
+    Route::prefix('day')->as('day')->group(function () {
+        Route::post('getOrder',[OrderDayController::class,'index']);
+        Route::post('createOrder', [OrderDayController::class, 'store']);
+        Route::post('updateStatus', [OrderDayController::class, 'update']);
+        Route::post('canselOrder', [OrderDayController::class, 'canselOrder']);
     });
 
 });

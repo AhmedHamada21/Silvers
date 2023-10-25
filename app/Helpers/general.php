@@ -275,6 +275,25 @@ if (!function_exists('createInFirebaseHours')) {
     }
 }
 
+if (!function_exists('createInFirebaseDay')) {
+    function createInFirebaseDay($user_id, $caption_id, $order_id)
+    {
+        $order = \App\Models\OrderHour::findorfail($order_id);
+        $response = Http::post('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
+            "order_code" => $order->order_code,
+            "total_price" => $order->total_price,
+        ]);
+        $response_caption = Http::post('https://silver-triangle-client-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
+            "order_code" => $order->order_code,
+            "total_price" => $order->total_price,
+        ]);
+        if ($response->ok() && $response_caption->ok()) {
+            return true;
+        }
+        return false;
+    }
+}
+
 if (!function_exists('DeletedInFirebase')) {
     function DeletedInFirebase($user_id, $caption_id, $order_id)
     {
@@ -300,6 +319,29 @@ if (!function_exists('DeletedInFirebase')) {
 
 if (!function_exists('DeletedInFirebaseHours')) {
     function DeletedInFirebaseHours($user_id, $caption_id, $order_id)
+    {
+        $order = \App\Models\OrderHour::findorfail($order_id);
+        $response = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
+            "order_code" => $order->order_code,
+            "total_price" => $order->total_price,
+        ]);
+        $response_caption = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
+            "order_code" => $order->order_code,
+            "total_price" => $order->total_price,
+        ]);
+        $response_Order = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/' . $order->order_code . '.json', [
+            "order_code" => $order->order_code,
+            "total_price" => $order->total_price,
+        ]);
+        if ($response->ok() && $response_caption->ok() && $response_Order->ok()) {
+            return true;
+        }
+        return false;
+    }
+}
+
+if (!function_exists('DeletedInFirebaseDay')) {
+    function DeletedInFirebaseDay($user_id, $caption_id, $order_id)
     {
         $order = \App\Models\OrderHour::findorfail($order_id);
         $response = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [

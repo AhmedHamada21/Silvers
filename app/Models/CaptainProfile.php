@@ -17,6 +17,8 @@ class CaptainProfile extends BaseModel
         'photo_criminal',
         'photo_personal',
         'number_personal',
+        'number_trips_cansel_hours',
+        'number_trips_cansel_day',
     ];
 
     public function profileStatus() {
