@@ -17,7 +17,9 @@ return new class extends Migration {
             $table->foreignId('agent_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('company_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('order_day_id')->nullable()->constrained('order_days')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('order_hour_id')->nullable()->constrained('order_hours')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('order_id')->nullable()->constrained('orders')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('captain_id')->nullable()->constrained()->cascadeOnDelete();
             $table->tinyInteger('rate')->default(5);
             $table->text('comment')->nullable();

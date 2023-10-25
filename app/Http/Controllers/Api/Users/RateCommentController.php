@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Users\RateCommentUserResources;
 use App\Models\CaptainProfile;
 use App\Models\Order;
+use App\Models\OrderDay;
+use App\Models\OrderHour;
 use App\Models\User;
 use App\Models\RateComment;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class RateCommentController extends Controller
@@ -31,20 +34,35 @@ class RateCommentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'order_code' => 'required|exists:orders,order_code',
-//            'user_id' => 'required|exists:users,id',
+            'order_code' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $foundInOrders = DB::table('orders')->where('order_code', $value)->exists();
+                    $foundInOrderDays = DB::table('order_days')->where('order_code', $value)->exists();
+                    $foundInOrderHours = DB::table('order_hours')->where('order_code', $value)->exists();
+
+                    if (!$foundInOrders && !$foundInOrderDays && !$foundInOrderHours) {
+                        $fail("$attribute is invalid.");
+                    }
+                },
+            ],
             'rate' => 'required|numeric|between:1,5',
             'comment' => 'nullable|string',
-
         ]);
+
         if ($validator->fails()) {
             return $this->errorResponse($validator->errors(), 400);
         }
 
         try {
             $findOrder = Order::where('order_code', $request->order_code)->first();
+            $findOrderHours = OrderHour::where('order_code', $request->order_code)->first();
+            $findOrderDay = OrderDay::where('order_code', $request->order_code)->first();
+
             $data = RateComment::create([
-                'order_id' => $findOrder->id,
+                'order_day_id' => optional($findOrderDay)->id,
+                'order_hour_id' => optional($findOrderHours)->id,
+                'order_id' => optional($findOrder)->id,
                 'user_id' => $findOrder->user_id,
                 'captain_id' => $findOrder->captain_id,
                 'rate' => $request->rate,
@@ -53,18 +71,8 @@ class RateCommentController extends Controller
             ]);
 
             if ($data) {
-                $users = User::findorfail($findOrder->user_id);
-                sendNotificationUser($users->fcm_token, "شكرا على تقيمكم", '');
-
-                $rateUserCount = RateComment::where('user_id', $findOrder->user_id)->count();
-                $rateUserSum = RateComment::where('user_id', $findOrder->user_id)->sum('rate');
-
-                if ($rateUserCount && $rateUserSum) {
-                    UserProfile::where('user_id', $findOrder->user_id)->update([
-                        'rate' => number_format($rateUserSum / $rateUserCount, 1),
-                    ]);
-                }
-
+                $this->sendNotificationToUser($findOrder->user_id);
+                $this->updateUserRating($findOrder->user_id);
                 return $this->successResponse(new RateCommentUserResources($data), 'data Return Successfully');
 
 
@@ -75,5 +83,23 @@ class RateCommentController extends Controller
     }
 
 
+    private function sendNotificationToUser($captainId)
+    {
+        $caption = User::findOrFail($captainId);
+        sendNotificationUser($caption->fcm_token, "شكرا على تقيمكم", '',true);
+    }
 
+
+
+    private function updateUserRating($userId)
+    {
+        $rateCaptainCount = RateComment::where('user_id', $userId)->count();
+        $rateCaptainSum = RateComment::where('user_id', $userId)->sum('rate');
+
+        if ($rateCaptainCount && $rateCaptainSum) {
+            UserProfile::where('user_id', $userId)->update([
+                'rate' => number_format($rateCaptainSum / $rateCaptainCount, 1),
+            ]);
+        }
+    }
 }

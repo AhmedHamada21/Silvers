@@ -10,12 +10,14 @@ class RateComment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'order_id',
         'admin_id',
         'employee_id',
         'agent_id',
         'company_id',
         'user_id',
+        'order_day_id',
+        'order_hour_id',
+        'order_id',
         'captain_id',
         'rate',
         'comment',
@@ -24,7 +26,16 @@ class RateComment extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class,'order_id');
+        return $this->belongsTo(Order::class, 'order_id');
+    }
+    public function order_day()
+    {
+        return $this->belongsTo(OrderDay::class, 'order_day_id');
+    }
+
+    public function order_hour()
+    {
+        return $this->belongsTo(OrderHour::class, 'order_hour_id');
     }
 
     public function admin()
