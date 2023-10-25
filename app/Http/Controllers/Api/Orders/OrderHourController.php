@@ -129,7 +129,7 @@ class OrderHourController extends Controller
                 $this->updateOrderStatus($findOrder, $request->status);
             }
 
-            return $this->successResponse(new OrdersResources($findOrder), 'Data updated successfully');
+            return $this->successResponse(new OrdersHoursResources($findOrder), 'Data updated successfully');
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
