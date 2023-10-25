@@ -149,8 +149,8 @@ class RateCommentController extends Controller
                 ]);
 
                 if ($data) {
-                    $this->sendNotificationToCaptain($findOrder->captain_id);
-                    $this->updateCaptainRating($findOrder->captain_id);
+                    $this->sendNotificationToCaptain($findOrderHours->captain_id);
+                    $this->updateCaptainRating($findOrderHours->captain_id);
 
                     return $this->successResponse(new RateCommentUserResources($data), 'Data returned successfully');
                 }
@@ -168,8 +168,8 @@ class RateCommentController extends Controller
                 ]);
 
                 if ($data) {
-                    $this->sendNotificationToCaptain($findOrder->captain_id);
-                    $this->updateCaptainRating($findOrder->captain_id);
+                    $this->sendNotificationToCaptain($findOrderDay->captain_id);
+                    $this->updateCaptainRating($findOrderDay->captain_id);
 
                     return $this->successResponse(new RateCommentUserResources($data), 'Data returned successfully');
                 }
