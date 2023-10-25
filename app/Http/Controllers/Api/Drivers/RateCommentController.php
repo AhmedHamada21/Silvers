@@ -109,7 +109,7 @@ class RateCommentController extends Controller
             return $this->errorResponse($validator->errors(), 400);
         }
 
-        try {
+//        try {
             $findOrder = Order::where('order_code', $request->order_code)->exists();
             $findOrderHours = OrderHour::where('order_code', $request->order_code)->exists();
             $findOrderDay = OrderDay::where('order_code', $request->order_code)->exists();
@@ -135,9 +135,9 @@ class RateCommentController extends Controller
 
                 return $this->successResponse(new RateCommentUserResources($data), 'Data returned successfully');
             }
-        } catch (\Exception $exception) {
-            return $this->errorResponse('Something went wrong, please try again later');
-        }
+//        } catch (\Exception $exception) {
+//            return $this->errorResponse('Something went wrong, please try again later');
+//        }
     }
 
 
