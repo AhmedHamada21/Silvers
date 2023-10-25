@@ -86,13 +86,13 @@ class OrderHourController extends Controller
 
             ]);
 
-            if ($data) {
-                sendNotificationCaptain($request->captain_id, 'Trips Created Successfully', 'New Trips Hours', true);
-                sendNotificationUser($request->user_id, 'Trips Created Successfully', 'New Trips Hours', true);
-                createInFirebase($request->user_id, $request->captain_id, $data->id);
-
-
-            }
+//            if ($data) {
+////                sendNotificationCaptain($request->captain_id, 'Trips Created Successfully', 'New Trips Hours', true);
+////                sendNotificationUser($request->user_id, 'Trips Created Successfully', 'New Trips Hours', true);
+////                createInFirebase($request->user_id, $request->captain_id, $data->id);
+//
+//
+//            }
             return $this->successResponse(new OrdersHoursResources($data), 'Data created successfully');
 
         } catch (\Exception $exception) {

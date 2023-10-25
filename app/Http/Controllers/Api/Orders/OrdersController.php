@@ -30,7 +30,7 @@ class OrdersController extends Controller
         OrderHour::query()->delete();
         CanselOrder::query()->delete();
         TakingOrder::query()->delete();
-        CaptionActivity::where('captain_id', 11)->update([
+        CaptionActivity::where('captain_id', 3)->update([
             'type_captain' => 'active',
             'status_captain' => 'active',
             'status_captain_work' => 'active',
