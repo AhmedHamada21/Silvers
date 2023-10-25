@@ -114,9 +114,9 @@ class RateCommentController extends Controller
             $findOrderHours = OrderHour::where('order_code', $request->order_code)->exists();
             $findOrderDay = OrderDay::where('order_code', $request->order_code)->exists();
 
-            if (!$findOrder || !$findOrderHours || !$findOrderDay) {
-                return $this->errorResponse('Order not found', 404);
-            }
+//            if (!$findOrder || !$findOrderHours || !$findOrderDay) {
+//                return $this->errorResponse('Order not found', 404);
+//            }
 
             $data = RateComment::create([
                 'order_day_id' => optional($findOrderDay)->id,
