@@ -110,9 +110,9 @@ class RateCommentController extends Controller
         }
 
         try {
-            $findOrder = Order::where('order_code', $request->order_code)->first();
-            $findOrderHours = OrderHour::where('order_code', $request->order_code)->first();
-            $findOrderDay = OrderDay::where('order_code', $request->order_code)->first();
+            $findOrder = Order::where('order_code', $request->order_code)->exists();
+            $findOrderHours = OrderHour::where('order_code', $request->order_code)->exists();
+            $findOrderDay = OrderDay::where('order_code', $request->order_code)->exists();
 
             if (!$findOrder || !$findOrderHours || !$findOrderDay) {
                 return $this->errorResponse('Order not found', 404);
