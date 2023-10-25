@@ -42,7 +42,6 @@ class OrderDayController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
             'captain_id' => 'required|exists:captains,id',
-            'hour_id' => 'required|exists:hours,id',
             'total_price' => 'required|numeric',
             'payments' => 'required|in:cash,masterCard,wallet',
             'lat_user' => 'required',
@@ -73,7 +72,6 @@ class OrderDayController extends Controller
             $chatId = 'chatD_' . generateRandomString(4);
 
             $data = OrderDay::create([
-                'hour_id' => $request->hour_id,
                 'address_now' => $request->address_now,
                 'user_id' => $request->user_id,
                 'captain_id' => $request->captain_id,
