@@ -95,8 +95,8 @@ class OrdersController extends Controller
             $orderCodeValue = optional($orderCode)->order_code;
             $trip_type_id = optional($orderCode)->trip_type_id;
             $responseData = [
-                'orderCodeValue' => $orderCodeValue ? $orderCodeValue : "",
-                'trip_type_id' => $trip_type_id ? $trip_type_id : "",
+                'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue" : "",
+                'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
             ];
             return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
         }
@@ -113,15 +113,15 @@ class OrdersController extends Controller
             $orderCodeValue = optional($orderCode2)->order_code;
             $trip_type_id = optional($orderCode2)->trip_type_id;
             $responseData = [
-                'orderCodeValue' => $orderCodeValue ? $orderCodeValue : "",
-                'trip_type_id' => $trip_type_id ? $trip_type_id : "",
+                'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue"  : "",
+                'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
             ];
             return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
         }
 
         $responsenull = [
-            'orderCodeValue' => null,
-            'trip_type_id' => null,
+            'orderCodeValue' => "",
+            'trip_type_id' => "",
         ];
         return $this->successResponse($responsenull, 'No data found');
 
