@@ -285,8 +285,11 @@ if (!function_exists('getImageCaption')) {
     {
         $caption = Captain::findorfail($id);
         $name_image = DB::table('images')->where('imageable_type', 'App\Models\Captain')->where('photo_type', 'personal_avatar')->where('imageable_id', $id)->first();
-        $captainFolderName = str_replace(' ', '_', $caption->name) . '_' . $caption->captainProfile->uuid;
-        return asset('dashboard/img/' . $captainFolderName . '/' . 'personal' .'/' .$name_image->filename);
+        if ($name_image) {
+            $captainFolderName = str_replace(' ', '_', $caption->name) . '_' . $caption->captainProfile->uuid;
+            return asset('dashboard/img/' . $captainFolderName . '/' . 'personal' . '/' . $name_image->filename);
 
+        }
+        return null;
     }
 }

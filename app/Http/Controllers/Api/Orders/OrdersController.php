@@ -9,6 +9,7 @@ use App\Models\Captain;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
 use App\Models\Order;
+use App\Models\OrderHour;
 use App\Models\TakingOrder;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\User;
@@ -23,17 +24,47 @@ class OrdersController extends Controller
     use ApiResponseTrait;
 
 
-    public function rest() {
+    public function rest()
+    {
         Order::query()->delete();
+        OrderHour::query()->delete();
         CanselOrder::query()->delete();
         TakingOrder::query()->delete();
-        CaptionActivity::where('captain_id',11)->update([
+        CaptionActivity::where('captain_id', 11)->update([
             'type_captain' => 'active',
             'status_captain' => 'active',
             'status_captain_work' => 'active',
         ]);
         return response()->json('ok');
     }
+
+
+//    public function OrderExiting(Request $request)
+//    {
+//        $validator = Validator::make($request->all(), [
+//            'user_id' => 'required_if:type,user|exists:users,id',
+//            'captain_id' => 'required_if:type,captains|exists:captains,id',
+//            'type' => 'required|in:captains,user',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return $this->errorResponse($validator->errors(), 400);
+//        }
+//
+//        $type = $request->type;
+//        $orderQuery = Order::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
+//
+//        $orderCode = $orderQuery->when($type == "captains", function ($query) use ($request) {
+//            return $query->where('captain_id', $request->captain_id);
+//        }, function ($query) use ($request) {
+//            return $query->where('user_id', $request->user_id);
+//        })->firstOr(fn() => null);
+//
+//        $orderCodeValue = optional($orderCode)->order_code  . ' (Trip_Id) '.optional($orderCode)->trip_type_id;
+//
+//        return $this->successResponse($orderCodeValue ? $orderCodeValue : "", 'Data returned successfully');
+//
+//    }
 
     public function OrderExiting(Request $request)
     {
@@ -48,20 +79,53 @@ class OrdersController extends Controller
         }
 
         $type = $request->type;
+
         $orderQuery = Order::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
+        $orderQuery2 = OrderHour::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
 
         $orderCode = $orderQuery->when($type == "captains", function ($query) use ($request) {
             return $query->where('captain_id', $request->captain_id);
         }, function ($query) use ($request) {
             return $query->where('user_id', $request->user_id);
-        })->firstOr(fn() => null);
+        })->firstOr(function () {
+            return null;
+        });
 
-        $orderCodeValue = optional($orderCode)->order_code;
+        if ($orderCode) {
+            $orderCodeValue = optional($orderCode)->order_code;
+            $trip_type_id = optional($orderCode)->trip_type_id;
+            $responseData = [
+                'orderCodeValue' => $orderCodeValue ? $orderCodeValue : "",
+                'trip_type_id' => $trip_type_id ? $trip_type_id : "",
+            ];
+            return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
+        }
 
-        return $this->successResponse($orderCodeValue ? $orderCodeValue : "", 'Data returned successfully');
+        $orderCode2 = $orderQuery2->when($type == "captains", function ($query) use ($request) {
+            return $query->where('captain_id', $request->captain_id);
+        }, function ($query) use ($request) {
+            return $query->where('user_id', $request->user_id);
+        })->firstOr(function () {
+            return null;
+        });
+
+        if ($orderCode2) {
+            $orderCodeValue = optional($orderCode2)->order_code;
+            $trip_type_id = optional($orderCode2)->trip_type_id;
+            $responseData = [
+                'orderCodeValue' => $orderCodeValue ? $orderCodeValue : "",
+                'trip_type_id' => $trip_type_id ? $trip_type_id : "",
+            ];
+            return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
+        }
+
+        $responsenull = [
+            'orderCodeValue' => null,
+            'trip_type_id' => null,
+        ];
+        return $this->successResponse($responsenull, 'No data found');
 
     }
-
 
     public function deletedOrder(Request $request)
     {
@@ -101,8 +165,6 @@ class OrdersController extends Controller
         }
 
     }
-
-
 
 
     public function store(Request $request)
@@ -181,7 +243,6 @@ class OrdersController extends Controller
             return $this->errorResponse('Something went wrong, please try again later');
         }
     }
-
 
 
     public function update(Request $request)
@@ -302,7 +363,7 @@ class OrdersController extends Controller
         }
     }
 
-       public function canselOrder(Request $request)
+    public function canselOrder(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'order_code' => 'required|exists:orders,order_code',
@@ -351,7 +412,7 @@ class OrdersController extends Controller
         return $this->successResponse(new OrdersResources($findOrder), 'Data updated successfully');
     }
 
-     private function updateUserProfileForCancel($userId)
+    private function updateUserProfileForCancel($userId)
     {
         $userProfile = UserProfile::where('user_id', $userId)->first();
         if ($userProfile) {

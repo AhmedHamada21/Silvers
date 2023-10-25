@@ -65,8 +65,8 @@ class OrderHourController extends Controller
         try {
 
             $latestOrderId = optional(OrderHour::latest()->first())->id;
-            $orderCode = 'orderHour_' . $latestOrderId . generateRandomString(5);
-            $chatId = 'chatHour_' . generateRandomString(4);
+            $orderCode = 'order_' . $latestOrderId . generateRandomString(5);
+            $chatId = 'chat_' . generateRandomString(4);
 
             $data = OrderHour::create([
                 'hour_id' => $request->hour_id,
@@ -81,8 +81,8 @@ class OrderHourController extends Controller
                 'payments' => $request->payments,
                 'lat_user' => $request->lat_user,
                 'long_user' => $request->long_user,
-                'data' => $request->long_user,
-                'hours_from' => $request->long_user,
+                'data' => $request->data,
+                'hours_from' => $request->hours_from,
 
             ]);
 
