@@ -42,6 +42,6 @@ class OrderHour extends Model
     }
     public function hour()
     {
-        return $this->belongsTo(Hour::class,'hour');
+        return $this->belongsTo(Hour::class,'hour_id');
     }
 }
