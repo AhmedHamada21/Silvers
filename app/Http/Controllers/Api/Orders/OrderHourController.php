@@ -118,7 +118,7 @@ class OrderHourController extends Controller
 
         try {
             $findOrder = OrderHour::where('order_code', $request->order_code)->first();
-            dd($findOrder);
+
 
             if (!$findOrder) {
                 return $this->errorResponse('Order not found', 404);
