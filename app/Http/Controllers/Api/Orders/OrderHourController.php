@@ -62,7 +62,7 @@ class OrderHourController extends Controller
         if (OrderHour::where('captain_id', $request->captain_id)->where('status', 'pending')->exists()) {
             return $this->errorResponse('This captain is already on a journey');
         }
-        try {
+//        try {
 
             $latestOrderId = optional(OrderHour::latest()->first())->id;
             $orderCode = 'order_' . $latestOrderId . generateRandomString(5);
@@ -95,9 +95,9 @@ class OrderHourController extends Controller
 //            }
             return $this->successResponse(new OrdersHoursResources($data), 'Data created successfully');
 
-        } catch (\Exception $exception) {
-            return $this->errorResponse('Something went wrong, please try again later');
-        }
+//        } catch (\Exception $exception) {
+//            return $this->errorResponse('Something went wrong, please try again later');
+//        }
 
 
     }
