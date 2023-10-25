@@ -111,7 +111,7 @@ class RateCommentController extends Controller
 
 
 
-//        try {
+        try {
             $findOrder = Order::where('order_code', $request->order_code)->first();
             $findOrderHours = OrderHour::where('order_code', $request->order_code)->first();
             $findOrderDay = OrderDay::where('order_code', $request->order_code)->first();
@@ -177,9 +177,9 @@ class RateCommentController extends Controller
 
 
 
-//        } catch (\Exception $exception) {
-//            return $this->errorResponse('Something went wrong, please try again later');
-//        }
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+        }
     }
 
 
