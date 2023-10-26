@@ -131,8 +131,8 @@ class OrdersController extends Controller
         });
 
         if ($orderCode3) {
-            $orderCodeValue = optional($orderCode2)->order_code;
-            $trip_type_id = optional($orderCode2)->trip_type_id;
+            $orderCodeValue = optional($orderCode3)->order_code;
+            $trip_type_id = optional($orderCode3)->trip_type_id;
             $responseData = [
                 'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue" : "",
                 'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
