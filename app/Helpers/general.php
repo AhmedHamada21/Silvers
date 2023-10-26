@@ -278,7 +278,7 @@ if (!function_exists('createInFirebaseHours')) {
 if (!function_exists('createInFirebaseDay')) {
     function createInFirebaseDay($user_id, $caption_id, $order_id)
     {
-        $order = \App\Models\OrderHour::findorfail($order_id);
+        $order = \App\Models\OrderDay::findorfail($order_id);
         $response = Http::post('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
@@ -343,7 +343,7 @@ if (!function_exists('DeletedInFirebaseHours')) {
 if (!function_exists('DeletedInFirebaseDay')) {
     function DeletedInFirebaseDay($user_id, $caption_id, $order_id)
     {
-        $order = \App\Models\OrderHour::findorfail($order_id);
+        $order = \App\Models\OrderDay::findorfail($order_id);
         $response = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
