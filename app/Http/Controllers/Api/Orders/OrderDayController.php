@@ -110,7 +110,7 @@ class OrderDayController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'order_code' => 'required|exists:order_hours,order_code',
+            'order_code' => 'required|exists:order_days,order_code',
             'status' => 'required|in:done,waiting,pending,cancel,accepted',
         ]);
 
