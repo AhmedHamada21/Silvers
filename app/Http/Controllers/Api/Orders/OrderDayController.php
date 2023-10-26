@@ -196,7 +196,7 @@ class OrderDayController extends Controller
         sendNotificationUser($findOrder->user->fcm_token, 'تم الغاء الطلب', $request->cansel, true);
         sendNotificationCaptain($findOrder->captain->fcm_token, 'تم الغاء الطلب', $request->cansel, true);
 
-        DeletedInFirebaseHours($findOrder->user_id, $findOrder->captain_id, $findOrder->id);
+        DeletedInFirebaseDay($findOrder->user_id, $findOrder->captain_id, $findOrder->id);
 
         return $this->successResponse(new OrdersDayResources($findOrder), 'Data updated successfully');
     }
