@@ -220,7 +220,20 @@ if (!function_exists('getTotalAmountDay')) {
             ->sum('total_price');
 
 
-        return number_format($ordersTotal - ($ordersTotal * $commission), 2);
+        $ordersTotalHours = \App\Models\OrderHour::where('status', 'done')
+            ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))
+            ->where('captain_id', $id_caption)
+            ->sum('total_price');
+
+
+        $ordersTotalDay = \App\Models\OrderDay::where('status', 'done')
+            ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))
+            ->where('captain_id', $id_caption)
+            ->sum('total_price');
+
+        $totalOrders = $ordersTotal +  $ordersTotalHours +  $ordersTotalDay;
+
+        return number_format($totalOrders - ($totalOrders * $commission), 2);
     }
 }
 
