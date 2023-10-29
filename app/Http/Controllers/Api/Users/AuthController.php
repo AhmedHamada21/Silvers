@@ -95,7 +95,8 @@ class AuthController extends Controller
             $validator->validated(),
             ['password' => bcrypt($request->password)]
         ));
-        return $this->successResponse(new UsersResources($user), 'data created Successfully', 200);
+
+        $this->login_phone($request);
     }
 
     /**
