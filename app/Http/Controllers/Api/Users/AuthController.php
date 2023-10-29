@@ -96,7 +96,7 @@ class AuthController extends Controller
             ['password' => bcrypt($request->password)]
         ));
 
-        $this->login_phone($request);
+        return $this->login_phone($request);
     }
 
     /**
