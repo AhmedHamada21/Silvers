@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Orders;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Orders\OrdersDayResources;
+use App\Http\Resources\Orders\OrdersSaveDayResources;
 use App\Models\CanselOrderHoursDay;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
@@ -103,6 +104,69 @@ class OrderDayController extends Controller
 //        } catch (\Exception $exception) {
 //            return $this->errorResponse('Something went wrong, please try again later');
 //        }
+
+
+    }
+    public function saveDay(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'total_price' => 'required|numeric',
+            'payments' => 'required|in:cash,masterCard,wallet',
+            'lat_user' => 'required',
+            'long_user' => 'required',
+            'address_now' => 'required',
+            'start_day' => 'required',
+            'end_day' => 'required',
+            'number_day' => 'required',
+            'start_time' => 'required',
+
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+
+        if (OrderDay::where('user_id', $request->user_id)->where('status', 'pending')->exists()) {
+            return $this->errorResponse('This client is already on a journey');
+        }
+
+        if (OrderDay::where('captain_id', $request->captain_id)->where('status', 'pending')->exists()) {
+            return $this->errorResponse('This captain is already on a journey');
+        }
+        try {
+
+            $latestOrderId = optional(OrderDay::latest()->first())->id;
+            $orderCode = 'orderD_' . $latestOrderId . generateRandomString(5);
+            $chatId = 'chatD_' . generateRandomString(4);
+
+            $data = OrderDay::create([
+                'address_now' => $request->address_now,
+                'user_id' => $request->user_id,
+                'trip_type_id' => 3,
+                'order_code' => $orderCode,
+                'total_price' => $request->total_price,
+                'chat_id' => $chatId,
+                'status' => 'pending',
+                'payments' => $request->payments,
+                'lat_user' => $request->lat_user,
+                'long_user' => $request->long_user,
+                'start_day' => $request->start_day,
+                'end_day' => $request->end_day,
+                'number_day' => $request->number_day,
+                'start_time' => $request->start_time,
+
+
+            ]);
+
+            if ($data) {
+
+            }
+            return $this->successResponse(new OrdersSaveDayResources($data), 'Data created successfully');
+
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+        }
 
 
     }

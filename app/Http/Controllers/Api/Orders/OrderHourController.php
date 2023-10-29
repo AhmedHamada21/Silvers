@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Orders;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Orders\OrdersHoursResources;
 use App\Http\Resources\Orders\OrdersResources;
+use App\Http\Resources\Orders\OrdersSaveHoursResources;
 use App\Models\CanselOrderHoursDay;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
@@ -97,6 +98,65 @@ class OrderHourController extends Controller
 
             }
             return $this->successResponse(new OrdersHoursResources($data), 'Data created successfully');
+
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+        }
+
+
+    }
+
+
+    public function saveHours(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'hour_id' => 'required|exists:hours,id',
+            'total_price' => 'required|numeric',
+            'payments' => 'required|in:cash,masterCard,wallet',
+            'lat_user' => 'required',
+            'long_user' => 'required',
+            'address_now' => 'required',
+            'data' => 'required',
+            'hours_from' => 'required',
+
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+
+        if (OrderHour::where('user_id', $request->user_id)->where('status', 'pending')->exists()) {
+            return $this->errorResponse('This client is already on a journey');
+        }
+
+        if (OrderHour::where('captain_id', $request->captain_id)->where('status', 'pending')->exists()) {
+            return $this->errorResponse('This captain is already on a journey');
+        }
+        try {
+
+            $latestOrderId = optional(OrderHour::latest()->first())->id;
+            $orderCode = 'orderH_' . $latestOrderId . generateRandomString(5);
+            $chatId = 'chatH_' . generateRandomString(4);
+
+            $data = OrderHour::create([
+                'hour_id' => $request->hour_id,
+                'address_now' => $request->address_now,
+                'user_id' => $request->user_id,
+                'trip_type_id' => 2,
+                'order_code' => $orderCode,
+                'total_price' => $request->total_price,
+                'chat_id' => $chatId,
+                'status' => 'pending',
+                'payments' => $request->payments,
+                'lat_user' => $request->lat_user,
+                'long_user' => $request->long_user,
+                'data' => $request->data,
+                'hours_from' => $request->hours_from,
+
+            ]);
+
+            return $this->successResponse(new OrdersSaveHoursResources($data), 'Data created successfully');
 
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
