@@ -9,6 +9,7 @@ use App\Models\CanselOrderHoursDay;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
 use App\Models\OrderDay;
+use App\Models\SaveRentDay;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
@@ -127,11 +128,11 @@ class OrderDayController extends Controller
             return $this->errorResponse($validator->errors(), 400);
         }
 
-        if (OrderDay::where('user_id', $request->user_id)->where('status', 'pending')->exists()) {
+        if (SaveRentDay::where('user_id', $request->user_id)->where('status', 'pending')->exists()) {
             return $this->errorResponse('This client is already on a journey');
         }
 
-        if (OrderDay::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('start_day',$request->start_day)->where('end_day',$request->end_day)->first()) {
+        if (SaveRentDay::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('start_day',$request->start_day)->where('end_day',$request->end_day)->first()) {
             return $this->errorResponse('There is a flight already booked for the same date');
 
         }
@@ -140,11 +141,11 @@ class OrderDayController extends Controller
 
         try {
 
-            $latestOrderId = optional(OrderDay::latest()->first())->id;
+            $latestOrderId = optional(SaveRentDay::latest()->first())->id;
             $orderCode = 'orderD_' . $latestOrderId . generateRandomString(5);
             $chatId = 'chatD_' . generateRandomString(4);
 
-            $data = OrderDay::create([
+            $data = SaveRentDay::create([
                 'address_now' => $request->address_now,
                 'user_id' => $request->user_id,
                 'trip_type_id' => 3,
@@ -163,9 +164,6 @@ class OrderDayController extends Controller
 
             ]);
 
-            if ($data) {
-
-            }
             return $this->successResponse(new OrdersSaveDayResources($data), 'Data created successfully');
 
         } catch (\Exception $exception) {

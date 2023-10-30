@@ -10,6 +10,7 @@ use App\Models\CanselOrderHoursDay;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
 use App\Models\OrderHour;
+use App\Models\SaveRentHour;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
@@ -126,21 +127,21 @@ class OrderHourController extends Controller
             return $this->errorResponse($validator->errors(), 400);
         }
 
-        if (OrderHour::where('user_id', $request->user_id)->where('status', 'pending')->exists()) {
+        if (SaveRentHour::where('user_id', $request->user_id)->where('status', 'pending')->exists()) {
             return $this->errorResponse('This client is already on a journey');
         }
 
-        if (OrderHour::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('data',$request->data)->where('hours_from',$request->hours_from)->first()) {
+        if (SaveRentHour::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('data',$request->data)->where('hours_from',$request->hours_from)->first()) {
             return $this->errorResponse('There is a flight already booked for the same date');
         }
 
-//        try {
+        try {
 
-            $latestOrderId = optional(OrderHour::latest()->first())->id;
+            $latestOrderId = optional(SaveRentHour::latest()->first())->id;
             $orderCode = 'orderH_' . $latestOrderId . generateRandomString(5);
             $chatId = 'chatH_' . generateRandomString(4);
 
-            $data = OrderHour::create([
+            $data = SaveRentHour::create([
                 'hour_id' => $request->hour_id,
                 'address_now' => $request->address_now,
                 'user_id' => $request->user_id,
@@ -159,9 +160,9 @@ class OrderHourController extends Controller
 
             return $this->successResponse(new OrdersSaveHoursResources($data), 'Data created successfully');
 
-//        } catch (\Exception $exception) {
-//            return $this->errorResponse('Something went wrong, please try again later');
-//        }
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+        }
 
 
     }
