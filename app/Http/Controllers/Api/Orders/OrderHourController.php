@@ -127,9 +127,6 @@ class OrderHourController extends Controller
             return $this->errorResponse($validator->errors(), 400);
         }
 
-        if (SaveRentHour::where('user_id', $request->user_id)->where('status', 'pending')->exists()) {
-            return $this->errorResponse('This client is already on a journey');
-        }
 
         if (SaveRentHour::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('data',$request->data)->where('hours_from',$request->hours_from)->first()) {
             return $this->errorResponse('There is a flight already booked for the same date');

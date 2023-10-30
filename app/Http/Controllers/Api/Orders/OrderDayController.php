@@ -128,9 +128,6 @@ class OrderDayController extends Controller
             return $this->errorResponse($validator->errors(), 400);
         }
 
-        if (SaveRentDay::where('user_id', $request->user_id)->where('status', 'pending')->exists()) {
-            return $this->errorResponse('This client is already on a journey');
-        }
 
         if (SaveRentDay::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('start_day',$request->start_day)->where('end_day',$request->end_day)->first()) {
             return $this->errorResponse('There is a flight already booked for the same date');

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\OrderHour;
+use App\Models\SaveRentHour;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 
@@ -27,26 +28,43 @@ class CheckOrderHours extends Command
      */
     public function handle()
     {
-        $hoursNow = Carbon::now()->format('g:i A');
-        $ordersHours = OrderHour::with([
-            'user',
-            'captain',
-        ])->where('data', date('Y-m-d'))->where('status', 'pending')->get();
+        $ordersSaveHours = SaveRentHour::get();
+        $now = Carbon::now()->format('g:i A');
 
-        foreach ($ordersHours as $ordersHour) {
+        if ($ordersSaveHours->count() > 0) {
+            foreach ($ordersSaveHours as $ordersSaveHour) {
+                if ($ordersSaveHour->status == 'cancel') {
+                    $ordersSaveHour->delete();
+                }
+                $this->comment('Deleted Orders status cancel');
+                if ($ordersSaveHour->data == Carbon::now()->format('Y-m-d')) {
 
-            $orderTime = Carbon::parse($ordersHour->hours_from);
-            $timeDifference = $orderTime->diffInMinutes($hoursNow);
+                    if ($ordersSaveHour->data == Carbon::now()->format('Y-m-d')) {
 
-            if ($timeDifference <= 10) {
+                        $timeDifferenceInMinutes = Carbon::now()->diffInMinutes($ordersSaveHour->hours_from);
+
+
+                        if ($timeDifferenceInMinutes == 10) {
+                            sendNotificationUser($ordersSaveHour->user->fcm_token,'تأكيد الرحله','من فضلك قم بتأكيد الرحله',true);
+                        }
+                        if ($timeDifferenceInMinutes == 5) {
+                            sendNotificationUser($ordersSaveHour->user->fcm_token,'تأكيد الرحله','من فضلك قم بتأكيد الرحله',true);
+
+                        }
+                        if ($timeDifferenceInMinutes == 20) {
+                            sendNotificationUser($ordersSaveHour->user->fcm_token,'تأكيد الرحله','من فضلك قم بتأكيد الرحله',true);
+
+                        }
+
+                    }
+
+                    $this->comment('Orders Send .'  .$timeDifferenceInMinutes);
+
+
+                }
+
             }
-
-            if ($timeDifference <= 5) {
-            }
-
-
         }
-
 
 
     }
