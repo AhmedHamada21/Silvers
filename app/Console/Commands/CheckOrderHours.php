@@ -77,6 +77,8 @@ class CheckOrderHours extends Command
 
 
             }
+        }else{
+            $this->comment('Orders Not exiting');
         }
 
 
