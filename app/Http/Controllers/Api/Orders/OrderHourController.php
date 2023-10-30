@@ -130,10 +130,11 @@ class OrderHourController extends Controller
             return $this->errorResponse('This client is already on a journey');
         }
 
-        if (OrderHour::where('captain_id', $request->captain_id)->where('status', 'pending')->exists()) {
-            return $this->errorResponse('This captain is already on a journey');
+        if (OrderHour::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('data',$request->data)->where('hours_from',$request->hours_from)->first()) {
+            return $this->errorResponse('There is a flight already booked for the same date');
         }
-        try {
+
+//        try {
 
             $latestOrderId = optional(OrderHour::latest()->first())->id;
             $orderCode = 'orderH_' . $latestOrderId . generateRandomString(5);
@@ -158,9 +159,9 @@ class OrderHourController extends Controller
 
             return $this->successResponse(new OrdersSaveHoursResources($data), 'Data created successfully');
 
-        } catch (\Exception $exception) {
-            return $this->errorResponse('Something went wrong, please try again later');
-        }
+//        } catch (\Exception $exception) {
+//            return $this->errorResponse('Something went wrong, please try again later');
+//        }
 
 
     }

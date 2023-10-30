@@ -22,6 +22,7 @@ Route::group(['prefix' => 'order', 'middleware' => 'auth:users-api,captain-api']
     Route::get('sendNotationsCalculator', [OrdersController::class, 'sendNotationsCalculator']);
     Route::post('OrderExiting', [OrdersController::class, 'OrderExiting']);
 
+    Route::get('getSavedOrders',[OrdersController::class, 'getSavedOrders']);
 
     ################# Create Orders Hours #########################
     Route::prefix('hours')->as('hours')->group(function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Orders;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Orders\AllOrdersSavedRentResources;
 use App\Http\Resources\Orders\OrdersResources;
 use App\Models\CanselOrder;
 use App\Models\Captain;
@@ -11,6 +12,8 @@ use App\Models\CaptionActivity;
 use App\Models\Order;
 use App\Models\OrderDay;
 use App\Models\OrderHour;
+use App\Models\SaveRentDay;
+use App\Models\SaveRentHour;
 use App\Models\TakingOrder;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\User;
@@ -529,6 +532,17 @@ class OrdersController extends Controller
 //
 //        return $distance;
 //    }
+
+
+    public function getSavedOrders()
+    {
+        $user = auth('users-api')->user();
+        $ordersHours = SaveRentHour::where('user_id',$user->id)->where('status', 'pending')->get();
+        $ordersDay = SaveRentDay::where('user_id',$user->id)->where('status', 'pending')->get();
+        $combinedOrders = $ordersHours->merge($ordersDay);
+        return $this->successResponse(AllOrdersSavedRentResources::collection($combinedOrders), 'Data returned successfully');
+
+    }
 
 
 }
