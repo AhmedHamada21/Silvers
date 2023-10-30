@@ -34,7 +34,7 @@ Route::group(['prefix' => 'order', 'middleware' => 'auth:users-api,captain-api']
         Route::post('canselOrder', [OrderHourController::class, 'canselOrder']);
     });
 
-    ################# Create Orders Hours #########################
+    ################# Create Orders Day #########################
     Route::prefix('day')->as('day')->group(function () {
         Route::post('getOrder',[OrderDayController::class,'index']);
         Route::post('createOrder', [OrderDayController::class, 'store']);
