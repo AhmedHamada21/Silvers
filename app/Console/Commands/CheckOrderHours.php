@@ -21,7 +21,7 @@ class CheckOrderHours extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Check Orders Saved Hours In Minutes';
 
     /**
      * Execute the console command.
@@ -33,6 +33,7 @@ class CheckOrderHours extends Command
 
         if ($ordersSaveHours->count() > 0) {
             foreach ($ordersSaveHours as $ordersSaveHour) {
+                $orders = SaveRentHour::findorfail($ordersSaveHour->id);
                 if ($ordersSaveHour->status == 'cancel') {
                     $ordersSaveHour->delete();
                 }
@@ -43,22 +44,30 @@ class CheckOrderHours extends Command
 
                         $timeDifferenceInMinutes = Carbon::now()->diffInMinutes($ordersSaveHour->hours_from);
 
+                        if ($timeDifferenceInMinutes == 20) {
+                            sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            $orders->status == "accepted";
+                            $orders->save();
+                        }
 
                         if ($timeDifferenceInMinutes == 10) {
-                            sendNotificationUser($ordersSaveHour->user->fcm_token,'تأكيد الرحله','من فضلك قم بتأكيد الرحله',true);
+                            sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            $orders->status == "accepted";
+                            $orders->save();
                         }
                         if ($timeDifferenceInMinutes == 5) {
-                            sendNotificationUser($ordersSaveHour->user->fcm_token,'تأكيد الرحله','من فضلك قم بتأكيد الرحله',true);
-
+                            sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            $orders->status == "accepted";
+                            $orders->save();
                         }
-                        if ($timeDifferenceInMinutes == 20) {
-                            sendNotificationUser($ordersSaveHour->user->fcm_token,'تأكيد الرحله','من فضلك قم بتأكيد الرحله',true);
 
+                        if ($timeDifferenceInMinutes == 60){
+                            $ordersSaveHour->delete();
                         }
 
                     }
 
-                    $this->comment('Orders Send .'  .$timeDifferenceInMinutes);
+                    $this->comment('Orders Send .' . $timeDifferenceInMinutes);
 
 
                 }

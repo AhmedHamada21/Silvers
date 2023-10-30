@@ -20,6 +20,7 @@ class AllOrdersSavedRentResources extends JsonResource
         return [
             'user_id' => $this->user_id,
             'trip_type_id' => new TripTypeResources($this->trip_type),
+            'typeOrders' => $this->hour_id == true ? "OrderHours" : "OrderDay",
             'hour_id' => $this->hour_id == true ? new HoursResources($this->hour) : null,
             'order_code' => $this->order_code ?? null,
             'total_price' => $this->total_price ?? null,
