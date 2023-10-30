@@ -46,19 +46,23 @@ class CheckOrderHours extends Command
 
                         if ($timeDifferenceInMinutes == 20) {
                             sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
-                            $orders->status == "accepted";
-                            $orders->save();
+                            $orders->update([
+                                'status'=>"accepted"
+                            ]);
+
                         }
 
                         if ($timeDifferenceInMinutes == 10) {
                             sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
-                            $orders->status == "accepted";
-                            $orders->save();
+                            $orders->update([
+                                'status'=>"accepted"
+                            ]);;
                         }
                         if ($timeDifferenceInMinutes == 5) {
                             sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
-                            $orders->status == "accepted";
-                            $orders->save();
+                            $orders->update([
+                                'status'=>"accepted"
+                            ]);
                         }
 
                         if ($timeDifferenceInMinutes == 60){
