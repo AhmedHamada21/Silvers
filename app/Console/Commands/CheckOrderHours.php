@@ -29,52 +29,52 @@ class CheckOrderHours extends Command
     public function handle()
     {
         $ordersSaveHours = SaveRentHour::get();
-        $now = Carbon::now()->format('g:i A');
-
         if ($ordersSaveHours->count() > 0) {
             foreach ($ordersSaveHours as $ordersSaveHour) {
                 $orders = SaveRentHour::findorfail($ordersSaveHour->id);
                 if ($ordersSaveHour->status == 'cancel') {
                     $ordersSaveHour->delete();
+                    $this->comment('Deleted Orders status cancel');
                 }
-                $this->comment('Deleted Orders status cancel');
+
+
                 if ($ordersSaveHour->data == Carbon::now()->format('Y-m-d')) {
 
-                    if ($ordersSaveHour->data == Carbon::now()->format('Y-m-d')) {
+                    $timeDifferenceInMinutes = Carbon::now()->diffInMinutes($ordersSaveHour->hours_from);
 
-                        $timeDifferenceInMinutes = Carbon::now()->diffInMinutes($ordersSaveHour->hours_from);
-
-                        if ($timeDifferenceInMinutes == 20) {
-                            sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
-                            $orders->update([
-                                'status'=>"accepted"
-                            ]);
-
-                        }
-
-                        if ($timeDifferenceInMinutes == 10) {
-                            sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
-                            $orders->update([
-                                'status'=>"accepted"
-                            ]);;
-                        }
-                        if ($timeDifferenceInMinutes == 5) {
-                            sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
-                            $orders->update([
-                                'status'=>"accepted"
-                            ]);
-                        }
-
-                        if ($timeDifferenceInMinutes == 60){
-                            $ordersSaveHour->delete();
-                        }
-
+                    if ($timeDifferenceInMinutes == 20) {
+                        sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        $orders->update([
+                            'status' => "accepted"
+                        ]);
                     }
 
-                    $this->comment('Orders Send .' . $timeDifferenceInMinutes);
+                    if ($timeDifferenceInMinutes == 10) {
+                        sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        $orders->update([
+                            'status' => "accepted"
+                        ]);;
+                    }
+                    if ($timeDifferenceInMinutes == 5) {
+                        sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        $orders->update([
+                            'status' => "accepted"
+                        ]);
+                    }
+
+                    $newTime = Carbon::parse($ordersSaveHour->hours_from)->addHour()->format('g:i A');
+                    $now = Carbon::now()->format('g:i A');
+                    if ($now == $newTime) {
+                        sendNotificationUser($ordersSaveHour->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
+                        $ordersSaveHour->delete();
+                        $this->comment('Orders Deleted Successfully');
+                    }
 
 
                 }
+
+                $this->comment('Orders Send ' . $timeDifferenceInMinutes);
+
 
             }
         }

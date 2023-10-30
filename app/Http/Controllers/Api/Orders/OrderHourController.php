@@ -164,6 +164,24 @@ class OrderHourController extends Controller
 
     }
 
+
+    public function canselHours(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_code'=>'required|exists:save_rent_hours,order_code'
+
+        ]);
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+
+        $orders = SaveRentHour::where('order_code',$request->order_code)->update([
+            'status'=>'cancel'
+        ]);
+        return $this->successResponse('Data cancel successfully');
+
+    }
+
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [

@@ -479,60 +479,6 @@ class OrdersController extends Controller
 
 
 
-//
-//
-//    protected function sendNotationsCalculator()
-//    {
-//        $takings = DB::table('taking_orders')->get();
-//        $results = []; // Array to store results
-//
-//        $start_time = microtime(true); // Start timing
-//
-//        foreach ($takings as $taking) {
-//            $getOrder = DB::table('orders')->where('id', $taking->order_id)->first();
-//            $distance = $this->haversineDistance($taking->lat_caption, $taking->long_caption, $getOrder->lat_caption, $getOrder->long_caption);
-//
-//            // Add the result to the array (if needed)
-//            $results[] = [
-//                'distance' => round($distance, 2) . ' km',
-//            ];
-//        }
-//
-//        $end_time = microtime(true); // End timing
-//        $execution_time = ($end_time - $start_time) * 1000;
-//
-//        // Check if 3 minutes have passed
-//        if ($execution_time >= 180000) {
-//            $user = DB::table('users')->where('id', $getOrder->user_id)->first();
-//            sendNotificationUser($user->fcm_token, __('admins.bodyWosol'), __('admins.titleWosol'), true);
-//        }
-//
-//        // Optionally, return the results if needed
-//        return response()->json(['results' => $results, 'execution_time' => round($execution_time, 2) . ' ms']);
-//    }
-//
-//
-//    private function haversineDistance($lat1, $lon1, $lat2, $lon2)
-//    {
-//        // Radius of the Earth in kilometers
-//        $earthRadius = 6371000;
-//
-//        // Convert latitude and longitude from degrees to radians
-//        $lat1 = deg2rad($lat1);
-//        $lon1 = deg2rad($lon1);
-//        $lat2 = deg2rad($lat2);
-//        $lon2 = deg2rad($lon2);
-//
-//        // Haversine formula
-//        $dLat = $lat2 - $lat1;
-//        $dLon = $lon2 - $lon1;
-//        $a = sin($dLat / 2) * sin($dLat / 2) + cos($lat1) * cos($lat2) * sin($dLon / 2) * sin($dLon / 2);
-//        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-//        $distance = $earthRadius * $c;
-//
-//        return $distance;
-//    }
-
 
     public function getSavedOrders()
     {
