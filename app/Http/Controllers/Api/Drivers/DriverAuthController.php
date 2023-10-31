@@ -189,12 +189,16 @@ class DriverAuthController extends Controller
      */
     public function refresh()
     {
-        $oldToken = auth('captain-api')->getToken();
-        if ($oldToken) {
-            $token = $oldToken->get();
-            $tokens = DB::table('personal_access_tokens')->where('token', $token)->first();
-            return $this->createNewTokenRefresh($tokens);
-        }
+
+        $token = JWTAuth::getToken();
+        $newToken = JWTAuth::refresh($token, ['custom_claim' => 'value'], 10);
+        return $this->createNewToken($newToken);
+//        $oldToken = auth('captain-api')->getToken();
+//        if ($oldToken) {
+//            $token = $oldToken->get();
+//            $tokens = DB::table('personal_access_tokens')->where('token', $token)->first();
+//            return $this->createNewTokenRefresh($tokens);
+//        }
     }
 
 
