@@ -20,7 +20,7 @@ class CountryController extends Controller
                 return $country->id == 65 ? 0 : 1;
             });
 
-            return $this->successResponse(CountryResources::collection($sortedCountries), 'تمت معالجة البيانات بنجاح');
+            return $this->successResponse(CountryResources::collection($sortedCountries), 'data Return Successfully');
 
         } catch (\Exception $exception) {
             $this->errorResponse('Something went wrong, please try again later');
