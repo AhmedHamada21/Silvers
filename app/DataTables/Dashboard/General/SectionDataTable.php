@@ -39,7 +39,11 @@ class SectionDataTable extends BaseDataTable {
     }
 
     public function query(): QueryBuilder {
-        return Section::latest();
+        return Section::with([
+            'country',
+            'admin',
+            'agent',
+        ])->latest();
     }
 
     public function getColumns(): array {
