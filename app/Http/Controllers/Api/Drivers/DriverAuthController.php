@@ -120,7 +120,6 @@ class DriverAuthController extends Controller
 
 
         $token = auth('captain-api')->login($information);
-        dd($token);
         $information2 = Captain::where('phone', $phone)->first();
         DB::table('personal_access_tokens')->updateOrInsert([
             'tokenable_id' => $information2->id,
@@ -131,6 +130,7 @@ class DriverAuthController extends Controller
             'token' => $token,
             'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
         ]);
+        dd('asdasd');
         return $this->createNewToken($token);
     }
 
