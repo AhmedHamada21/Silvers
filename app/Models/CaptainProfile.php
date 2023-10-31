@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CaptainProfile extends BaseModel
 {
@@ -39,4 +40,7 @@ class CaptainProfile extends BaseModel
         return $this->hasMany(Wallet::class,'captain_id')->sum('amount');
     }
 
+    public function orders(): HasMany {
+        return $this->hasMany(Order::class,'captain_id');
+    }
 }
