@@ -15,7 +15,13 @@ class CountryController extends Controller
     public function index()
     {
         try {
-            return $this->successResponse(CountryResources::collection(Country::whereStatus(true)->get()), 'data Return Successfully');
+//            return $this->successResponse(CountryResources::collection(Country::whereStatus(true)->get()), 'data Return Successfully');
+            $sortedCountries = Country::whereStatus(true)->get()->sortBy(function ($country) {
+                return $country->id == 65 ? 0 : 1;
+            });
+
+            return $this->successResponse(CountryResources::collection($sortedCountries), 'تمت معالجة البيانات بنجاح');
+
         } catch (\Exception $exception) {
             $this->errorResponse('Something went wrong, please try again later');
         }
