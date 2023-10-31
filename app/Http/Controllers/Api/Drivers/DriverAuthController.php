@@ -69,7 +69,7 @@ class DriverAuthController extends Controller
             'tokenable_id' => $information2->id,
             'name' => $information2->name,
             'token' => $token,
-            'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
+            'expires_at' => auth('captain-api')->factory()->getTTL() * 1,
         ]);
 
         return $this->createNewToken($token);
@@ -103,7 +103,7 @@ class DriverAuthController extends Controller
             'tokenable_id' => $information2->id,
             'name' => $information2->name,
             'token' => $token,
-            'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
+            'expires_at' => auth('captain-api')->factory()->getTTL() * 1,
         ]);
 
 
@@ -128,7 +128,7 @@ class DriverAuthController extends Controller
             'tokenable_id' => $information2->id,
             'name' => $information2->name,
             'token' => $token,
-            'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
+            'expires_at' => auth('captain-api')->factory()->getTTL() * 1,
         ]);
 
         return $this->createNewToken($token);
