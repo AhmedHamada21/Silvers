@@ -15,7 +15,7 @@ class CountryController extends Controller
     public function index()
     {
         try {
-            return $this->successResponse(CountryResources::collection(Country::whereStatus(true)->get()->index(65)), 'data Return Successfully');
+            return $this->successResponse(CountryResources::collection(Country::whereStatus(true)->get()), 'data Return Successfully');
         } catch (\Exception $exception) {
             $this->errorResponse('Something went wrong, please try again later');
         }
