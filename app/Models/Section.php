@@ -11,9 +11,6 @@ class Section extends Model {
         return $this->whereStatus('active')->get();
     }
 
-    public function status() {
-        return $this->status ? 'Active' : 'NO Active';
-    }
     public function country(): BelongsTo {
         return $this->belongsTo(related:Country::class, foreignKey:'country_id');
     }
