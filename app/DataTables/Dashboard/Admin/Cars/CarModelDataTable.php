@@ -15,7 +15,7 @@ class CarModelDataTable extends BaseDataTable {
     public function dataTable($query): EloquentDataTable {
         return (new EloquentDataTable($query))
             ->addColumn('action', function (CarModel $carModel) {
-                return view('dashboard.admin.cars.CarModel.btn.actions', compact('carModel'));
+                return view('dashboard.admin.cars.carModel.btn.actions', compact('carModel'));
             })
             ->editColumn('created_at', function (CarModel $carModel) {
                 return $this->formatBadge($this->formatDate($carModel->created_at));
@@ -29,7 +29,7 @@ class CarModelDataTable extends BaseDataTable {
             ->editColumn('car_make_id', function (CarModel $carModel) {
                 return $carModel->car_make->name;
             })
-            ->rawColumns(['action', 'created_at', 'updated_at','status', 'car_make_id']); 
+            ->rawColumns(['action', 'created_at', 'updated_at','status', 'car_make_id']);
     }
 
     public function query(): QueryBuilder {
