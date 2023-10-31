@@ -202,7 +202,6 @@ class DriverAuthController extends Controller
     {
 
         $users = Captain::findorfail($token->tokenable_id);
-      dd($users);
         return $this->loginPhoneToken($users->phone);
     }
 
