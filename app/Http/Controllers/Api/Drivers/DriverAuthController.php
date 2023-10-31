@@ -114,7 +114,7 @@ class DriverAuthController extends Controller
     public function loginPhoneToken($phone)
     {
         $information = Captain::where('phone', $phone)->first();
-
+dd($information);
         if (!$information) {
             return $this->errorResponse('Unauthorized', 422);
         }
@@ -201,7 +201,6 @@ class DriverAuthController extends Controller
     public function createNewTokenRefresh($token)
     {
         $users = Captain::findorfail($token->tokenable_id);
-        dd($users->phone);
         return $this->loginPhoneToken($users->phone);
     }
 
