@@ -69,7 +69,7 @@ class DriverAuthController extends Controller
             'tokenable_id' => $information2->id,
             'name' => $information2->name,
             'token' => $token,
-            'expires_at' => auth('captain-api')->factory()->getTTL() * 1,
+            'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
         ]);
 
         return $this->createNewToken($token);
@@ -103,7 +103,7 @@ class DriverAuthController extends Controller
             'tokenable_id' => $information2->id,
             'name' => $information2->name,
             'token' => $token,
-            'expires_at' => auth('captain-api')->factory()->getTTL() * 1,
+            'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
         ]);
 
 
@@ -128,7 +128,7 @@ class DriverAuthController extends Controller
             'tokenable_id' => $information2->id,
             'name' => $information2->name,
             'token' => $token,
-            'expires_at' => auth('captain-api')->factory()->getTTL() * 1,
+            'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
         ]);
 
         return $this->createNewToken($token);
@@ -233,7 +233,7 @@ class DriverAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('captain-api')->factory()->getTTL() * 1, // تم تحديث هذا السطر
+            'expires_in' => auth('captain-api')->factory()->getTTL() * 60, // تم تحديث هذا السطر
             'user' => new CaptionResources(auth('captain-api')->user())
         ]);
     }
