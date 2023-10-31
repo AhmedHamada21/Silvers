@@ -130,7 +130,7 @@ class DriverAuthController extends Controller
             'token' => $token,
             'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
         ]);
-        dd('asdasd');
+
         return $this->createNewToken($token);
     }
 
