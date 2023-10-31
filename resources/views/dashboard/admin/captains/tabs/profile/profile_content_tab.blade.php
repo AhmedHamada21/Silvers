@@ -97,68 +97,66 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                    
                                                         @forelse ($data['captain']['images'] as $image)
-                                                            {{--@if ($image['type'] === 'personal')--}}
-                                                                <tr>
-                                                                    <td>
-                                                                        @php
-                                                                            $imagePath = asset('dashboard/img/' . str_replace(' ', '_', $data['captain']->name) . '_' . $data['captain']->profile->uuid . '/' . $image->type . '/' . $image->filename)
-                                                                        @endphp
-                                                                       
-                                                                        <img src="{{ $imagePath }}" alt="{{ $image->photo_type }}" width="100">
-                                                                        <td>{{ ucfirst(str_replace('_', ' ', $image->photo_type)) }}</td>
-                                                                        <td>{{ $image->type }}</td>
-                                                                        <td>{{ ucfirst(str_replace('_', ' ', $image->photo_status)) }}</td>
-                                                                        <td>
-                                                                            <div class="mb-1 btn-group">
-                                                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ trans('general.processes') }}</button>
-                                                                                <div class="dropdown-menu">
-                                                                                    {{--<a type="button" class="modal-effect btn btn-sm btn-primary dropdown-item" style="text-align: center !important"
-                                                                                        data-toggle="modal" data-target="#edit{{$image->id}}" data-effect="effect-scale">
-                                                                                        <span class="icon text-primary text-bold">
-                                                                                            <i class="fa fa-edit"></i>
-                                                                                            Edit
-                                                                                        </span>
-                                                                                    </a>--}}
-                                                                                    <a type="button" class="modal-effect btn btn-sm btn-success dropdown-item" style="text-align: center !important"
-                                                                                        data-toggle="modal" data-target="#active{{$image->id}}" data-effect="effect-scale">
-                                                                                        <span class="icon text-success text-bold">
-                                                                                            <i class="fa fa-edit"></i>
-                                                                                            Active
-                                                                                        </span>
-                                                                                    </a>
-                                                                                    <a type="button" class="modal-effect btn btn-sm btn-warning dropdown-item" style="text-align: center !important"
-                                                                                        data-toggle="modal" data-target="#reject{{$image->id}}" data-effect="effect-scale">
-                                                                                        <span class="icon text-warning text-bold">
-                                                                                            <i class="fa fa-edit"></i>
-                                                                                            Reject
-                                                                                        </span>
-                                                                                    </a>
-                                                                                    {{--<a type="button" class="modal-effect btn btn-sm btn-danger dropdown-item" style="text-align: center !important"
-                                                                                        data-toggle="modal" data-target="#delete{{$image->id}}" data-effect="effect-scale">
-                                                                                        <span class="icon text-danger text-bold">
-                                                                                            <i class="fa fa-edit"></i>
-                                                                                            Delete
-                                                                                        </span>
-                                                                                    </a>--}}
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                    </td>
-                                                                </tr>
-                                                                @if ($image->photo_status === 'rejected')
-                                                                <tr>
-                                                                    <td colspan="5">
-                                                                        <div>
-                                                                            <strong class="text-danger">Reject Reason:</strong>
-                                                                            {{ $image->reject_reson }}
+                                                        <tr>
+                                                            <td>
+                                                                @php
+                                                                    $imagePath = asset('dashboard/img/' . str_replace(' ', '_', $data['captain']->name) . '_' . $data['captain']->profile->uuid . '/' . $image->type . '/' . $image->filename)
+                                                                @endphp
+                                                                <img src="{{ $imagePath }}" alt="{{ $image->photo_type }}" width="100">
+                                                                <td>{{ ucfirst(str_replace('_', ' ', $image->photo_type)) }}</td>
+                                                                <td>{{ $image->type }}</td>
+                                                                <td>{{ ucfirst(str_replace('_', ' ', $image->photo_status)) }}</td>
+                                                                <td>
+                                                                    <div class="mb-1 btn-group">
+                                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ trans('general.processes') }}</button>
+                                                                        <div class="dropdown-menu">
+                                                                            {{--<a type="button" class="modal-effect btn btn-sm btn-primary dropdown-item" style="text-align: center !important"
+                                                                                data-toggle="modal" data-target="#edit{{$image->id}}" data-effect="effect-scale">
+                                                                                <span class="icon text-primary text-bold">
+                                                                                    <i class="fa fa-edit"></i>
+                                                                                    Edit
+                                                                                </span>
+                                                                            </a>--}}
+                                                                            <a type="button" class="modal-effect btn btn-sm btn-success dropdown-item" style="text-align: center !important"
+                                                                                data-toggle="modal" data-target="#active{{$image->id}}" data-effect="effect-scale">
+                                                                                <span class="icon text-success text-bold">
+                                                                                    <i class="fa fa-edit"></i>
+                                                                                    Active
+                                                                                </span>
+                                                                            </a>
+                                                                            <a type="button" class="modal-effect btn btn-sm btn-warning dropdown-item" style="text-align: center !important"
+                                                                                data-toggle="modal" data-target="#reject{{$image->id}}" data-effect="effect-scale">
+                                                                                <span class="icon text-warning text-bold">
+                                                                                    <i class="fa fa-edit"></i>
+                                                                                    Reject
+                                                                                </span>
+                                                                            </a>
+                                                                            {{--<a type="button" class="modal-effect btn btn-sm btn-danger dropdown-item" style="text-align: center !important"
+                                                                                data-toggle="modal" data-target="#delete{{$image->id}}" data-effect="effect-scale">
+                                                                                <span class="icon text-danger text-bold">
+                                                                                    <i class="fa fa-edit"></i>
+                                                                                    Delete
+                                                                                </span>
+                                                                            </a>--}}
                                                                         </div>
-                                                                    </td>
-                                                                </tr>
-                                                                @endif
-                                                                @include('dashboard.admin.captains.btn.modals.profile.active')
-                                                                @include('dashboard.admin.captains.btn.modals.profile.reject')
-                                                            {{--@endif--}}
+                                                                    </div>
+                                                                </td>
+                                                            </td>
+                                                        </tr>
+                                                        @if ($image->photo_status === 'rejected')
+                                                        <tr>
+                                                            <td colspan="5">
+                                                                <div>
+                                                                    <strong class="text-danger">Reject Reason:</strong>
+                                                                    {{ $image->reject_reson }}
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        @endif
+                                                        @include('dashboard.admin.captains.btn.modals.profile.active')
+                                                        @include('dashboard.admin.captains.btn.modals.profile.reject')
                                                         @empty
 
                                                         @endforelse

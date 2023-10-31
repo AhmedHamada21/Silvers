@@ -44,6 +44,14 @@ class OrderDataTable extends BaseDataTable {
                 $query->whereStatus('done');
             }
         }
+        if ($this->request->has('caption_orders')) {
+            $captainId = $this->request->get('caption_orders');
+            $query->whereCaptainId($captainId);
+        }
+        if ($this->request->has('client_orders')) {
+            $clientId = $this->request->get('client_orders');
+            $query->whereUserId($clientId);
+        }
         return $query;
     }
 

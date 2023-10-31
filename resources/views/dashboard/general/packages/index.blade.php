@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-{{$data['title']}}
+{{$title}}
 @stop
 @endsection
 @section('page-header')
@@ -9,12 +9,12 @@
 <div class="page-title">
     <div class="row">
         <div class="col-sm-6">
-            <h4 class="mb-0"> {{$data['title']}}</h4>
+            <h4 class="mb-0"> {{$title}}</h4>
         </div>
         <div class="col-sm-6">
             <ol class="float-left pt-0 pr-0 breadcrumb float-sm-right ">
                 <li class="breadcrumb-item"><a href="{{route('dashboard')}}" class="default-color">Dasboard</a></li>
-                <li class="breadcrumb-item active">{{$data['title']}}</li>
+                <li class="breadcrumb-item active">{{$title}}</li>
             </ol>
         </div>
     </div>
@@ -28,6 +28,10 @@
     <div class="col-md-12 mb-30">
         <div class="card card-statistics h-100">
             <div class="card-body">
+                <a data-target="#create{{$title}}" data-toggle="modal"  data-effect="effect-scale" class="btn btn-success btn-sm" role="button">
+                    <i class="fa fa-plus"></i>
+                    Add New {{$title}}
+                </a>
                 <br><br>
                 <!--begin::Table-->
                 {!! $dataTable->table([
@@ -37,6 +41,7 @@
                 ]) !!}
                 <!--end::Table-->
             </div>
+            @include('dashboard.general.packages.btn.modals.create')
         </div>
     </div>
 </div>

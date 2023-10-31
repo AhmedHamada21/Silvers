@@ -137,64 +137,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
     integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    {{--<script>
-        function initializeMap() {
-            const locations = {!! $data !!};
-
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 13
-            });
-
-            const bounds = new google.maps.LatLngBounds();
-            const userLocation = new google.maps.LatLng(parseFloat(locations[0].lat_user), parseFloat(locations[0].long_user));
-            const goingLocation = new google.maps.LatLng(parseFloat(locations[0].lat_going), parseFloat(locations[0].long_going));
-            const userMarker = new google.maps.Marker({
-                position: userLocation,
-                map: map,
-                label: 'U',
-            });
-            bounds.extend(userMarker.position);
-            const goingMarker = new google.maps.Marker({
-                position: goingLocation,
-                map: map,
-                label: 'G',
-                icon: {
-                    url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                    scaledSize: new google.maps.Size(30, 40)
-                }
-            });
-            bounds.extend(goingMarker.position);
-            const directionsService = new google.maps.DirectionsService();
-            const directionsRenderer = new google.maps.DirectionsRenderer();
-            directionsRenderer.setMap(map);
-
-            const request = {
-                origin: userLocation,
-                destination: goingLocation,
-                travelMode: google.maps.TravelMode.DRIVING
-            };
-
-            directionsService.route(request, function (result, status) {
-                if (status == google.maps.DirectionsStatus.OK) {
-                    directionsRenderer.setDirections(result);
-                }
-            });
-            const userInfoWindow = new google.maps.InfoWindow({
-                content: `User ID: ${locations[0].user_id}`
-            });
-            userMarker.addListener('click', function () {
-                userInfoWindow.open(map, userMarker);
-            });
-            const goingInfoWindow = new google.maps.InfoWindow({
-                content: `Captain ID: ${locations[0].captain_id}`
-            });
-            goingMarker.addListener('click', function () {
-                goingInfoWindow.open(map, goingMarker);
-            });
-
-            map.fitBounds(bounds);
-        }
-    </script>--}}
     <script>
         function initializeMap() {
             const locations = {!! $data !!};

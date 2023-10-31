@@ -78,4 +78,13 @@ abstract class BaseDataTable extends DataTable {
     protected function formatDate($value): string {
         return $value ? $value->diffForHumans() : '';
     }
+
+    protected function StatusChange($value , $type): string {
+        $badge  = $value == "1" ? 'success' : 'danger';
+        return '<span class="badge badge-'. $badge. '">'. $type .'</span>';
+    }
+    protected function StatusChangeActive($value , $type): string {
+        $badge  = $value == "active" ? 'success' : 'danger';
+        return '<span class="badge badge-'. $badge. '">'. $type .'</span>';
+    }
 }

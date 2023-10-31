@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Dashboard\Admin;
 use App\DataTables\Orders\OrderDataTable;
 use Illuminate\Http\Request;
-use App\Models\{CaptainProfile,CarsCaptionStatus,Captain,Image};
+use App\Models\{CaptainProfile,CarsCaptionStatus,Captain,Image, Order};
 use App\Http\Controllers\Controller;
 use App\DataTables\Dashboard\Admin\CaptainDataTable;
 use App\Http\Requests\Dashboard\Admin\CaptionRequestValidation;
@@ -10,8 +10,7 @@ use App\Services\Dashboard\{Admins\CaptainService, General\GeneralService};
 
 class CaptainController extends Controller {
 
-    public function __construct(protected CaptainDataTable $dataTable, protected CaptainService $captainService, protected GeneralService $generalService)
-    {
+    public function __construct(protected CaptainDataTable $dataTable, protected CaptainService $captainService, protected GeneralService $generalService) {
         $this->dataTable = $dataTable;
         $this->captainService = $captainService;
         $this->generalService = $generalService;
@@ -131,7 +130,7 @@ class CaptainController extends Controller {
         }
     }
 
-     public function updatePersonalMediaStatus(Request $request, $id) {
+    public function updatePersonalMediaStatus(Request $request, $id) {
     
         try {
             $columns = [
