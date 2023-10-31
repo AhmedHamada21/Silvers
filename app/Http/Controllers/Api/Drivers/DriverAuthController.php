@@ -114,6 +114,7 @@ class DriverAuthController extends Controller
     public function loginPhoneToken($phone)
     {
         $information = Captain::where('phone', $phone)->first();
+
         if (!$information) {
             return $this->errorResponse('Unauthorized', 422);
         }
@@ -130,7 +131,6 @@ class DriverAuthController extends Controller
             'token' => $token,
             'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
         ]);
-
         return $this->createNewToken($token);
     }
 
@@ -189,22 +189,17 @@ class DriverAuthController extends Controller
      */
     public function refresh()
     {
-
-        $token = JWTAuth::getToken();
-        $newToken = JWTAuth::refresh($token, ['custom_claim' => 'value'], 10);
-        return $this->createNewToken($newToken);
-//        $oldToken = auth('captain-api')->getToken();
-//        if ($oldToken) {
-//            $token = $oldToken->get();
-//            $tokens = DB::table('personal_access_tokens')->where('token', $token)->first();
-//            return $this->createNewTokenRefresh($tokens);
-//        }
+        $oldToken = auth('captain-api')->getToken();
+        if ($oldToken) {
+            $token = $oldToken->get();
+            $tokens = DB::table('personal_access_tokens')->where('token', $token)->first();
+            return $this->createNewTokenRefresh($tokens);
+        }
     }
 
 
     public function createNewTokenRefresh($token)
     {
-
         $users = Captain::findorfail($token->tokenable_id);
         return $this->loginPhoneToken($users->phone);
     }
@@ -233,7 +228,7 @@ class DriverAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('captain-api')->factory()->getTTL() * 60, // تم تحديث هذا السطر
+            'expires_in' => auth('captain-api')->factory()->getTTL() * 1, // تم تحديث هذا السطر
             'user' => new CaptionResources(auth('captain-api')->user())
         ]);
     }
