@@ -114,13 +114,13 @@ class DriverAuthController extends Controller
     public function loginPhoneToken($phone)
     {
         $information = Captain::where('phone', $phone)->first();
-dd($information);
         if (!$information) {
             return $this->errorResponse('Unauthorized', 422);
         }
 
 
         $token = auth('captain-api')->login($information);
+        dd($token);
         $information2 = Captain::where('phone', $phone)->first();
         DB::table('personal_access_tokens')->updateOrInsert([
             'tokenable_id' => $information2->id,
