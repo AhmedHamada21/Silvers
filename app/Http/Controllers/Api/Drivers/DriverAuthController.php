@@ -200,7 +200,9 @@ class DriverAuthController extends Controller
 
     public function createNewTokenRefresh($token)
     {
+        dd($token);
         $users = Captain::findorfail($token->tokenable_id);
+
         return $this->loginPhoneToken($users->phone);
     }
 
