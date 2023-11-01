@@ -254,11 +254,11 @@ if (!function_exists('createInFirebase')) {
     function createInFirebase($user_id, $caption_id, $order_id)
     {
         $order = \App\Models\Order::findorfail($order_id);
-        $response = Http::post('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
+        $response = Http::post('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
-        $response_caption = Http::post('https://silver-triangle-client-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
+        $response_caption = Http::post('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
@@ -273,11 +273,11 @@ if (!function_exists('createInFirebaseHours')) {
     function createInFirebaseHours($user_id, $caption_id, $order_id)
     {
         $order = \App\Models\OrderHour::findorfail($order_id);
-        $response = Http::post('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
+        $response = Http::post('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
-        $response_caption = Http::post('https://silver-triangle-client-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
+        $response_caption = Http::post('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
@@ -292,11 +292,11 @@ if (!function_exists('createInFirebaseDay')) {
     function createInFirebaseDay($user_id, $caption_id, $order_id)
     {
         $order = \App\Models\OrderDay::findorfail($order_id);
-        $response = Http::post('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
+        $response = Http::post('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
-        $response_caption = Http::post('https://silver-triangle-client-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
+        $response_caption = Http::post('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
@@ -311,15 +311,15 @@ if (!function_exists('DeletedInFirebase')) {
     function DeletedInFirebase($user_id, $caption_id, $order_id)
     {
         $order = \App\Models\Order::findorfail($order_id);
-        $response = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
+        $response = Http::delete('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
-        $response_caption = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
+        $response_caption = Http::delete('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
-        $response_Order = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/' . $order->order_code . '.json', [
+        $response_Order = Http::delete('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/' . $order->order_code . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
@@ -334,15 +334,15 @@ if (!function_exists('DeletedInFirebaseHours')) {
     function DeletedInFirebaseHours($user_id, $caption_id, $order_id)
     {
         $order = \App\Models\OrderHour::findorfail($order_id);
-        $response = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
+        $response = Http::delete('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
-        $response_caption = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
+        $response_caption = Http::delete('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
-        $response_Order = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/' . $order->order_code . '.json', [
+        $response_Order = Http::delete('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/' . $order->order_code . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
@@ -357,15 +357,15 @@ if (!function_exists('DeletedInFirebaseDay')) {
     function DeletedInFirebaseDay($user_id, $caption_id, $order_id)
     {
         $order = \App\Models\OrderDay::findorfail($order_id);
-        $response = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
+        $response = Http::delete('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/user-' . $user_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
-        $response_caption = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
+        $response_caption = Http::delete('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/captain-' . $caption_id . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
-        $response_Order = Http::delete('https://silver-triangle-client-default-rtdb.firebaseio.com/' . $order->order_code . '.json', [
+        $response_Order = Http::delete('https://S9YlU6er-Tri0Yngle-tripU-0ZY32-default-rtdb.firebaseio.com/' . $order->order_code . '.json', [
             "order_code" => $order->order_code,
             "total_price" => $order->total_price,
         ]);
