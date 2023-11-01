@@ -31,5 +31,7 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-
+    'firebase_chat' => [
+        'chat_base' => 'https://firestore.googleapis.com/v1/projects/S9YlU6er-Tri0Yngle-tripU-0ZY32/databases/(default)/documents/messages/',
+    ],
 ];

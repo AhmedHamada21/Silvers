@@ -56,7 +56,7 @@ if (!function_exists('sendNotificationUser')) {
         $user = User::where('fcm_token', $fcm)->first();
         $url = Http::withHeaders([
             "Content-Type" => "application/json",
-            "Authorization" => "key=AAAA5dxbfSs:APA91bH6P3jOhcvNzYL9u-9n9J8Zm_PhOmSDhJu-IfPiH7ofh7IWf8nRl-xNd_TMlIB_0jDuGu4swGYk3MYxZ2B_NXGbO8NPZJcL0d4UtDRqHnDGIcoSqDlkGYp8RPazQdnLhZWV3T4u"
+            "Authorization" => "key=AAAAX2bL0C0:APA91bEckQ5zvMGKvt2FulWNsq9rsEe5qhphBKK_tVsvMozsOGMTZc4m5lwlkwZ8XFRHbMvItsxaZLnDvA0bEi3CsoxZ1w6bBEJNYYhhvksMTmBbJqgARVCNHkRKWxb43JGDS0WUeL7s"
         ])->post('https://fcm.googleapis.com/fcm/send', [
             "to" => $fcm,
             "notification" => [
@@ -88,7 +88,7 @@ if (!function_exists('sendNotificationCaptain')) {
 
         $url = Http::withHeaders([
             "Content-Type" => "application/json",
-            "Authorization" => "key=AAAA5dxbfSs:APA91bH6P3jOhcvNzYL9u-9n9J8Zm_PhOmSDhJu-IfPiH7ofh7IWf8nRl-xNd_TMlIB_0jDuGu4swGYk3MYxZ2B_NXGbO8NPZJcL0d4UtDRqHnDGIcoSqDlkGYp8RPazQdnLhZWV3T4u"
+            "Authorization" => "key=AAAAX2bL0C0:APA91bEckQ5zvMGKvt2FulWNsq9rsEe5qhphBKK_tVsvMozsOGMTZc4m5lwlkwZ8XFRHbMvItsxaZLnDvA0bEi3CsoxZ1w6bBEJNYYhhvksMTmBbJqgARVCNHkRKWxb43JGDS0WUeL7s"
         ])->post('https://fcm.googleapis.com/fcm/send', [
             "to" => $fcm,
             "notification" => [
@@ -118,7 +118,7 @@ if (!function_exists('sendNotificatioAll')) {
 
         Http::withHeaders([
             "Content-Type" => "application/json",
-            "Authorization" => "key=AAAA5dxbfSs:APA91bH6P3jOhcvNzYL9u-9n9J8Zm_PhOmSDhJu-IfPiH7ofh7IWf8nRl-xNd_TMlIB_0jDuGu4swGYk3MYxZ2B_NXGbO8NPZJcL0d4UtDRqHnDGIcoSqDlkGYp8RPazQdnLhZWV3T4u"
+            "Authorization" => "key=AAAAX2bL0C0:APA91bEckQ5zvMGKvt2FulWNsq9rsEe5qhphBKK_tVsvMozsOGMTZc4m5lwlkwZ8XFRHbMvItsxaZLnDvA0bEi3CsoxZ1w6bBEJNYYhhvksMTmBbJqgARVCNHkRKWxb43JGDS0WUeL7s"
         ])->post('https://fcm.googleapis.com/fcm/send', [
             "to" => "/topics/" . $type,
             "notification" => [
