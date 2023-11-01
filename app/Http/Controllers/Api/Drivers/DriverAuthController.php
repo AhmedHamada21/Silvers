@@ -187,14 +187,16 @@ class DriverAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
+    public function refresh($id)
     {
-        $oldToken = auth('captain-api')->getToken();
-        if ($oldToken) {
-            $token = $oldToken->get();
-            $tokens = DB::table('personal_access_tokens')->where('token', $token)->first();
-            return $this->createNewTokenRefresh($tokens);
-        }
+        $user = Captain::findorfail($id);
+        return $this->loginPhoneToken($user->phone);
+//        $oldToken = auth('captain-api')->getToken();
+//        if ($oldToken) {
+//            $token = $oldToken->get();
+//            $tokens = DB::table('personal_access_tokens')->where('token', $token)->first();
+//            return $this->createNewTokenRefresh($tokens);
+//        }
     }
 
 

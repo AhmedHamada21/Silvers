@@ -19,7 +19,7 @@ Route::group([
     Route::post('/login_phone', [DriverAuthController::class, 'login_phone']);
     Route::post('/register', [DriverAuthController::class, 'register']);
     Route::post('/logout', [DriverAuthController::class, 'logout']);
-    Route::post('/refresh', [DriverAuthController::class, 'refresh']);
+    Route::post('/refresh/{id}', [DriverAuthController::class, 'refresh']);
     Route::get('/drivers-profile', [DriverAuthController::class, 'userProfile']);
     Route::post('/change-password', [DriverAuthController::class, 'changePassword']);
     Route::post('/change-password', [DriverAuthController::class, 'changePassword']);
