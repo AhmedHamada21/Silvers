@@ -14,6 +14,7 @@ class OrdersAllResources extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        dd($this->orders);
         return [
             'OrderCode' => is_float($this->order_code) ? null : $this->order_code,
             'status' => $this->status,
