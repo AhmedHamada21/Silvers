@@ -17,7 +17,7 @@ class OrdersAllResources extends JsonResource
         return [
             'OrderCode' => $this->order_code,
             'status' => $this->status,
-            'total_price' => getTotalPrice($this->total_price),
+//            'total_price' => getTotalPrice($this->total_price),
             'distance' => $this->distance ?? null,
             'address_now' => $this->address_now ?? null,
             'address_going' => $this->address_going ?? null,
