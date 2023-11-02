@@ -12,11 +12,10 @@ class OrdersAllResources extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
-        dd($this->orders);
         return [
-            'OrderCode' => is_float($this->order_code) ? null : $this->order_code,
+            'OrderCode' => $this->order_code,
             'status' => $this->status,
             'total_price' => getTotalPrice($this->total_price),
             'distance' => $this->distance ?? null,
@@ -32,6 +31,6 @@ class OrdersAllResources extends JsonResource
                 'updated_at' => $this->updated_at
             ]
         ];
-
     }
+
 }
