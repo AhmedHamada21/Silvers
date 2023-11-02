@@ -58,6 +58,7 @@ class DatabaseSeeder extends Seeder
             ConditionsSeeder::class,
             PrivacySeeder::class,
             HourSeeder::class,
+            SubscriptionCaptionSeeder::class,
         ]);
     }
 }

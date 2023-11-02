@@ -6,12 +6,14 @@ use App\Http\Resources\AboutUsResources;
 use App\Http\Resources\ConditionsResources;
 use App\Http\Resources\HoursResources;
 use App\Http\Resources\PrivacyResources;
+use App\Http\Resources\SubscriptionCaptionResources;
 use App\Http\Resources\YearResources;
 use App\Models\AboutUs;
 use App\Models\Conditions;
 use App\Models\Hour;
 use App\Models\Privacy;
 use App\Models\Settings;
+use App\Models\SubscriptionCaption;
 use App\Models\Years;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -124,6 +126,16 @@ class MainSettingController extends Controller
     {
         try {
             return $this->successResponse(HoursResources::collection(Hour::all()),'data Return Successfully');
+
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+        }
+    }
+
+    public function subscriptionCaption()
+    {
+        try {
+            return $this->successResponse(SubscriptionCaptionResources::collection(SubscriptionCaption::all()),'data Return Successfully');
 
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');

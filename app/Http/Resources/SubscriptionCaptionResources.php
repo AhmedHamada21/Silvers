@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Drivers;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrdersAllResources extends JsonResource
+class SubscriptionCaptionResources extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,13 +15,10 @@ class OrdersAllResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'OrderCode' => $this->order_code,
-            'status' => $this->status,
-            'total_price' => getTotalPrice($this->total_price),
-            'distance' => $this->distance ?? null,
-            'address_now' => $this->address_now ?? null,
-            'address_going' => $this->address_going ?? null,
-            'trip_type_id' => $this->trip_type_id,
+            'id' => $this->id,
+            'name' => $this->name,
+            'price' => $this->price,
+            'type' => $this->type,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

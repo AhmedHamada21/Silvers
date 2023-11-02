@@ -94,6 +94,9 @@ Route::group(['prefix' => 'v1'], function () {
     //privacies
     Route::get('privacies',[Api\Setting\MainSettingController::class, 'privacies']);
 
+    //subscriptionCaption
+    Route::get('subscriptionCaption',[Api\Setting\MainSettingController::class, 'subscriptionCaption']);
+
     //hours
     Route::get('hours',[Api\Setting\MainSettingController::class, 'hours']);
 });

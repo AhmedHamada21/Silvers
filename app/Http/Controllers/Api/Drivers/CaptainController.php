@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Api\Drivers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Drivers\CaptionActivityResources;
+use App\Http\Resources\Drivers\CaptionSubscriptionResources;
 use App\Models\CaptionActivity;
+use App\Models\CaptionSubscription;
+use App\Models\SubscriptionCaption;
 use App\Models\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class CaptainController extends Controller
@@ -42,6 +46,7 @@ class CaptainController extends Controller
                     'status_captain' => $request->status_captain,
                 ]);
                 return $this->successResponse(new CaptionActivityResources($checkCaptainStatus), 'data Updated Successfully');
+
 
             } else {
                 $data = CaptionActivity::create([
@@ -92,6 +97,66 @@ class CaptainController extends Controller
                 return $this->errorResponse('Captain is not active');
 
             }
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+        }
+    }
+
+
+    public function captionSubscriptions(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'subscription_caption_id' => 'required|exists:subscription_captions,id',
+
+        ]);
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+
+        try {
+            $data = SubscriptionCaption::findorfail($request->subscription_caption_id);
+            $check = CaptionSubscription::where('captain_id', auth('captain-api')->id())->where('subscription_caption_id', $request->subscription_caption_id)->where('status', 'waiting')->first();
+            if (!$check) {
+                if ($data->type == "year") {
+                    $success = CaptionSubscription::create([
+                        'captain_id' => auth('captain-api')->id(),
+                        'subscription_caption_id' => $request->subscription_caption_id,
+                        'start_date' => Carbon::now(),
+                        'end_date' => Carbon::now()->addYear(),
+                        'status' => false,
+                    ]);
+
+                    return $this->successResponse(new CaptionSubscriptionResources($success), 'data return successfully');
+                }
+
+                if ($data->type == "month") {
+                    $success = CaptionSubscription::create([
+                        'captain_id' => auth('captain-api')->id(),
+                        'subscription_caption_id' => $request->subscription_caption_id,
+                        'start_date' => Carbon::now(),
+                        'end_date' => Carbon::now()->addMonth(),
+                        'status' => false,
+                    ]);
+
+                    return $this->successResponse(new CaptionSubscriptionResources($success), 'data return successfully');
+                }
+
+                if ($data->type == "week") {
+                    $success = CaptionSubscription::create([
+                        'captain_id' => auth('captain-api')->id(),
+                        'subscription_caption_id' => $request->subscription_caption_id,
+                        'start_date' => Carbon::now(),
+                        'end_date' => Carbon::now()->addWeek(),
+                        'status' => false,
+                    ]);
+
+                    return $this->successResponse(new CaptionSubscriptionResources($success), 'data return successfully');
+                }
+
+            }
+            return $this->errorResponse('The Caption Subscription Already');
+
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }

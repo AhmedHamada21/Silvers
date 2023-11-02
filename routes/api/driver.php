@@ -31,10 +31,12 @@ Route::group([
 Route::group(['middleware' => 'auth:captain-api' ,'prefix' => 'driver'], function () {
     Route::get('getNotifications',[NotificationsController::class,'getNotifications']);
     Route::post('updateStatus',[CaptainController::class,'updateStatus']);
+    Route::post('captionSubscriptions',[CaptainController::class,'captionSubscriptions']);
     Route::post('checkStatusCaptain',[CaptainController::class,'checkStatusCaptain']);
     Route::post('StatusCaptain',[CaptainController::class,'StatusCaptain']);
     Route::get('allOrders',[OrderController::class,'index']);
     Route::post('report',[OrderController::class,'report']);
+
 
     Route::prefix('profile')->group(function () {
 
