@@ -61,7 +61,7 @@ class OrderController extends Controller
             $OrderDaySum = OrderDay::where('captain_id', auth('captain-api')->id())->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->sum('total_price');
 
             $data = [
-                'total' => $ordersSum->concat($OrderHourSum)->concat($OrderDaySum),
+                'total' => $ordersSum + $OrderHourSum + $OrderDaySum,
                 'orders' => $orders->concat($OrderHour)->concat($OrderDay),
             ];
             return $this->successResponse(OrdersAllResources::collection($data), 'data return successfully');
