@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth:captain-api' ,'prefix' => 'driver'], functio
     Route::post('checkStatusCaptain',[CaptainController::class,'checkStatusCaptain']);
     Route::post('StatusCaptain',[CaptainController::class,'StatusCaptain']);
     Route::get('allOrders',[OrderController::class,'index']);
+    Route::post('report',[OrderController::class,'report']);
 
     Route::prefix('profile')->group(function () {
 

@@ -249,6 +249,17 @@ if (!function_exists('getTotalAmount')) {
     }
 }
 
+if (!function_exists('getTotalPrice')) {
+    function getTotalPrice($price)
+    {
+        $commissionPercentage = \App\Models\Settings::first()->company_commission ?? 0;
+        $commission = $commissionPercentage / 100;
+        $ordersTotal = 0;
+        $ordersTotal += $price;
+        return number_format($price - ($ordersTotal * $commission), 2);
+    }
+}
+
 
 if (!function_exists('createInFirebase')) {
     function createInFirebase($user_id, $caption_id, $order_id)

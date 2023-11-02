@@ -18,7 +18,7 @@ Route::group([
     Route::post('/login_phone', [AuthController::class, 'login_phone']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::post('/refresh/{id}', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
     Route::post('/edit-profile', [AuthController::class, 'editProfile']);
     Route::post('/change-password', [AuthController::class, 'changePassword']);

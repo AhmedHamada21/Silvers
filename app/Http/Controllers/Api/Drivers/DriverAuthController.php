@@ -64,6 +64,7 @@ class DriverAuthController extends Controller
 
         DB::table('personal_access_tokens')->updateOrInsert([
             'tokenable_id' => $information2->id,
+            'tokenable_type' => 'App\Models\Captain',
         ], [
             'tokenable_type' => 'App\Models\Captain',
             'tokenable_id' => $information2->id,
@@ -98,6 +99,7 @@ class DriverAuthController extends Controller
         $information2 = Captain::where('phone', $request->phone)->first();
         DB::table('personal_access_tokens')->updateOrInsert([
             'tokenable_id' => $information2->id,
+            'tokenable_type' => 'App\Models\Captain',
         ], [
             'tokenable_type' => 'App\Models\Captain',
             'tokenable_id' => $information2->id,
@@ -124,6 +126,7 @@ class DriverAuthController extends Controller
         $information2 = Captain::where('phone', $phone)->first();
         DB::table('personal_access_tokens')->updateOrInsert([
             'tokenable_id' => $information2->id,
+            'tokenable_type' => 'App\Models\Captain',
         ], [
             'tokenable_type' => 'App\Models\Captain',
             'tokenable_id' => $information2->id,
