@@ -55,15 +55,23 @@ class OrderController extends Controller
             $OrderHour = OrderHour::where('captain_id', auth('captain-api')->id())->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->get();
             $OrderDay = OrderDay::where('captain_id', auth('captain-api')->id())->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->get();
 
-            $data = $orders->concat($OrderHour)->concat($OrderDay);
+
+            $ordersSum = Order::where('captain_id', auth('captain-api')->id())->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->sum('total_price');
+            $OrderHourSum = OrderHour::where('captain_id', auth('captain-api')->id())->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->sum('total_price');
+            $OrderDaySum = OrderDay::where('captain_id', auth('captain-api')->id())->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->sum('total_price');
+
+            $data = [
+                'total' => $ordersSum->concat($OrderHourSum)->concat($OrderDaySum),
+                'orders' => $orders->concat($OrderHour)->concat($OrderDay),
+            ];
             return $this->successResponse(OrdersAllResources::collection($data), 'data return successfully');
 
         }
 
-        if (isset($request->start_data) && isset($request->end_data)){
-            $orders = Order::where('captain_id', auth('captain-api')->id())->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data,$request->end_data])->get();
-            $OrderHour = OrderHour::where('captain_id', auth('captain-api')->id())->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data,$request->end_data])->get();
-            $OrderDay = OrderDay::where('captain_id', auth('captain-api')->id())->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data,$request->end_data])->get();
+        if (isset($request->start_data) && isset($request->end_data)) {
+            $orders = Order::where('captain_id', auth('captain-api')->id())->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
+            $OrderHour = OrderHour::where('captain_id', auth('captain-api')->id())->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
+            $OrderDay = OrderDay::where('captain_id', auth('captain-api')->id())->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
 
             $data = $orders->concat($OrderHour)->concat($OrderDay);
             return $this->successResponse(OrdersAllResources::collection($data), 'data return successfully');
