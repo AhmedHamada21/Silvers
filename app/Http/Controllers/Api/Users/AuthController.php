@@ -70,6 +70,18 @@ class AuthController extends Controller
                 'fcm_token' => $request->fcm_token,
             ]);
         }
+        $information2 = User::where('phone', $request->phone)->first();
+        DB::table('personal_access_tokens')->updateOrInsert([
+            'tokenable_id' => $information2->id,
+            'tokenable_type' => 'App\Models\User',
+        ], [
+            'tokenable_type' => 'App\Models\User',
+            'tokenable_id' => $information2->id,
+            'name' => $information2->name,
+            'token' => $token,
+            'expires_at' => auth('users-api')->factory()->getTTL() * 60,
+        ]);
+
         return $this->createNewToken($token);
     }
 
