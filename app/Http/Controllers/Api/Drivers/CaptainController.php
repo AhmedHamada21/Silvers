@@ -118,13 +118,25 @@ class CaptainController extends Controller
             $data = SubscriptionCaption::findorfail($request->subscription_caption_id);
             $check = CaptionSubscription::where('captain_id', auth('captain-api')->id())->where('subscription_caption_id', $request->subscription_caption_id)->where('status', 'waiting')->first();
             if (!$check) {
+                if ($data->type == "day") {
+                    $success = CaptionSubscription::create([
+                        'captain_id' => auth('captain-api')->id(),
+                        'subscription_caption_id' => $request->subscription_caption_id,
+                        'start_date' => Carbon::now(),
+                        'end_date' => Carbon::now()->addDay(),
+                        'status' => "waiting",
+                    ]);
+
+                    return $this->successResponse(new CaptionSubscriptionResources($success), 'data return successfully');
+                }
+
                 if ($data->type == "year") {
                     $success = CaptionSubscription::create([
                         'captain_id' => auth('captain-api')->id(),
                         'subscription_caption_id' => $request->subscription_caption_id,
                         'start_date' => Carbon::now(),
                         'end_date' => Carbon::now()->addYear(),
-                        'status' => false,
+                        'status' => "waiting",
                     ]);
 
                     return $this->successResponse(new CaptionSubscriptionResources($success), 'data return successfully');
@@ -136,7 +148,7 @@ class CaptainController extends Controller
                         'subscription_caption_id' => $request->subscription_caption_id,
                         'start_date' => Carbon::now(),
                         'end_date' => Carbon::now()->addMonth(),
-                        'status' => false,
+                        'status' => "waiting",
                     ]);
 
                     return $this->successResponse(new CaptionSubscriptionResources($success), 'data return successfully');
@@ -148,7 +160,7 @@ class CaptainController extends Controller
                         'subscription_caption_id' => $request->subscription_caption_id,
                         'start_date' => Carbon::now(),
                         'end_date' => Carbon::now()->addWeek(),
-                        'status' => false,
+                        'status' => "waiting",
                     ]);
 
                     return $this->successResponse(new CaptionSubscriptionResources($success), 'data return successfully');

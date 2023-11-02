@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('price');
-            $table->enum('type', ['year', 'month', 'week']);
+            $table->enum('type', ['year', 'month', 'week','day']);
             $table->timestamps();
         });
     }

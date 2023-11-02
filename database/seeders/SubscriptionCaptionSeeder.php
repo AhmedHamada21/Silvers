@@ -21,7 +21,7 @@ class SubscriptionCaptionSeeder extends Seeder
             SubscriptionCaption::create([
                 'name' => fake()->name(),
                 'price' => fake()->numberBetween(120, 350),
-                'type' => fake()->randomElement(['year', 'month', 'week']),
+                'type' => fake()->randomElement(['year', 'month', 'week','day']),
             ]);
         }
         Schema::enableForeignKeyConstraints();
