@@ -59,12 +59,14 @@ class OrderController extends Controller
             $OrderHourSum = $OrderHour->sum('total_price');
             $OrderDaySum = $OrderDay->sum('total_price');
 
-            $data = [
-                'total' => $ordersSum + $OrderHourSum + $OrderDaySum,
-                'orders' => $orders->concat($OrderHour)->concat($OrderDay),
-            ];
+            $data = $orders->concat($OrderHour)->concat($OrderDay);
+            $total = $ordersSum + $OrderHourSum + $OrderDaySum;
 
-            return $this->successResponse(OrdersAllResources::collection($data), 'data returned successfully');
+            $responseData = [
+                'data' => OrdersAllResources::collection($data),
+                'total' => $total,
+            ];
+            return $this->successResponse($responseData, 'data returned successfully');
 
         }
 
@@ -73,8 +75,18 @@ class OrderController extends Controller
             $OrderHour = OrderHour::where('captain_id', auth('captain-api')->id())->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
             $OrderDay = OrderDay::where('captain_id', auth('captain-api')->id())->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
 
+            $ordersSum = $orders->sum('total_price');
+            $OrderHourSum = $OrderHour->sum('total_price');
+            $OrderDaySum = $OrderDay->sum('total_price');
+
             $data = $orders->concat($OrderHour)->concat($OrderDay);
-            return $this->successResponse(OrdersAllResources::collection($data), 'data return successfully');
+            $total = $ordersSum + $OrderHourSum + $OrderDaySum;
+
+            $responseData = [
+                'data' => OrdersAllResources::collection($data),
+                'total' => $total,
+            ];
+            return $this->successResponse($responseData, 'data returned successfully');
 
         }
         return $this->errorResponse('Something went wrong, please try again later');
