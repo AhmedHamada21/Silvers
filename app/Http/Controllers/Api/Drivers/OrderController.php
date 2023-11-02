@@ -62,7 +62,7 @@ class OrderController extends Controller
 
             $data = [
                 'total' => $ordersSum + $OrderHourSum + $OrderDaySum,
-                'orders' => $orders->concat($OrderHour)->concat($OrderDay),
+                'data' => $orders->concat($OrderHour)->concat($OrderDay),
             ];
 
             return $this->successResponse(OrdersAllResources::collection($data), 'data return successfully');
