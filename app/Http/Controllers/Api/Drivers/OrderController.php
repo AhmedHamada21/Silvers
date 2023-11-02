@@ -60,6 +60,7 @@ class OrderController extends Controller
             $OrderHourSum = OrderHour::where('captain_id', auth('captain-api')->id())->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->sum('total_price');
             $OrderDaySum = OrderDay::where('captain_id', auth('captain-api')->id())->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->sum('total_price');
 
+            dd($OrderDaySum);
             $data = [
                 'total' => $ordersSum + $OrderHourSum + $OrderDaySum,
                 'orders' => $orders->concat($OrderHour)->concat($OrderDay),
