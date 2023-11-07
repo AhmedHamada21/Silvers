@@ -483,9 +483,19 @@ class OrdersController extends Controller
     public function getSavedOrders()
     {
         $user = auth('users-api')->user();
-        $ordersHours = SaveRentHour::where('user_id', $user->id)->whereIn('status', ['pending','accepted'])->get();
-        $ordersDay = SaveRentDay::where('user_id', $user->id)->whereIn('status', ['pending','accepted'])->get();
+
+        $ordersHours = SaveRentHour::where('user_id', $user->id)
+            ->whereIn('status', ['pending', 'accepted'])
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        $ordersDay = SaveRentDay::where('user_id', $user->id)
+            ->whereIn('status', ['pending', 'accepted'])
+            ->orderBy('id', 'DESC')
+            ->get();
+
         $data = $ordersHours->concat($ordersDay);
+
         return $this->successResponse(AllOrdersSavedRentResources::collection($data), 'Data returned successfully');
     }
 
