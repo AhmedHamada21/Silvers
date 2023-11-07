@@ -12,6 +12,7 @@ use App\Models\CaptionActivity;
 use App\Models\OrderHour;
 use App\Models\SaveRentHour;
 use App\Models\Traits\Api\ApiResponseTrait;
+use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -127,6 +128,7 @@ class OrderHourController extends Controller
             return $this->errorResponse($validator->errors(), 400);
         }
 
+        $user = User::findOrfail($request->user_id);
 
         if (SaveRentHour::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('data',$request->data)->where('hours_from',$request->hours_from)->first()) {
             return $this->errorResponse('There is a flight already booked for the same date');
@@ -154,6 +156,7 @@ class OrderHourController extends Controller
                 'hours_from' => $request->hours_from,
 
             ]);
+            sendNotificationUser($user->fcm_token, 'تم حجز الرحله بنجاح', 'حجز الرحله', true);
 
             return $this->successResponse(new OrdersSaveHoursResources($data), 'Data created successfully');
 
