@@ -75,7 +75,7 @@ class CheckOrderHours extends Command
 
                 $dataCheck = $ordersSaveHour->data . ' ' . $ordersSaveHour->hours_from;
 
-                if ($dataCheck >= Carbon::now()) {
+                if (Carbon::now() >= $dataCheck) {
                     sendNotificationUser($ordersSaveHour->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
                     $ordersSaveHour->delete();
                 }
