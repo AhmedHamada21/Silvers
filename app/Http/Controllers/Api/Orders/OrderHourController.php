@@ -148,7 +148,7 @@ class OrderHourController extends Controller
                 'order_code' => $orderCode,
                 'total_price' => $request->total_price,
                 'chat_id' => $chatId,
-                'status' => 'pending',
+                'status' => 'accepted',
                 'payments' => $request->payments,
                 'lat_user' => $request->lat_user,
                 'long_user' => $request->long_user,
