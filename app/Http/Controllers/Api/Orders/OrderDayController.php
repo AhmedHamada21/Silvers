@@ -11,6 +11,7 @@ use App\Models\CaptionActivity;
 use App\Models\OrderDay;
 use App\Models\SaveRentDay;
 use App\Models\Traits\Api\ApiResponseTrait;
+use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -134,7 +135,7 @@ class OrderDayController extends Controller
 
         }
 
-
+        $user = User::findOrfail($request->user_id);
 
         try {
 
@@ -149,7 +150,7 @@ class OrderDayController extends Controller
                 'order_code' => $orderCode,
                 'total_price' => $request->total_price,
                 'chat_id' => $chatId,
-                'status' => 'accepted',
+                'status' => 'pending',
                 'payments' => $request->payments,
                 'lat_user' => $request->lat_user,
                 'long_user' => $request->long_user,
@@ -160,6 +161,7 @@ class OrderDayController extends Controller
 
 
             ]);
+            sendNotificationUser($user->fcm_token, 'تم حجز الرحله بنجاح', 'حجز الرحله', true);
 
             return $this->successResponse(new OrdersSaveDayResources($data), 'Data created successfully');
 
