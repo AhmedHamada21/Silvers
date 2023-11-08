@@ -37,22 +37,25 @@ class BonusesController extends Controller
         }
         try {
 
-            $Profile = CaptainProfile::where('captain_id',auth('captain-api')->id())->first();
+            $Profile = CaptainProfile::where('captain_id', auth('captain-api')->id())->first();
 
-            if ($Profile->point >= $request->bout){
+            if ($Profile->point >= $request->bout) {
                 $data = CaptionBonus::create([
                     'captain_id' => auth('captain-api')->id(),
                     'bout' => $request->bout,
                     'status' => 'active',
                 ]);
 
+                $Profile->update([
+                    'point' => $Profile->point - $request->bout,
+                ]);
+
                 if ($data) {
                     return $this->successResponse('Caption Created Successfully in bonuses');
                 }
-            }else{
+            } else {
                 return $this->errorResponse('The Caption account is unable to calculate');
             }
-
 
 
         } catch (\Exception $exception) {
