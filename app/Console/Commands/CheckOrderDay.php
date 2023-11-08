@@ -87,6 +87,7 @@ class CheckOrderDay extends Command
                 $dataSub = Carbon::now()->subDay()->format('Y-m-d');
                 $checks = $dataCheck == $dataSub;
                 if ($checks == true){
+                    sendNotificationUser($ordersSaveDay->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
                     $ordersSaveDay->delete();
                 }
 
