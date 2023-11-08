@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Drivers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubscriptionCaptionResources extends JsonResource
+class BonusResources extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,12 @@ class SubscriptionCaptionResources extends JsonResource
     {
         return [
             'id' => $this->id,
+            'number_bout' => $this->number_bout,
+            'number_kilometre' => $this->number_kilometre,
             'name' => $this->name,
-            'price' => $this->price,
-            'type' => $this->type,
             'notes' => $this->notes,
+            'start_data' => $this->start_data,
+            'end_data' => $this->end_data,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

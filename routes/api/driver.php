@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api;
+use App\Http\Controllers\Api\Drivers\BonusesController;
 use App\Http\Controllers\Api\Drivers\CaptainController;
 use App\Http\Controllers\Api\Drivers\CaptainProfileController;
 use App\Http\Controllers\Api\Drivers\DriverAuthController;
@@ -62,5 +63,10 @@ Route::group(['middleware' => 'auth:captain-api' ,'prefix' => 'driver'], functio
     Route::prefix('rate')->group(function () {
         Route::get('getRate', [RateCommentController::class, 'index']);
         Route::post('createRate', [RateCommentController::class, 'store']);
+    });
+
+    Route::prefix('bonuses')->group(function () {
+        Route::get('/', [BonusesController::class, 'index']);
+        Route::post('store', [BonusesController::class, 'store']);
     });
 });

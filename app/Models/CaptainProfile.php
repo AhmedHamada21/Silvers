@@ -20,6 +20,7 @@ class CaptainProfile extends BaseModel
         'number_personal',
         'number_trips_cansel_hours',
         'number_trips_cansel_day',
+        'point',
     ];
 
     public function profileStatus() {

@@ -19,9 +19,11 @@ class SubscriptionCaptionSeeder extends Seeder
         DB::table('subscription_captions')->truncate();
         for ($i = 0; $i < 5; $i++) {
             SubscriptionCaption::create([
-                'name' => fake()->name(),
+                'name_ar' => fake()->name(),
+                'name_en' => fake()->name(),
                 'price' => fake()->numberBetween(120, 350),
-                'type' => fake()->randomElement(['year', 'month', 'week','day']),
+                'type' => fake()->randomElement(['year', 'month', 'week', 'day']),
+                'notes' => fake()->paragraph()
             ]);
         }
         Schema::enableForeignKeyConstraints();
