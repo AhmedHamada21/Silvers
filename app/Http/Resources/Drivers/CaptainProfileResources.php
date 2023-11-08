@@ -19,6 +19,7 @@ class CaptainProfileResources extends JsonResource
             'id' => $this->id,
             'amountDay' => getTotalAmountDay($this->captain_id),
             'wallet' => $this->captainWallet(),
+            'point' => $this->point,
             'bio' => $this->bio,
             'rate' => $this->rate,
             'number_trips' => $this->number_trips,
