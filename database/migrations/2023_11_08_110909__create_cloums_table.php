@@ -17,6 +17,8 @@ return new class extends Migration
 
         Schema::table('settings', function (Blueprint $table) {
            $table->string('price_day_premium')->nullable();
+            $table->string('kilo_price_premium')->nullable();
+
         });
 
         Schema::table('hours', function (Blueprint $table) {
@@ -36,6 +38,7 @@ return new class extends Migration
 
         Schema::table('settings', function (Blueprint $table) {
             $table->dropColumn('price_day_premium');
+            $table->string('kilo_price_premium')->nullable();
         });
 
         Schema::table('hours', function (Blueprint $table) {

@@ -27,6 +27,7 @@ class Settings extends Model {
         'company_commission',
         'company_tax',
         'price_day_premium',
+        'kilo_price_premium',
     ];
 
     protected $with = ['translations'];
