@@ -23,6 +23,7 @@ return new class extends Migration
 
         Schema::table('hours', function (Blueprint $table) {
             $table->string('price_premium')->nullable();
+            $table->string('offer_price_premium')->nullable();
         });
     }
 
@@ -43,6 +44,7 @@ return new class extends Migration
 
         Schema::table('hours', function (Blueprint $table) {
             $table->dropColumn('price_premium');
+            $table->string('offer_price_premium')->nullable();
         });
     }
 };

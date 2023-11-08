@@ -14,5 +14,6 @@ class Hour extends Model
         'discount_hours',
         'price_hours',
         'price_premium',
+        'offer_price_premium',
     ];
 }
