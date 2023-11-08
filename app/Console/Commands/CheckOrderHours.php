@@ -70,10 +70,10 @@ class CheckOrderHours extends Command
                         $this->comment('Orders Deleted Successfully');
                     }
 
-
+                    $this->comment('Orders Send ' . $timeDifferenceInMinutes);
                 }
 
-                $this->comment('Orders Send ' . $timeDifferenceInMinutes);
+
 
 
             }
