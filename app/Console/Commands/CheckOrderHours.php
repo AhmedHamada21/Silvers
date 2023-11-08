@@ -62,28 +62,43 @@ class CheckOrderHours extends Command
                         ]);
                     }
 
-                    $newTime = Carbon::parse($ordersSaveHour->hours_from)->addHour()->format('g:i A');
-                    $now = Carbon::now()->format('g:i A');
-                    if ($now == $newTime) {
-                        sendNotificationUser($ordersSaveHour->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
-                        $ordersSaveHour->delete();
-                        $this->comment('Orders Deleted Successfully');
-                    }
-
                     $this->comment('Orders Send ' . $timeDifferenceInMinutes);
                 }
 
-//                $dataCheck = $ordersSaveHour->data . ' ' . $ordersSaveHour->hours_from;
-//
-//                if ($dataCheck > Carbon::now()->addMinutes(20)) {
-//                    sendNotificationUser($ordersSaveHour->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
-//                    $ordersSaveHour->delete();
-//                }
 
 
+
+
+                // Check Time Out
+
+                $dataCheck = $ordersSaveHour->data . $ordersSaveHour->hours_from;
+                $dataCheckTimeOut = Carbon::parse($dataCheck)->addMinutes(20)->format('Y-m-d g:i A');
+                $dataNowCheckTimeOut =Carbon::now()->format('Y-m-d g:i A');
+
+                if ($dataCheckTimeOut == $dataNowCheckTimeOut){
+                    sendNotificationUser($ordersSaveHour->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
+                    $ordersSaveHour->delete();
+                }
+
+
+
+
+
+
+                //Check Orders Sub Dayes
+
+                $dataCheck = $ordersSaveHour->data;
+
+                $dataSub = Carbon::now()->subDay()->format('Y-m-d');
+                $checks = $dataCheck == $dataSub;
+                if ($checks == true){
+                    $ordersSaveHour->delete();
+                }
 
 
             }
+
+
         } else {
             $this->comment('Orders Not exiting');
         }
