@@ -122,10 +122,6 @@ class DriverAuthController extends Controller
         }
 
 
-        if (!$token = auth('captain-api')->attempt($information, ['exp' => Carbon::now()->addDays(7300)->timestamp])) {
-            return $this->errorResponse('Unauthorized', 422);
-        }
-
         $token = auth('captain-api')->login($information);
         $information2 = Captain::where('phone', $phone)->first();
         DB::table('personal_access_tokens')->updateOrInsert([
