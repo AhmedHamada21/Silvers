@@ -26,6 +26,7 @@ class Settings extends Model {
         'ocean',
         'company_commission',
         'company_tax',
+        'price_day_premium',
     ];
 
     protected $with = ['translations'];

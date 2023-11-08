@@ -23,6 +23,7 @@ class HourSeeder extends Seeder
             'offer_price' => '0',
             'discount_hours' => '0',
             'price_hours' => '100',
+            'price_premium' => '200',
         ]);
 
         Hour::create([
@@ -30,6 +31,7 @@ class HourSeeder extends Seeder
             'discount_hours' => '10',
             'offer_price' => '10',
             'price_hours' => '250',
+            'price_premium' => '350',
         ]);
 
         Hour::create([
@@ -37,12 +39,14 @@ class HourSeeder extends Seeder
             'discount_hours' => '15',
             'offer_price' => '15',
             'price_hours' => '350',
+            'price_premium' => '550',
         ]);
         Hour::create([
             'number_hours' => '4',
             'discount_hours' => '20',
             'offer_price' => '20',
             'price_hours' => '400',
+            'price_premium' => '600',
         ]);
 
 

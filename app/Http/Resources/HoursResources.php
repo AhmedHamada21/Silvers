@@ -20,6 +20,7 @@ class HoursResources extends JsonResource
             'discount_hours' => $this->discount_hours,
             'offer_price' => $this->offer_price,
             'price_hours' => $this->price_hours,
+            'price_premium' => $this->price_premium,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

@@ -14,6 +14,14 @@ return new class extends Migration
         Schema::table('captain_profiles', function (Blueprint $table) {
            $table->string('point')->default(0);
         });
+
+        Schema::table('settings', function (Blueprint $table) {
+           $table->string('price_day_premium')->nullable();
+        });
+
+        Schema::table('hours', function (Blueprint $table) {
+            $table->string('price_premium')->nullable();
+        });
     }
 
     /**
@@ -23,6 +31,15 @@ return new class extends Migration
     {
         Schema::table('captain_profiles', function (Blueprint $table) {
            $table->dropColumn('point');
+        });
+
+
+        Schema::table('settings', function (Blueprint $table) {
+            $table->dropColumn('price_day_premium');
+        });
+
+        Schema::table('hours', function (Blueprint $table) {
+            $table->dropColumn('price_premium');
         });
     }
 };

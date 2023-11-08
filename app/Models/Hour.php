@@ -13,5 +13,6 @@ class Hour extends Model
         'number_hours',
         'discount_hours',
         'price_hours',
+        'price_premium',
     ];
 }
