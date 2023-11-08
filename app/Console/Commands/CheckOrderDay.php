@@ -61,6 +61,13 @@ class CheckOrderDay extends Command
                         ]);
                     }
 
+                    if ($timeDifferenceInMinutes == 1) {
+                        sendNotificationUser($ordersSaveDay->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        $orders->update([
+                            'status' => "accepted"
+                        ]);
+                    }
+
                     $this->comment('Orders Send ' . $timeDifferenceInMinutes);
                 }
 
