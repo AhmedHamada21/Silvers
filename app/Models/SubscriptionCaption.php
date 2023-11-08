@@ -14,6 +14,7 @@ class SubscriptionCaption extends Model
         'name_en',
         'price',
         'type',
-        'notes',
+        'notes_en',
+        'notes_ar',
     ];
 }

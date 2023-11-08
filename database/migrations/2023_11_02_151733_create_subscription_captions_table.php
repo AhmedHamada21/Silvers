@@ -16,8 +16,9 @@ return new class extends Migration {
             $table->string('name_ar');
             $table->string('name_en');
             $table->string('price');
-            $table->enum('type', ['year', 'month', 'week','day']);
-            $table->text('notes');
+            $table->enum('type', ['month', 'week','day']);
+            $table->text('notes_en');
+            $table->text('notes_ar');
             $table->timestamps();
         });
     }
