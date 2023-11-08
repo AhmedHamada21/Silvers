@@ -70,7 +70,7 @@ class DriverAuthController extends Controller
             'tokenable_id' => $information2->id,
             'name' => $information2->name,
             'token' => $token,
-            'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
+            'expires_at' => auth('captain-api')->factory()->getTTL() * 60000,
         ]);
 
         return $this->createNewToken($token);
@@ -105,7 +105,7 @@ class DriverAuthController extends Controller
             'tokenable_id' => $information2->id,
             'name' => $information2->name,
             'token' => $token,
-            'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
+            'expires_at' => auth('captain-api')->factory()->getTTL() * 60000,
         ]);
 
 
@@ -122,6 +122,10 @@ class DriverAuthController extends Controller
         }
 
 
+        if (!$token = auth('captain-api')->attempt($information, ['exp' => Carbon::now()->addDays(7300)->timestamp])) {
+            return $this->errorResponse('Unauthorized', 422);
+        }
+
         $token = auth('captain-api')->login($information);
         $information2 = Captain::where('phone', $phone)->first();
         DB::table('personal_access_tokens')->updateOrInsert([
@@ -132,7 +136,7 @@ class DriverAuthController extends Controller
             'tokenable_id' => $information2->id,
             'name' => $information2->name,
             'token' => $token,
-            'expires_at' => auth('captain-api')->factory()->getTTL() * 60,
+            'expires_at' => auth('captain-api')->factory()->getTTL() * 60000,
         ]);
         return $this->createNewToken($token);
     }
@@ -233,7 +237,7 @@ class DriverAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('captain-api')->factory()->getTTL() * 1, // تم تحديث هذا السطر
+            'expires_in' => auth('captain-api')->factory()->getTTL() * 600000, // تم تحديث هذا السطر
             'user' => new CaptionResources(auth('captain-api')->user())
         ]);
     }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('captain_profiles', function (Blueprint $table) {
-           $table->string('point')->nullable();
+           $table->string('point')->default(0);
         });
     }
 
