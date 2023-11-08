@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->enum('type', ['user', 'captions']);
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('captain_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->enum('status', ['package', 'offer', 'subscriptions', 'card','company']);
+            $table->enum('status', ['package', 'offer', 'subscriptions', 'card','company','bonuses']);
             $table->string('amount');
             $table->string('payment_date');
             $table->timestamps();

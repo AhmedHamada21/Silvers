@@ -16,10 +16,12 @@ class SubscriptionCaptionResources extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name_ar' => $this->name_ar,
+            'name_en' => $this->name_en,
             'price' => $this->price,
             'type' => $this->type,
-            'notes' => $this->notes,
+            'notes_en' => $this->notes_en,
+            'notes_ar' => $this->notes_ar,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at
