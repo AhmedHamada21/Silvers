@@ -74,10 +74,14 @@ class CheckOrderHours extends Command
                 }
 
 
+                if (Carbon::parse($ordersSaveHour->data . ' ' . $ordersSaveHour->hours_from)->gte(Carbon::now())) {
+                    $ordersSaveHour->delete();
+                }
+
 
 
             }
-        }else{
+        } else {
             $this->comment('Orders Not exiting');
         }
 
