@@ -73,11 +73,13 @@ class CheckOrderHours extends Command
                     $this->comment('Orders Send ' . $timeDifferenceInMinutes);
                 }
 
+                $dataCheck = $ordersSaveHour->data . ' ' . $ordersSaveHour->hours_from;
 
-                if (Carbon::parse($ordersSaveHour->data . ' ' . $ordersSaveHour->hours_from)->gte(Carbon::now())) {
+                if (!($dataCheck >= Carbon::now())) {
                     sendNotificationUser($ordersSaveHour->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
                     $ordersSaveHour->delete();
                 }
+
 
 
 
