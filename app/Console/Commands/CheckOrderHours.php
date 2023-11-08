@@ -61,6 +61,12 @@ class CheckOrderHours extends Command
                             'status' => "accepted"
                         ]);
                     }
+                    if ($timeDifferenceInMinutes == 1) {
+                        sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        $orders->update([
+                            'status' => "accepted"
+                        ]);
+                    }
 
                     $this->comment('Orders Send ' . $timeDifferenceInMinutes);
                 }
