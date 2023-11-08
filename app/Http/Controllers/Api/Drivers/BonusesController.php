@@ -50,7 +50,7 @@ class BonusesController extends Controller
                     return $this->successResponse('Caption Created Successfully in bonuses');
                 }
             }else{
-                return $this->successResponse('The Caption account is unable to calculate');
+                return $this->errorResponse('The Caption account is unable to calculate');
             }
 
 
