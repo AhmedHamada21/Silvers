@@ -17,6 +17,8 @@ class MainSettingResources extends JsonResource {
             'waiting_price' => $this->waiting_price,
             'country_tax' => $this->country_tax,
             'kilo_price' => $this->kilo_price,
+            'price_day_premium' => $this->price_day_premium,
+            'kilo_price_premium' => $this->kilo_price_premium,
             'ocean' => $this->ocean,
             'company_commission' => $this->company_commission,
             'company_tax' => $this->company_tax,
