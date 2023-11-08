@@ -29,8 +29,7 @@ class BonusesController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'captain_id' => 'required|exists:captains,id',
-            'bonuses_id' => 'required|exists:bonuses,id',
+            'bout' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -40,7 +39,6 @@ class BonusesController extends Controller
 
             $data = CaptionBonus::create([
                 'captain_id' => auth('captain-api')->id(),
-                'bonuses_id' => $request->bonuses_id,
                 'bout' => $request->bout,
                 'status' => 'active',
             ]);
