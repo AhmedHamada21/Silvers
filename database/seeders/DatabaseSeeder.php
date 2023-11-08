@@ -59,6 +59,7 @@ class DatabaseSeeder extends Seeder
             PrivacySeeder::class,
             HourSeeder::class,
             SubscriptionCaptionSeeder::class,
+            BonusSeeder::class,
         ]);
     }
 }
