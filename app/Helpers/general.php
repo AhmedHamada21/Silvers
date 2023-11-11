@@ -249,17 +249,17 @@ if (!function_exists('getTotalAmount')) {
             return number_format($ordersTotal - ($ordersTotal * $commission), 2);
         }
 
-        $dailyTotal = \App\Models\OrderDay::findorfail($id_order);
-        if ($dailyTotal){
+        $dailyTotalOrderDay = \App\Models\OrderDay::findorfail($id_order);
+        if ($dailyTotalOrderDay){
             $ordersTotal = 0;
-            $ordersTotal += $dailyTotal->total_price;
+            $ordersTotal += $dailyTotalOrderDay->total_price;
             return number_format($ordersTotal - ($ordersTotal * $commission), 2);
         }
 
-        $dailyTotal = \App\Models\OrderHour::findorfail($id_order);
-        if ($dailyTotal){
+        $dailyTotalOrderHour = \App\Models\OrderHour::findorfail($id_order);
+        if ($dailyTotalOrderHour){
             $ordersTotal = 0;
-            $ordersTotal += $dailyTotal->total_price;
+            $ordersTotal += $dailyTotalOrderHour->total_price;
             return number_format($ordersTotal - ($ordersTotal * $commission), 2);
         }
 
