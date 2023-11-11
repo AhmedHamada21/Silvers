@@ -40,4 +40,9 @@ class OrderDay extends Model
     {
         return $this->belongsTo(TripType::class, 'trip_type_id');
     }
+
+    public function scopeByCaptain($query, $captainId)
+    {
+        return $query->where('captain_id', $captainId);
+    }
 }

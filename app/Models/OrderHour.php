@@ -44,4 +44,9 @@ class OrderHour extends Model
     {
         return $this->belongsTo(Hour::class,'hour_id');
     }
+
+    public function scopeByCaptain($query, $captainId)
+    {
+        return $query->where('captain_id', $captainId);
+    }
 }
