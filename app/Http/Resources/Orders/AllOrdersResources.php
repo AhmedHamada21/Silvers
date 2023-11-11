@@ -20,7 +20,7 @@ class AllOrdersResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'trip_type' => $this->hour_id ? 'Hourly Trip' : ($this->number_day ? 'Daily Trip' : 'Regular Trip'),
+            'trip_type' => $this->hour_id ? 'hours Trip' : ($this->number_day ? 'Day Trip' : 'One Trip'),
             'user_id' => new UsersResources($this->user) ?? null,
             'captain_id' => new CaptionResources($this->captain) ?? null,
             'trip_type_id' => new TripTypeResources($this->trip_type)?? null,
