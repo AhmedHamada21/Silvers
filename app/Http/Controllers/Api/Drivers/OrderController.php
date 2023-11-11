@@ -121,7 +121,7 @@ class OrderController extends Controller
 
             $responseData = [
                 'data' => OrdersAllResources::collection($data),
-                'total' => $total,
+                'total' => getTotalPrice($total),
             ];
             return $this->successResponse($responseData, 'data returned successfully');
 
