@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Orders\AllOrdersResources;
 use App\Http\Resources\Orders\OrdersResources;
 use App\Models\Order;
+use App\Models\OrderDay;
+use App\Models\OrderHour;
 use App\Models\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
 
@@ -18,7 +21,16 @@ class OrderController extends Controller
             ->whereIn('status', ['done', 'cancel'])
             ->paginate(15);
 
-        $data = OrdersResources::collection($orders);
+        $orderHours = OrderHour::where('user_id', auth('users-api')->id())
+            ->whereIn('status', ['done', 'cancel'])->paginate(15);
+
+
+        $orderDay = OrderDay::where('user_id', auth('users-api')->id())
+            ->whereIn('status', ['done', 'cancel'])->paginate(15);
+
+        $dataAllOrders = $orders->concat($orderHours)->concat($orderDay);
+
+        $data = AllOrdersResources::collection($dataAllOrders);
         $response = [
             'data' => $data,
             'pagination' => [
