@@ -26,7 +26,7 @@ class AllOrdersResources extends JsonResource
             'complaints' => $this->complaints == true ?  ComplaintResponse::collection($this->complaints) : null,
             'order_code' => $this->order_code ?? null,
             'total_price' => $this->total_price ?? null,
-            'total_profit' => getTotalAmount($this->id),
+//            'total_profit' => getTotalAmount($this->id),
             'chat_id' => $this->chat_id ?? null,
             'status' => $this->status ?? null,
             'payments' => $this->payments ?? null,
