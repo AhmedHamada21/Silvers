@@ -27,7 +27,7 @@ class OrdersResources extends JsonResource
             'complaints' => ComplaintResponse::collection($this->complaints),
             'order_code' => $this->order_code,
             'total_price' => $this->total_price,
-            'total_profit' => getTotalAmount($this->id),
+//            'total_profit' => getTotalAmount($this->id),
             'chat_id' => $this->chat_id,
             'status' => $this->status,
             'payments' => $this->payments,
