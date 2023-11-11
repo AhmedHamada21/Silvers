@@ -263,6 +263,7 @@ if (!function_exists('getTotalAmount')) {
             return number_format($ordersTotal - ($ordersTotal * $commission), 2);
         }
 
+        return null;
     }
 }
 
