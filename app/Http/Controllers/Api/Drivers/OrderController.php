@@ -72,14 +72,6 @@ class OrderController extends Controller
         $allData = $orders->concat($ordersHours)->concat($orderDay);
 
         $data = AllOrdersResources::collection($allData);
-//        $pagination = $allData->toArray();
-//        unset($pagination['data']); // Remove the 'data' key from pagination
-//
-//        $response = [
-//            'data' => $data,
-//            'pagination' => $pagination,
-//        ];
-
         $pagination = [
             'total' => $orders->total() + $ordersHours->total() + $orderDay->total(),
             'per_page' => $orders->perPage() + $ordersHours->perPage() + $orderDay->perPage() ,
