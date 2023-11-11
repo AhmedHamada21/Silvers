@@ -94,7 +94,7 @@ class OrderHourController extends Controller
 
             if ($data) {
                 sendNotificationCaptain($request->captain_id, 'Trips Created Successfully', 'New Trips Hours', true);
-                sendNotificationUser($request->user_id, 'Trips Created Successfully', 'New Trips Hours', true);
+                sendNotificationUser($request->user_id, 'Trips Created Successfully Driver :' . $data->captain->name, 'New Trips Hours', true);
                 createInFirebaseHours($request->user_id, $request->captain_id, $data->id);
 
 

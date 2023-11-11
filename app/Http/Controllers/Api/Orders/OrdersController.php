@@ -258,7 +258,7 @@ class OrdersController extends Controller
                 ]);
 
                 sendNotificationCaptain($request->captain_id, 'Trips Created Successfully', 'New Trips', true);
-                sendNotificationUser($request->user_id, 'Trips Created Successfully', 'New Trips', true);
+                sendNotificationUser($request->user_id, 'Trips Created Successfully Drivers' .$data->captain->name, 'New Trips', true);
                 createInFirebase($request->user_id, $request->captain_id, $data->id);
             }
 
@@ -475,9 +475,6 @@ class OrdersController extends Controller
 
         return $this->successResponse(new OrdersResources($checkOrder), 'Data returned successfully');
     }
-
-
-
 
 
     public function getSavedOrders()
