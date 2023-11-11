@@ -217,21 +217,18 @@ if (!function_exists('getTotalAmountDay')) {
         $ordersTotal = \App\Models\Order::where('status', 'done')
             ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))
             ->where('captain_id', $id_caption)
-            ->where('status','done')
             ->sum('total_price');
 
 
         $ordersTotalHours = \App\Models\OrderHour::where('status', 'done')
             ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))
             ->where('captain_id', $id_caption)
-            ->where('status','done')
             ->sum('total_price');
 
 
         $ordersTotalDay = \App\Models\OrderDay::where('status', 'done')
             ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))
             ->where('captain_id', $id_caption)
-            ->where('status','done')
             ->sum('total_price');
 
         $totalOrders = $ordersTotal +  $ordersTotalHours +  $ordersTotalDay;

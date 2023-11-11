@@ -105,7 +105,11 @@ class OrderController extends Controller
         }
 
         if (isset($request->start_data)) {
-            $orders = Order::where('captain_id', auth('captain-api')->id())->where('status','done')->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))->get();
+            $orders = Order::where('captain_id', auth('captain-api')->id())
+            ->where('status', 'done')
+            ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))
+            ->get();
+
             $OrderHour = OrderHour::where('captain_id', auth('captain-api')->id())->where('status','done')->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))->get();
             $OrderDay = OrderDay::where('captain_id', auth('captain-api')->id())->where('status','done')->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))->get();
 
