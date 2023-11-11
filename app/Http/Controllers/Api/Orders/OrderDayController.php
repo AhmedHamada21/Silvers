@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Orders\OrdersDayResources;
 use App\Http\Resources\Orders\OrdersSaveDayResources;
 use App\Models\CanselOrderHoursDay;
+use App\Models\Captain;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
 use App\Models\OrderDay;
@@ -70,38 +71,40 @@ class OrderDayController extends Controller
         }
 //        try {
 
-            $latestOrderId = optional(OrderDay::latest()->first())->id;
-            $orderCode = 'orderD_' . $latestOrderId . generateRandomString(5);
-            $chatId = 'chatD_' . generateRandomString(4);
-
-            $data = OrderDay::create([
-                'address_now' => $request->address_now,
-                'user_id' => $request->user_id,
-                'captain_id' => $request->captain_id,
-                'trip_type_id' => 3,
-                'order_code' => $orderCode,
-                'total_price' => $request->total_price,
-                'chat_id' => $chatId,
-                'status' => 'pending',
-                'payments' => $request->payments,
-                'lat_user' => $request->lat_user,
-                'long_user' => $request->long_user,
-                'start_day' => $request->start_day,
-                'end_day' => $request->end_day,
-                'number_day' => $request->number_day,
-                'start_time' => $request->start_time,
-
-
-            ]);
-
-            if ($data) {
-                sendNotificationCaptain($data->captain->fcm_token, 'Trips Created Successfully User ' . $data->user->name, 'New Trips', true);
-                sendNotificationUser($data->user->fcm_token, 'Trips Created Successfully Driver :' . $data->captain->name, 'New Trips Hours', true);
-                createInFirebaseDay($request->user_id, $request->captain_id, $data->id);
+        $latestOrderId = optional(OrderDay::latest()->first())->id;
+        $orderCode = 'orderD_' . $latestOrderId . generateRandomString(5);
+        $chatId = 'chatD_' . generateRandomString(4);
+        $user = User::findorfail($request->user_id);
+        $caption = Captain::findorfail($request->captain_id);
+        $data = OrderDay::create([
+            'address_now' => $request->address_now,
+            'user_id' => $request->user_id,
+            'captain_id' => $request->captain_id,
+            'trip_type_id' => 3,
+            'order_code' => $orderCode,
+            'total_price' => $request->total_price,
+            'chat_id' => $chatId,
+            'status' => 'pending',
+            'payments' => $request->payments,
+            'lat_user' => $request->lat_user,
+            'long_user' => $request->long_user,
+            'start_day' => $request->start_day,
+            'end_day' => $request->end_day,
+            'number_day' => $request->number_day,
+            'start_time' => $request->start_time,
 
 
-            }
-            return $this->successResponse(new OrdersDayResources($data), 'Data created successfully');
+        ]);
+
+        if ($data) {
+            sendNotificationCaptain($caption->fcm_token, 'Trips Created Successfully User ' . $user->name, 'New Trips', true);
+            sendNotificationUser($user->fcm_token, 'Trips Created Successfully Driver ' . $caption->name, 'New Trips', true);
+
+            createInFirebaseDay($request->user_id, $request->captain_id, $data->id);
+
+
+        }
+        return $this->successResponse(new OrdersDayResources($data), 'Data created successfully');
 
 //        } catch (\Exception $exception) {
 //            return $this->errorResponse('Something went wrong, please try again later');
@@ -109,6 +112,7 @@ class OrderDayController extends Controller
 
 
     }
+
     public function saveDay(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -130,7 +134,7 @@ class OrderDayController extends Controller
         }
 
 
-        if (SaveRentDay::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('start_day',$request->start_day)->where('end_day',$request->end_day)->first()) {
+        if (SaveRentDay::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('start_day', $request->start_day)->where('end_day', $request->end_day)->first()) {
             return $this->errorResponse('There is a flight already booked for the same date');
 
         }
@@ -291,15 +295,15 @@ class OrderDayController extends Controller
     public function canselDay(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'order_code'=>'required|exists:save_rent_days,order_code'
+            'order_code' => 'required|exists:save_rent_days,order_code'
 
         ]);
         if ($validator->fails()) {
             return $this->errorResponse($validator->errors(), 400);
         }
 
-        $orders = SaveRentDay::where('order_code',$request->order_code)->update([
-            'status'=>'cancel'
+        $orders = SaveRentDay::where('order_code', $request->order_code)->update([
+            'status' => 'cancel'
         ]);
         return $this->successResponse('Data cancel successfully');
 

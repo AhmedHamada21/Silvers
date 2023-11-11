@@ -7,6 +7,7 @@ use App\Http\Resources\Orders\OrdersHoursResources;
 use App\Http\Resources\Orders\OrdersResources;
 use App\Http\Resources\Orders\OrdersSaveHoursResources;
 use App\Models\CanselOrderHoursDay;
+use App\Models\Captain;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
 use App\Models\OrderHour;
@@ -74,6 +75,9 @@ class OrderHourController extends Controller
             $orderCode = 'orderH_' . $latestOrderId . generateRandomString(5);
             $chatId = 'chatH_' . generateRandomString(4);
 
+            $user = User::findorfail($request->user_id);
+            $caption = Captain::findorfail($request->captain_id);
+
             $data = OrderHour::create([
                 'hour_id' => $request->hour_id,
                 'address_now' => $request->address_now,
@@ -93,8 +97,8 @@ class OrderHourController extends Controller
             ]);
 
             if ($data) {
-                sendNotificationCaptain($data->captain->fcm_token, 'Trips Created Successfully Users ' . $data->user->name, 'New Trips', true);
-                sendNotificationUser($data->user->fcm_token, 'Trips Created Successfully Driver :' . $data->captain->name, 'New Trips Hours', true);
+                sendNotificationCaptain($caption->fcm_token, 'Trips Created Successfully User ' . $user->name, 'New Trips', true);
+                sendNotificationUser($user->fcm_token, 'Trips Created Successfully Driver ' . $caption->name, 'New Trips', true);
                 createInFirebaseHours($request->user_id, $request->captain_id, $data->id);
 
 
