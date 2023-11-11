@@ -42,7 +42,7 @@ class AllOrdersResources extends JsonResource
             'takingOrder' => new TakingOrderResources($this->takingOrder) ?? null,
             'Rate' => new RateCommentUserResources($this->rates) ?? null,
             'canselOrders' => new CanselOrderResources($this->canselOrder) ?? null,
-//            'hour_id' => new HoursResources($this->hour) ?? null,
+            'hour_id' => new HoursResources($this->hour) ?? null,
             'data' => $this->data ?? null,
             'hours_from' => $this->hours_from ?? null,
             'start_day' => $this->start_day ?? null,
