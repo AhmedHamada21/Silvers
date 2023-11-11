@@ -71,9 +71,9 @@ class OrderController extends Controller
             'per_page' => $orders->perPage() + $orderHours->perPage() + $orderDay->perPage(),
             'current_page' => $orders->currentPage() + $orderHours->currentPage() + $orderDay->currentPage(),
             'last_page' => $orders->lastPage() + $orderHours->lastPage() + $orderDay->lastPage(),
-            'from' => $data->firstItem(),
-            'to' => $data->lastItem(),
-            'next_page_url' => $data->nextPageUrl(),
+//            'from' => $data->firstItem(),
+//            'to' => $data->lastItem(),
+//            'next_page_url' => $data->nextPageUrl(),
         ];
 
         $response = [
