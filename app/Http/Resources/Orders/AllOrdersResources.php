@@ -21,7 +21,7 @@ class AllOrdersResources extends JsonResource
     {
         return [
             'user_id' => new UsersResources($this->user),
-            'captain_id' => new CaptionResources($this->captain),
+            'captain_id' => new CaptionResources($this->captain) ?? null,
             'trip_type_id' => new TripTypeResources($this->trip_type)?? null,
             'complaints' => $this->complaints == true ?  ComplaintResponse::collection($this->complaints) : null,
             'order_code' => $this->order_code ?? null,
@@ -49,7 +49,6 @@ class AllOrdersResources extends JsonResource
             'end_day' => $this->end_day ?? null,
             'number_day' => $this->number_day ?? null,
             'start_time' => $this->start_time ?? null,
-
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

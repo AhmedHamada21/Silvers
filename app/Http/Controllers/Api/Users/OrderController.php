@@ -8,6 +8,8 @@ use App\Http\Resources\Orders\OrdersResources;
 use App\Models\Order;
 use App\Models\OrderDay;
 use App\Models\OrderHour;
+use App\Models\SaveRentDay;
+use App\Models\SaveRentHour;
 use App\Models\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
 
@@ -54,6 +56,14 @@ class OrderController extends Controller
             ->whereIn('status', ['done', 'cancel'])
             ->paginate(15);
 
+        $orderSavesHours = SaveRentHour::where('user_id', $userId)
+            ->whereIn('status', ['done', 'cancel'])
+            ->paginate(15);
+
+        $orderSaveDay = SaveRentDay::where('user_id', $userId)
+            ->whereIn('status', ['done', 'cancel'])
+            ->paginate(15);
+
         $orderHours = OrderHour::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
             ->paginate(15);
@@ -62,18 +72,18 @@ class OrderController extends Controller
             ->whereIn('status', ['done', 'cancel'])
             ->paginate(15);
 
-        $dataAllOrders = $orders->concat($orderHours)->concat($orderDay);
+        $dataAllOrders = $orders->concat($orderHours)->concat($orderDay)->concat($orderSavesHours)->concat($orderSaveDay);
 
         $data = AllOrdersResources::collection($dataAllOrders);
 
         $pagination = [
-            'total' => $orders->total() + $orderHours->total() + $orderDay->total(),
-            'per_page' => $orders->perPage() + $orderHours->perPage() + $orderDay->perPage(),
-            'current_page' => $orders->currentPage() + $orderHours->currentPage() + $orderDay->currentPage(),
-            'last_page' => $orders->lastPage() + $orderHours->lastPage() + $orderDay->lastPage(),
-            'from' => $orders->firstItem() + $orderHours->firstItem() + $orderDay->firstItem(),
-            'to' => $orders->lastItem() + $orderHours->lastItem() + $orderDay->lastItem(),
-            'next_page_url' => $orders->nextPageUrl() + $orderHours->nextPageUrl() + $orderDay->nextPageUrl(),
+            'total' => $orders->total() + $orderHours->total() + $orderDay->total() + $orderSavesHours->total() + $orderSaveDay->total(),
+            'per_page' => $orders->perPage() + $orderHours->perPage() + $orderDay->perPage()  + $orderSavesHours->perPage() + $orderSaveDay->perPage(),
+            'current_page' => $orders->currentPage() + $orderHours->currentPage() + $orderDay->currentPage() + $orderSavesHours->currentPage() + $orderSaveDay->currentPage(),
+            'last_page' => $orders->lastPage() + $orderHours->lastPage() + $orderDay->lastPage() + $orderSavesHours->lastPage() + $orderSaveDay->lastPage(),
+            'from' => $orders->firstItem() + $orderHours->firstItem() + $orderDay->firstItem() + $orderSavesHours->firstItem() + $orderSaveDay->firstItem(),
+            'to' => $orders->lastItem() + $orderHours->lastItem() + $orderDay->lastItem() + $orderSavesHours->lastItem() + $orderSaveDay->lastItem(),
+            'next_page_url' => $orders->nextPageUrl() + $orderHours->nextPageUrl() + $orderDay->nextPageUrl() + $orderSavesHours->nextPageUrl() + $orderSaveDay->nextPageUrl(),
         ];
 
         $response = [
@@ -83,7 +93,6 @@ class OrderController extends Controller
 
         return $this->successResponse($response, 'Data returned successfully');
     }
-
 
 
     public function lasts()
