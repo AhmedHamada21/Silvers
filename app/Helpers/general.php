@@ -243,9 +243,26 @@ if (!function_exists('getTotalAmount')) {
         $commissionPercentage = \App\Models\Settings::first()->company_commission ?? 0;
         $commission = $commissionPercentage / 100;
         $dailyTotal = \App\Models\Order::findorfail($id_order);
-        $ordersTotal = 0;
-        $ordersTotal += $dailyTotal->total_price;
-        return number_format($ordersTotal - ($ordersTotal * $commission), 2);
+        if ($dailyTotal){
+            $ordersTotal = 0;
+            $ordersTotal += $dailyTotal->total_price;
+            return number_format($ordersTotal - ($ordersTotal * $commission), 2);
+        }
+
+        $dailyTotal = \App\Models\OrderDay::findorfail($id_order);
+        if ($dailyTotal){
+            $ordersTotal = 0;
+            $ordersTotal += $dailyTotal->total_price;
+            return number_format($ordersTotal - ($ordersTotal * $commission), 2);
+        }
+
+        $dailyTotal = \App\Models\OrderHour::findorfail($id_order);
+        if ($dailyTotal){
+            $ordersTotal = 0;
+            $ordersTotal += $dailyTotal->total_price;
+            return number_format($ordersTotal - ($ordersTotal * $commission), 2);
+        }
+
     }
 }
 
