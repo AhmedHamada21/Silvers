@@ -240,7 +240,7 @@ if (!function_exists('getTotalAmountDay')) {
 if (!function_exists('getTotalAmount')) {
     function getTotalAmount($id_order)
     {
-        dd($id_order);
+
         $commissionPercentage = \App\Models\Settings::first()->company_commission ?? 0;
         $commission = $commissionPercentage / 100;
         $dailyTotal = \App\Models\Order::findorfail($id_order);
@@ -250,23 +250,35 @@ if (!function_exists('getTotalAmount')) {
             return number_format($ordersTotal - ($ordersTotal * $commission), 2);
         }
 
-        $dailyTotalOrderDay = \App\Models\OrderDay::findorfail($id_order);
-        if ($dailyTotalOrderDay){
-            $ordersTotal = 0;
-            $ordersTotal += $dailyTotalOrderDay->total_price;
-            return number_format($ordersTotal - ($ordersTotal * $commission), 2);
+        return null;
+    }
+}
+
+if (!function_exists('getTotalAmountCaptions')) {
+    function getTotalAmountCaptions($id_order)
+    {
+        $commissionPercentage = \App\Models\Settings::first()->company_commission ?? 0;
+        $commission = $commissionPercentage / 100;
+
+        $dailyTotal = \App\Models\Order::where('order_code',$id_order)->first();
+
+        if (!$dailyTotal) {
+            $dailyTotal = \App\Models\OrderDay::where('order_code',$id_order)->first();
         }
 
-        $dailyTotalOrderHour = \App\Models\OrderHour::findorfail($id_order);
-        if ($dailyTotalOrderHour){
-            $ordersTotal = 0;
-            $ordersTotal += $dailyTotalOrderHour->total_price;
+        if (!$dailyTotal) {
+            $dailyTotal = \App\Models\OrderHour::where('order_code',$id_order)->first();
+        }
+
+        if ($dailyTotal) {
+            $ordersTotal = $dailyTotal->total_price;
             return number_format($ordersTotal - ($ordersTotal * $commission), 2);
         }
 
         return null;
     }
 }
+
 
 if (!function_exists('getTotalPrice')) {
     function getTotalPrice($price)
