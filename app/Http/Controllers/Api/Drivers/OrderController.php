@@ -11,6 +11,7 @@ use App\Models\OrderDay;
 use App\Models\OrderHour;
 use App\Models\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -104,9 +105,9 @@ class OrderController extends Controller
         }
 
         if (isset($request->start_data)) {
-            $orders = Order::where('captain_id', auth('captain-api')->id())->where('status','done')->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->get();
-            $OrderHour = OrderHour::where('captain_id', auth('captain-api')->id())->where('status','done')->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->get();
-            $OrderDay = OrderDay::where('captain_id', auth('captain-api')->id())->where('status','done')->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)->get();
+            $orders = Order::where('captain_id', auth('captain-api')->id())->where('status','done')->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))->get();
+            $OrderHour = OrderHour::where('captain_id', auth('captain-api')->id())->where('status','done')->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))->get();
+            $OrderDay = OrderDay::where('captain_id', auth('captain-api')->id())->where('status','done')->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), Carbon::now()->format('Y-m-d'))->get();
 
             $ordersSum = $orders->sum('total_price');
             $OrderHourSum = $OrderHour->sum('total_price');
