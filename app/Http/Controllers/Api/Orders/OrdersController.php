@@ -223,7 +223,7 @@ class OrdersController extends Controller
             return $this->errorResponse('This captain is already on a journey');
         }
 
-        try {
+//        try {
             $latestOrderId = optional(Order::latest()->first())->id;
             $orderCode = 'order_' . $latestOrderId . generateRandomString(5);
             $chatId = 'chat_' . generateRandomString(4);
@@ -268,9 +268,9 @@ class OrdersController extends Controller
             }
 
             return $this->successResponse(new OrdersResources($data), 'Data created successfully');
-        } catch (\Exception $exception) {
-            return $this->errorResponse('Something went wrong, please try again later');
-        }
+//        } catch (\Exception $exception) {
+//            return $this->errorResponse('Something went wrong, please try again later');
+//        }
     }
 
 
