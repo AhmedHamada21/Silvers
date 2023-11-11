@@ -186,7 +186,7 @@ class RateCommentController extends Controller
     private function sendNotificationToCaptain($captainId)
     {
         $caption = Captain::findOrFail($captainId);
-        sendNotificationCaptain($caption->fcm_token, "شكرا على تقييمكم", '',true);
+        sendNotificationCaptain($caption->id, "شكرا على تقييمكم", '',true);
     }
 
     private function updateCaptainRating($captainId)

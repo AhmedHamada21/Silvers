@@ -131,7 +131,7 @@ class CaptainController extends Controller {
     }
 
     public function updatePersonalMediaStatus(Request $request, $id) {
-    
+
         try {
             $columns = [
                 'personal_avatar' => [
@@ -174,33 +174,33 @@ class CaptainController extends Controller {
 
 
             $image = Image::find($id);
-      
-            
-        
+
+
+
             $captain = Captain::findOrfail($request->imageable_id);
             $accept = array_key_exists('Accept',$messages) ? $messages['Accept']['ar'] : null;
             $reject = array_key_exists('Reject',$messages) ? $messages['Reject']['ar'] : null;
-          
+
             $specificName = array_key_exists($image->photo_type,$columns) ? $columns[$image->photo_type]['ar'] : null;
-            if (!$image) 
+            if (!$image)
                 return redirect()->back()->with('error', 'Image not found');
             $updateData = [];
             if ($request->has('photo_status'))
                 $updateData['photo_status'] = $request->input('photo_status');
-            
+
             if ($request->has('reject_reson'))
                 $updateData['reject_reson'] = $request->input('reject_reson');
-            
+
             $image->update($updateData);
             $body = ($request->input('photo_status') === 'accept') ? 'Good Your ' . $specificName . ' Successfully' : 'Sorry this image ' .$specificName;
             $title = ($request->input('photo_status') === 'accept') ? $accept . ' ' .$specificName :  ' ' .$reject .' ' . $specificName;
-            sendNotificationCaptain($captain->fcm_token,$body, $title, false);
+            sendNotificationCaptain($captain->id,$body, $title, false);
             return redirect()->back()->with('success', 'Image ' . ucfirst(str_replace('_', ' ', $image->photo_type)) . ' updated status successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred during the update: ' . $e->getMessage());
         }
     }
-    
+
 
     public function updateCarStatus(Request $request, $id) {
         try {
@@ -220,7 +220,7 @@ class CaptainController extends Controller {
             } else {
                 $status->status = $newStatus;
                 $status->save();
-                sendNotificationCaptain($status->captain_profile->owner->fcm_token, $newStatus, $status->status);
+                sendNotificationCaptain($status->captain_profile->owner->id, $newStatus, $status->status);
                 return redirect()->back()->with('success', 'Captain car media updated status successfully');
             }
         } catch (\Exception $e) {
