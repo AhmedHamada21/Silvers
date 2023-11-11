@@ -34,8 +34,9 @@ class OrderController extends Controller
         $dataAllOrders = $orders->concat($orderHours)->concat($orderDay);
 
         $data = AllOrdersResources::collection($dataAllOrders);
+
         $pagination = [
-            'total' => $data->total(),
+            'total' => $dataAllOrders->total(),
             'per_page' => $data->perPage(),
             'current_page' => $data->currentPage(),
             'last_page' => $data->lastPage(),
