@@ -68,12 +68,12 @@ class OrderController extends Controller
 
         $pagination = [
             'total' => $orders->total() + $orderHours->total() + $orderDay->total(),
-            'per_page' => $data->perPage(),
-            'current_page' => $data->currentPage(),
-            'last_page' => $data->lastPage(),
-            'from' => $data->firstItem(),
-            'to' => $data->lastItem(),
-            'next_page_url' => $data->nextPageUrl(),
+            'per_page' => $orders->perPage() + $orderHours->perPage() + $orderDay->perPage(),
+            'current_page' => $orders->current_page() + $orderHours->current_page() + $orderDay->current_page(),
+            'last_page' => $orders->last_page() + $orderHours->last_page() + $orderDay->last_page(),
+            'from' => $orders->from() + $orderHours->from() + $orderDay->from(),
+            'to' => $orders->to() + $orderHours->to() + $orderDay->to(),
+            'next_page_url' => $orders->next_page_url() + $orderHours->next_page_url() + $orderDay->next_page_url(),
         ];
 
         $response = [
