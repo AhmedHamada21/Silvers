@@ -70,10 +70,10 @@ class OrderController extends Controller
             'total' => $orders->total() + $orderHours->total() + $orderDay->total(),
             'per_page' => $orders->perPage() + $orderHours->perPage() + $orderDay->perPage(),
             'current_page' => $orders->currentPage() + $orderHours->currentPage() + $orderDay->currentPage(),
-            'last_page' => $orders->last_page() + $orderHours->last_page() + $orderDay->last_page(),
-            'from' => $orders->from() + $orderHours->from() + $orderDay->from(),
-            'to' => $orders->to() + $orderHours->to() + $orderDay->to(),
-            'next_page_url' => $orders->next_page_url() + $orderHours->next_page_url() + $orderDay->next_page_url(),
+            'last_page' => $orders->lastPage() + $orderHours->lastPage() + $orderDay->lastPage(),
+            'from' => $orders->firstItem() + $orderHours->firstItem() + $orderDay->firstItem(),
+            'to' => $orders->lastItem() + $orderHours->lastItem() + $orderDay->lastItem(),
+            'next_page_url' => $orders->nextPageUrl() + $orderHours->nextPageUrl() + $orderDay->nextPageUrl(),
         ];
 
         $response = [
