@@ -69,7 +69,7 @@ class OrderController extends Controller
         $pagination = [
             'total' => $orders->total() + $orderHours->total() + $orderDay->total(),
             'per_page' => $orders->perPage() + $orderHours->perPage() + $orderDay->perPage(),
-            'current_page' => $orders->current_page() + $orderHours->current_page() + $orderDay->current_page(),
+            'current_page' => $orders->currentPage() + $orderHours->currentPage() + $orderDay->currentPage(),
             'last_page' => $orders->last_page() + $orderHours->last_page() + $orderDay->last_page(),
             'from' => $orders->from() + $orderHours->from() + $orderDay->from(),
             'to' => $orders->to() + $orderHours->to() + $orderDay->to(),
