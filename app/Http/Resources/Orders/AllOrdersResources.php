@@ -20,13 +20,13 @@ class AllOrdersResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'user_id' => new UsersResources($this->user),
+            'user_id' => new UsersResources($this->user) ?? null,
             'captain_id' => new CaptionResources($this->captain) ?? null,
             'trip_type_id' => new TripTypeResources($this->trip_type)?? null,
             'complaints' => $this->complaints == true ?  ComplaintResponse::collection($this->complaints) : null,
             'order_code' => $this->order_code ?? null,
             'total_price' => $this->total_price ?? null,
-            'total_profit' => getTotalAmount($this->id),
+            'total_profit' => getTotalAmount($this->id) ?? null,
             'chat_id' => $this->chat_id ?? null,
             'status' => $this->status ?? null,
             'payments' => $this->payments ?? null,
