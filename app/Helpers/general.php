@@ -53,7 +53,7 @@ if (!function_exists('mainsSettings')) {
 if (!function_exists('sendNotificationUser')) {
     function sendNotificationUser($fcm, $body, $title, $store = false)
     {
-        $user = User::where('fcm_token', $fcm)->first();
+        $user = User::where('id', $fcm)->first();
         $url = Http::withHeaders([
             "Content-Type" => "application/json",
             "Authorization" => "key=AAAAX2bL0C0:APA91bEckQ5zvMGKvt2FulWNsq9rsEe5qhphBKK_tVsvMozsOGMTZc4m5lwlkwZ8XFRHbMvItsxaZLnDvA0bEi3CsoxZ1w6bBEJNYYhhvksMTmBbJqgARVCNHkRKWxb43JGDS0WUeL7s"
