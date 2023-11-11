@@ -63,14 +63,25 @@ class OrderController extends Controller
             ->paginate(15);
 
         $dataAllOrders = $orders->concat($orderHours)->concat($orderDay);
-        $perPage = 15;
 
+        $data = AllOrdersResources::collection($dataAllOrders);
 
-        $page = \Illuminate\Pagination\Paginator::resolveCurrentPage() ?: 1;
-        $pagedData = $dataAllOrders->slice(($page - 1) * $perPage, $perPage)->all();
-        $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator($pagedData, count($dataAllOrders), $perPage, $page);
-        $data = AllOrdersResources::collection($paginatedData);
-        return $this->successResponse($data, 'Data returned successfully');
+        $pagination = [
+            'total' => $orders->total() + $orderHours->total() + $orderDay->total(),
+            'per_page' => $orders->perPage() + $orderHours->perPage() + $orderDay->perPage(),
+            'current_page' => $orders->currentPage() + $orderHours->currentPage() + $orderDay->currentPage(),
+            'last_page' => $orders->lastPage() + $orderHours->lastPage() + $orderDay->lastPage(),
+            'from' => $data->firstItem(),
+            'to' => $data->lastItem(),
+            'next_page_url' => $data->nextPageUrl(),
+        ];
+
+        $response = [
+            'data' => $data,
+            'pagination' => $pagination,
+        ];
+
+        return $this->successResponse($response, 'Data returned successfully');
     }
 
 
