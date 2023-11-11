@@ -17,34 +17,41 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::where('user_id', auth('users-api')->id())
+        $userId = auth('users-api')->id();
+
+        $orders = Order::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
             ->paginate(15);
 
-        $orderHours = OrderHour::where('user_id', auth('users-api')->id())
-            ->whereIn('status', ['done', 'cancel'])->paginate(15);
+        $orderHours = OrderHour::where('user_id', $userId)
+            ->whereIn('status', ['done', 'cancel'])
+            ->paginate(15);
 
-
-        $orderDay = OrderDay::where('user_id', auth('users-api')->id())
-            ->whereIn('status', ['done', 'cancel'])->paginate(15);
+        $orderDay = OrderDay::where('user_id', $userId)
+            ->whereIn('status', ['done', 'cancel'])
+            ->paginate(15);
 
         $dataAllOrders = $orders->concat($orderHours)->concat($orderDay);
 
         $data = AllOrdersResources::collection($dataAllOrders);
+        $pagination = [
+            'total' => $data->total(),
+            'per_page' => $data->perPage(),
+            'current_page' => $data->currentPage(),
+            'last_page' => $data->lastPage(),
+            'from' => $data->firstItem(),
+            'to' => $data->lastItem(),
+            'next_page_url' => $data->nextPageUrl(),
+        ];
+
         $response = [
             'data' => $data,
-            'pagination' => [
-                'total' => $data->total(),
-                'per_page' => $data->perPage(),
-                'current_page' => $data->currentPage(),
-                'last_page' => $data->lastPage(),
-                'from' => $data->firstItem(),
-                'to' => $data->lastItem(),
-                'next_page_url' => $data->nextPageUrl(),
-            ],
+            'pagination' => $pagination,
         ];
-        return $this->successResponse($response, 'data return successfully');
+
+        return $this->successResponse($response, 'Data returned successfully');
     }
+
 
 
     public function lasts()
