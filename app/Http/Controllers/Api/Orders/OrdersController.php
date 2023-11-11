@@ -257,8 +257,10 @@ class OrdersController extends Controller
                     'long_caption' => $request->long_caption,
                 ]);
 
-                sendNotificationCaptain($request->captain_id, 'Trips Created Successfully Users' . $data->user->name, 'New Trips', true);
-                sendNotificationUser($request->user_id, 'Trips Created Successfully Drivers' .$data->captain->name, 'New Trips', true);
+
+
+                sendNotificationCaptain($data->captain->fcm_token, 'Trips Created Successfully Users' . $data->user->name, 'New Trips', true);
+                sendNotificationUser($data->user->fcm_token, 'Trips Created Successfully Drivers' .$data->captain->name, 'New Trips', true);
                 createInFirebase($request->user_id, $request->captain_id, $data->id);
             }
 
