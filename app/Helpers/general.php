@@ -240,6 +240,7 @@ if (!function_exists('getTotalAmountDay')) {
 if (!function_exists('getTotalAmount')) {
     function getTotalAmount($id_order)
     {
+        dd($id_order);
         $commissionPercentage = \App\Models\Settings::first()->company_commission ?? 0;
         $commission = $commissionPercentage / 100;
         $dailyTotal = \App\Models\Order::findorfail($id_order);
