@@ -15,6 +15,37 @@ class OrderController extends Controller
 {
     use ApiResponseTrait;
 
+//    public function index()
+//    {
+//        $orders = Order::where('user_id', auth('users-api')->id())
+//            ->whereIn('status', ['done', 'cancel'])
+//            ->paginate(15);
+//
+//        $orderHours = OrderHour::where('user_id', auth('users-api')->id())
+//            ->whereIn('status', ['done', 'cancel'])->paginate(15);
+//
+//
+//        $orderDay = OrderDay::where('user_id', auth('users-api')->id())
+//            ->whereIn('status', ['done', 'cancel'])->paginate(15);
+//
+//        $dataAllOrders = $orders->concat($orderHours)->concat($orderDay);
+//
+//        $data = OrdersResources::collection($dataAllOrders);
+//        $response = [
+//            'data' => $data,
+//            'pagination' => [
+//                'total' => $data->total(),
+//                'per_page' => $data->perPage(),
+//                'current_page' => $data->currentPage(),
+//                'last_page' => $data->lastPage(),
+//                'from' => $data->firstItem(),
+//                'to' => $data->lastItem(),
+//                'next_page_url' => $data->nextPageUrl(),
+//            ],
+//        ];
+//        return $this->successResponse($response, 'data return successfully');
+//    }
+
     public function index()
     {
         $userId = auth('users-api')->id();
@@ -36,7 +67,7 @@ class OrderController extends Controller
         $data = AllOrdersResources::collection($dataAllOrders);
 
         $pagination = [
-            'total' => $dataAllOrders->total(),
+            'total' => $orders->total() + $orderHours->total() + $orderDay->total(),
             'per_page' => $data->perPage(),
             'current_page' => $data->currentPage(),
             'last_page' => $data->lastPage(),
