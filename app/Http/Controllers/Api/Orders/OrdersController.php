@@ -227,6 +227,8 @@ class OrdersController extends Controller
             $latestOrderId = optional(Order::latest()->first())->id;
             $orderCode = 'order_' . $latestOrderId . generateRandomString(5);
             $chatId = 'chat_' . generateRandomString(4);
+            $user = User::findorfail($request->user_id);
+            $caption = Captain::findorfail($request->captain_id);
 
             $data = Order::create([
                 'address_now' => $request->address_now,
@@ -259,8 +261,8 @@ class OrdersController extends Controller
 
 
 
-                sendNotificationCaptain($data->captain->fcm_token, 'Trips Created Successfully User ' . $data->user->name, 'New Trips', true);
-                sendNotificationUser($data->user->fcm_token, 'Trips Created Successfully Driver ' . $data->captain->name, 'New Trips', true);
+                sendNotificationCaptain($caption->fcm_token, 'Trips Created Successfully User ' . $user->name, 'New Trips', true);
+                sendNotificationUser($user->fcm_token, 'Trips Created Successfully Driver ' . $caption->name, 'New Trips', true);
                 createInFirebase($request->user_id, $request->captain_id, $data->id);
             }
 
