@@ -23,7 +23,7 @@ class AllOrdersResources extends JsonResource
             'user_id' => new UsersResources($this->user),
             'captain_id' => new CaptionResources($this->captain),
             'trip_type_id' => new TripTypeResources($this->trip_type)?? null,
-//            'complaints' => ComplaintResponse::collection($this->complaints) ?? null,
+            'complaints' => ComplaintResponse::collection($this->complaints) ?? null,
             'order_code' => $this->order_code ?? null,
             'total_price' => $this->total_price ?? null,
             'chat_id' => $this->chat_id ?? null,
