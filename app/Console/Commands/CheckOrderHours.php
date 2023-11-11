@@ -43,26 +43,26 @@ class CheckOrderHours extends Command
                     $timeDifferenceInMinutes = Carbon::now()->diffInMinutes($ordersSaveHour->hours_from);
 
                     if ($timeDifferenceInMinutes == 20) {
-                        sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         $orders->update([
                             'status' => "accepted"
                         ]);
                     }
 
                     if ($timeDifferenceInMinutes == 10) {
-                        sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         $orders->update([
                             'status' => "accepted"
                         ]);;
                     }
                     if ($timeDifferenceInMinutes == 5) {
-                        sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         $orders->update([
                             'status' => "accepted"
                         ]);
                     }
                     if ($timeDifferenceInMinutes == 1) {
-                        sendNotificationUser($ordersSaveHour->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         $orders->update([
                             'status' => "accepted"
                         ]);
@@ -82,7 +82,7 @@ class CheckOrderHours extends Command
                 $dataNowCheckTimeOut =Carbon::now()->format('Y-m-d g:i A');
 
                 if ($dataCheckTimeOut == $dataNowCheckTimeOut){
-                    sendNotificationUser($ordersSaveHour->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
+                    sendNotificationUser($ordersSaveHour->user_id, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
                     $ordersSaveHour->delete();
                 }
 
@@ -98,7 +98,7 @@ class CheckOrderHours extends Command
                 $dataSub = Carbon::now()->subDay()->format('Y-m-d');
                 $checks = $dataCheck == $dataSub;
                 if ($checks == true){
-                    sendNotificationUser($ordersSaveHour->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
+                    sendNotificationUser($ordersSaveHour->user_id, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
                     $ordersSaveHour->delete();
                 }
 

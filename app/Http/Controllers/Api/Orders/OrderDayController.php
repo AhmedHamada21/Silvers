@@ -166,7 +166,7 @@ class OrderDayController extends Controller
 
 
             ]);
-            sendNotificationUser($user->fcm_token, 'تم حجز الرحله بنجاح', 'حجز الرحله', true);
+            sendNotificationUser($data->user_id, 'تم حجز الرحله بنجاح', 'حجز الرحله', true);
 
             return $this->successResponse(new OrdersSaveDayResources($data), 'Data created successfully');
 
@@ -211,8 +211,8 @@ class OrderDayController extends Controller
     {
         CaptionActivity::where('captain_id', $order->captain_id)->update(['type_captain' => 'active']);
         $order->update(['status' => 'done']);
-        sendNotificationUser($order->user->fcm_token, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده', true);
-        sendNotificationCaptain($order->captain->fcm_token, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده كابتن', true);
+        sendNotificationUser($order->user_id, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده', true);
+        sendNotificationCaptain($order->captain_id, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده كابتن', true);
         DeletedInFirebaseDay($order->user_id, $order->captain_id, $order->id);
     }
 
@@ -220,8 +220,8 @@ class OrderDayController extends Controller
     {
         $order->update(['status' => $status]);
 
-        sendNotificationUser($order->user->fcm_token, 'تغير حاله الطلب', $status, true);
-        sendNotificationCaptain($order->captain->fcm_token, 'تغير حاله الطلب', $status, true);
+        sendNotificationUser($order->user_id, 'تغير حاله الطلب', $status, true);
+        sendNotificationCaptain($order->captain_id, 'تغير حاله الطلب', $status, true);
     }
 
 
@@ -263,8 +263,8 @@ class OrderDayController extends Controller
             $this->updateCaptainProfileForCancel($findOrder->captain_id);
         }
 
-        sendNotificationUser($findOrder->user->fcm_token, 'تم الغاء الطلب', $request->cansel, true);
-        sendNotificationCaptain($findOrder->captain->fcm_token, 'تم الغاء الطلب', $request->cansel, true);
+        sendNotificationUser($findOrder->user_id, 'تم الغاء الطلب', $request->cansel, true);
+        sendNotificationCaptain($findOrder->captain_id, 'تم الغاء الطلب', $request->cansel, true);
 
         DeletedInFirebaseDay($findOrder->user_id, $findOrder->captain_id, $findOrder->id);
 

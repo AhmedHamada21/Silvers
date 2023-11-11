@@ -223,7 +223,7 @@ class OrdersController extends Controller
             return $this->errorResponse('This captain is already on a journey');
         }
 
-//        try {
+        try {
             $latestOrderId = optional(Order::latest()->first())->id;
             $orderCode = 'order_' . $latestOrderId . generateRandomString(5);
             $chatId = 'chat_' . generateRandomString(4);
@@ -268,9 +268,9 @@ class OrdersController extends Controller
             }
 
             return $this->successResponse(new OrdersResources($data), 'Data created successfully');
-//        } catch (\Exception $exception) {
-//            return $this->errorResponse('Something went wrong, please try again later');
-//        }
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+        }
     }
 
 
@@ -313,8 +313,8 @@ class OrdersController extends Controller
         $this->updateUserProfile($order->user_id);
         $this->updateCaptainProfile($order->captain_id);
 
-        sendNotificationUser($order->user->fcm_token, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده', true);
-        sendNotificationCaptain($order->captain->fcm_token, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده كابتن', true);
+        sendNotificationUser($order->user_id, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده', true);
+        sendNotificationCaptain($order->captain_id, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده كابتن', true);
 
         $this->takingCompleted($order->order_code);
         DeletedInFirebase($order->user_id, $order->captain_id, $order->id);
@@ -324,8 +324,8 @@ class OrdersController extends Controller
     {
         $order->update(['status' => $status]);
 
-        sendNotificationUser($order->user->fcm_token, 'تغير حاله الطلب', $status, true);
-        sendNotificationCaptain($order->captain->fcm_token, 'تغير حاله الطلب', $status, true);
+        sendNotificationUser($order->user_id, 'تغير حاله الطلب', $status, true);
+        sendNotificationCaptain($order->captain_id, 'تغير حاله الطلب', $status, true);
     }
 
     private function updateUserProfile($userId)
@@ -433,8 +433,8 @@ class OrdersController extends Controller
             ]);
         }
 
-        sendNotificationUser($findOrder->user->fcm_token, 'تم الغاء الطلب', $request->cansel, true);
-        sendNotificationCaptain($findOrder->captain->fcm_token, 'تم الغاء الطلب', $request->cansel, true);
+        sendNotificationUser($findOrder->user_id, 'تم الغاء الطلب', $request->cansel, true);
+        sendNotificationCaptain($findOrder->captain_id, 'تم الغاء الطلب', $request->cansel, true);
 
         DeletedInFirebase($findOrder->user_id, $findOrder->captain_id, $findOrder->id);
 

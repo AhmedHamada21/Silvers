@@ -42,27 +42,27 @@ class CheckOrderDay extends Command
                     $timeDifferenceInMinutes = Carbon::now()->diffInMinutes($ordersSaveDay->start_time);
 
                     if ($timeDifferenceInMinutes == 20) {
-                        sendNotificationUser($ordersSaveDay->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         $orders->update([
                             'status' => "accepted"
                         ]);
                     }
 
                     if ($timeDifferenceInMinutes == 10) {
-                        sendNotificationUser($ordersSaveDay->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         $orders->update([
                             'status' => "accepted"
                         ]);;
                     }
                     if ($timeDifferenceInMinutes == 5) {
-                        sendNotificationUser($ordersSaveDay->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         $orders->update([
                             'status' => "accepted"
                         ]);
                     }
 
                     if ($timeDifferenceInMinutes == 1) {
-                        sendNotificationUser($ordersSaveDay->user->fcm_token, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         $orders->update([
                             'status' => "accepted"
                         ]);
@@ -80,7 +80,7 @@ class CheckOrderDay extends Command
                 $dataNowCheckTimeOut =Carbon::now()->format('Y-m-d g:i A');
 
                 if ($dataCheckTimeOut == $dataNowCheckTimeOut){
-                    sendNotificationUser($ordersSaveDay->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
+                    sendNotificationUser($ordersSaveDay->user_id, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
                     $ordersSaveDay->delete();
                 }
 
@@ -94,7 +94,7 @@ class CheckOrderDay extends Command
                 $dataSub = Carbon::now()->subDay()->format('Y-m-d');
                 $checks = $dataCheck == $dataSub;
                 if ($checks == true){
-                    sendNotificationUser($ordersSaveDay->user->fcm_token, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
+                    sendNotificationUser($ordersSaveDay->user_id, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
                     $ordersSaveDay->delete();
                 }
 
