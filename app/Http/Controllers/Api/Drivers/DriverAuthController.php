@@ -310,6 +310,7 @@ class DriverAuthController extends Controller
 
     public function deleted(Request $request)
     {
+        dd($request->all());
         $validator = Validator::make($request->all(), [
             'password' => 'required',
         ]);
