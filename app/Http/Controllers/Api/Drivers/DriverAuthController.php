@@ -239,8 +239,6 @@ class DriverAuthController extends Controller
     }
 
 
-
-
     public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -310,19 +308,27 @@ class DriverAuthController extends Controller
 
     public function deleted(Request $request)
     {
-//        dd($request->all());
         $validator = Validator::make($request->all(), [
             'password' => 'required',
         ]);
 
-        $user = Captain::findorfail(auth('captain-api')->id());
-
-
-        if (Hash::check($request->password ,$user->password)){
-
-            $user->delete();
-            return $this->successResponse('', 'Deleted Captain Successfully');
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
         }
-        return $this->errorResponse('error', 400);
+
+        try {
+            $user = Captain::findorfail(auth('captain-api')->id());
+
+            if (Hash::check($request->password, $user->password)) {
+
+                $user->delete();
+                return $this->successResponse('', 'Deleted Captain Successfully');
+            }
+            return $this->errorResponse('Password Error', 400);
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+        }
+
+
     }
 }
