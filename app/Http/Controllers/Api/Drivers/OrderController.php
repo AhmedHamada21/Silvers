@@ -97,7 +97,7 @@ class OrderController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'start_data' => 'required|date_format:Y-m-d',
-            'end_data' => 'nullable',
+            'end_data' => 'nullable|date_format:Y-m-d',
         ]);
         if ($validator->fails()) {
 
@@ -125,6 +125,37 @@ class OrderController extends Controller
             ];
             return $this->successResponse($responseData, 'data returned successfully');
 
+        }else{
+            $captainId = auth('captain-api')->id();
+
+            $orders = Order::where('captain_id', $captainId)
+                ->where('status', 'done')
+                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+                ->get();
+
+            $OrderHour = OrderHour::where('captain_id', $captainId)
+                ->where('status', 'done')
+                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+                ->get();
+
+            $OrderDay = OrderDay::where('captain_id', $captainId)
+                ->where('status', 'done')
+                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+                ->get();
+
+            $ordersSum = $orders->sum('total_price');
+            $OrderHourSum = $OrderHour->sum('total_price');
+            $OrderDaySum = $OrderDay->sum('total_price');
+
+            $data = $orders->concat($OrderHour)->concat($OrderDay);
+            $total = $ordersSum + $OrderHourSum + $OrderDaySum;
+
+            $responseData = [
+                'data' => OrdersAllResources::collection($data),
+                'total' => getTotalPrice($total),
+            ];
+
+            return $this->successResponse($responseData, 'Data returned successfully');
         }
 
 //        if (isset($request->start_data) && isset($request->end_data)) {
@@ -182,39 +213,10 @@ class OrderController extends Controller
 //        }
 
 
-        if ($request->start_data && $request->end_data) {
-            dd('asdasd');
-            $captainId = auth('captain-api')->id();
-
-            $orders = Order::where('captain_id', $captainId)
-                ->where('status', 'done')
-                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
-                ->get();
-
-            $OrderHour = OrderHour::where('captain_id', $captainId)
-                ->where('status', 'done')
-                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
-                ->get();
-
-            $OrderDay = OrderDay::where('captain_id', $captainId)
-                ->where('status', 'done')
-                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
-                ->get();
-
-            $ordersSum = $orders->sum('total_price');
-            $OrderHourSum = $OrderHour->sum('total_price');
-            $OrderDaySum = $OrderDay->sum('total_price');
-
-            $data = $orders->concat($OrderHour)->concat($OrderDay);
-            $total = $ordersSum + $OrderHourSum + $OrderDaySum;
-
-            $responseData = [
-                'data' => OrdersAllResources::collection($data),
-                'total' => getTotalPrice($total),
-            ];
-
-            return $this->successResponse($responseData, 'Data returned successfully');
-        }
+//        if ($request->start_data && $request->end_data) {
+//            dd('asdasd');
+//
+//        }
 
         return $this->errorResponse('Something went wrong, please try again later');
 
