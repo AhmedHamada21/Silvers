@@ -320,7 +320,7 @@ class DriverAuthController extends Controller
             $user = Captain::findorfail(auth('captain-api')->id());
 
             if (Hash::check($request->password, $user->password)) {
-
+                DB::table('personal_access_tokens')->where('tokenable_type','App\Models\Captain')->where('tokenable_id',$user->id)->delete();
                 $user->delete();
                 return $this->successResponse('', 'Deleted Captain Successfully');
             }
