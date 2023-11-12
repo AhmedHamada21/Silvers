@@ -124,6 +124,7 @@ class OrderController extends Controller
             ->get();
 
         if ($request->start_data && $request->end_data) {
+            dd('asdsad');
             $orders = Order::where('captain_id', $captainId)
                 ->where('status', 'done')
                 ->where('date_created', [$request->start_data, $request->end_data])
