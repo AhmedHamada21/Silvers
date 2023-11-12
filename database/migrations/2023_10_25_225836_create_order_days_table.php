@@ -28,6 +28,7 @@ return new class extends Migration {
             $table->string('number_day')->nullable()->comment('عدد الايام');
             $table->string('start_time')->nullable()->comment('وقت البدايه');
             $table->string('commit')->nullable();
+            $table->string('date_created')->nullable();
             $table->timestamps();
         });
     }

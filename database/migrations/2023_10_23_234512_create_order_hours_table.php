@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('data');
             $table->string('hours_from');
             $table->string('commit')->nullable();
+            $table->string('date_created')->nullable();
             $table->timestamps();
         });
     }

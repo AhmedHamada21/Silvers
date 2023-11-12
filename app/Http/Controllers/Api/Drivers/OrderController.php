@@ -110,33 +110,33 @@ class OrderController extends Controller
 
         $orders = Order::where('status', 'done')
             ->where('captain_id', $captainId)
-            ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), "2023-11-11")
+            ->where('date_created', $request->start_data)
             ->get();
 
         $OrderHour = OrderHour::where('status', 'done')
             ->where('captain_id', $captainId)
-            ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)
+            ->where('date_created', $request->start_data)
             ->get();
 
         $OrderDay = OrderDay::where('status', 'done')
             ->where('captain_id', $captainId)
-            ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)
+            ->where('date_created', $request->start_data)
             ->get();
 
         if ($request->start_data && $request->end_data) {
             $orders = Order::where('captain_id', $captainId)
                 ->where('status', 'done')
-                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+                ->where('date_created', [$request->start_data, $request->end_data])
                 ->get();
 
             $OrderHour = OrderHour::where('captain_id', $captainId)
                 ->where('status', 'done')
-                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+                ->where('date_created', [$request->start_data, $request->end_data])
                 ->get();
 
             $OrderDay = OrderDay::where('captain_id', $captainId)
                 ->where('status', 'done')
-                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+                ->where('date_created', [$request->start_data, $request->end_data])
                 ->get();
         }
 

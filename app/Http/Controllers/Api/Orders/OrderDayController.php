@@ -14,6 +14,7 @@ use App\Models\SaveRentDay;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\User;
 use App\Models\UserProfile;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -93,6 +94,7 @@ class OrderDayController extends Controller
             'number_day' => $request->number_day,
             'start_time' => $request->start_time,
             'commit' => $request->commit,
+            'date_created' => Carbon::now()->format('Y-m-d'),
 
 
         ]);

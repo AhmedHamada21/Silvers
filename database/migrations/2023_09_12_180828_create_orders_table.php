@@ -31,6 +31,7 @@ return new class extends Migration {
             $table->string('long_user');
             $table->string('lat_going');
             $table->string('long_going');
+            $table->string('date_created');
             $table->timestamps();
         });
     }

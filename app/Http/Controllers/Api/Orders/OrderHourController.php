@@ -15,6 +15,7 @@ use App\Models\SaveRentHour;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\User;
 use App\Models\UserProfile;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -94,6 +95,7 @@ class OrderHourController extends Controller
                 'data' => $request->data,
                 'hours_from' => $request->hours_from,
                 'commit' => $request->commit,
+                'date_created' => Carbon::now()->format('Y-m-d'),
 
             ]);
 

@@ -18,6 +18,7 @@ use App\Models\TakingOrder;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\User;
 use App\Models\UserProfile;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -249,6 +250,7 @@ class OrdersController extends Controller
                 'distance' => $request->distance,
                 'lat_caption' => $request->lat_caption,
                 'long_caption' => $request->long_caption,
+                'date_created' => Carbon::now()->format('Y-m-d'),
             ]);
 
             if ($data) {

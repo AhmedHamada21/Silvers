@@ -28,6 +28,7 @@ class Order extends Model
         'distance',
         'lat_caption',
         'long_caption',
+        'date_created',
     ];
 
     public function user()
@@ -64,7 +65,7 @@ class Order extends Model
     {
         return $this->hasMany(Complaint::class,'order_id');
     }
-    
+
      public function scopeByCaptain($query, $captainId)
     {
         return $query->where('captain_id', $captainId);
