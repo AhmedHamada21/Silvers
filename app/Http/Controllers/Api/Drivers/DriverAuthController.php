@@ -323,6 +323,6 @@ class DriverAuthController extends Controller
             $user->delete();
             return $this->successResponse('', 'Deleted Captain Successfully');
         }
-        return $this->successResponse('', 'Error');
+        return $this->errorResponse('error', 400);
     }
 }
