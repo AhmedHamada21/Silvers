@@ -92,6 +92,7 @@ class OrderDayController extends Controller
             'end_day' => $request->end_day,
             'number_day' => $request->number_day,
             'start_time' => $request->start_time,
+            'commit' => $request->commit,
 
 
         ]);

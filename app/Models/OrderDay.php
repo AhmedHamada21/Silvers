@@ -24,6 +24,7 @@ class OrderDay extends Model
         'end_day',
         'number_day',
         'start_time',
+        'commit',
     ];
 
     public function user()

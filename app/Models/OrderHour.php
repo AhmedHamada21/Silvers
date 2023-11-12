@@ -24,6 +24,7 @@ class OrderHour extends Model
         'data',
         'hours_from',
         'hour_id',
+        'commit',
     ];
 
     public function user()
