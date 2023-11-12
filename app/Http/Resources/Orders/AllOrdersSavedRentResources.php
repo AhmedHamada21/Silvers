@@ -36,6 +36,7 @@ class AllOrdersSavedRentResources extends JsonResource
             'start_time' => $this->start_time ?? null,
             'data' => $this->data ?? null,
             'hours_from' => $this->hours_from ?? null,
+            'commit'=>$this->commit,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at
