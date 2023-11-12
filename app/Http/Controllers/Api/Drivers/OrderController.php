@@ -110,12 +110,8 @@ class OrderController extends Controller
 
         $orders = Order::where('status', 'done')
             ->where('captain_id', $captainId)
-            ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)
+            ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), "2023-11-11")
             ->get();
-
-        foreach ($orders as $order) {
-            dd($order->created_at->format('Y-m-d'));
-        }
 
         $OrderHour = OrderHour::where('status', 'done')
             ->where('captain_id', $captainId)
