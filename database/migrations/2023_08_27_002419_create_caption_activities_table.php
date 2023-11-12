@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('caption_activities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('captain_id')->constrained('captains')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('captain_id')->constrained('captains')->nullOnDelete()->cascadeOnUpdate();
             $table->string('longitude');
             $table->string('latitude');
             $table->enum('type_captain',['active','inorder']);

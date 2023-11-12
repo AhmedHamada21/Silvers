@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('caption_bonuses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('captain_id')->constrained('captains')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('captain_id')->constrained('captains')->nullOnDelete()->cascadeOnUpdate();
             $table->string('bout');
             $table->enum('status',['active','inactive','waiting']);
             $table->timestamps();

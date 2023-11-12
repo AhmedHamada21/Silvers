@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete()->cascadeOnUpdate();
             $table->text('messages');
             $table->enum('type',['user','captain']);
-            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('captain_id')->nullable()->constrained('captains')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('captain_id')->nullable()->constrained('captains')->nullOnDelete()->cascadeOnUpdate();
             $table->text('photo')->nullable();
             $table->enum('status',['pending','read','answered'])->default('pending');
             $table->timestamps();

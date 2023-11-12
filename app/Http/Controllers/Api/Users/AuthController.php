@@ -318,4 +318,22 @@ class AuthController extends Controller
         return $this->errorResponse('The User Not Find');
 
     }
+
+
+    public function deleted(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+        ]);
+
+        $user = User::findorfail(auth('users-api')->id());
+
+
+        if (Hash::check($request->password ,$user->password)){
+
+            $user->delete();
+            return $this->successResponse('', 'Deleted Users Successfully');
+        }
+        return $this->successResponse('', 'Error');
+    }
 }

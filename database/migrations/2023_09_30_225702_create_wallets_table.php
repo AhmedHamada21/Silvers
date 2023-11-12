@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->foreignId('agent_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('company_id')->nullable()->constrained()->cascadeOnDelete();
             $table->enum('type', ['user', 'captions']);
-            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('captain_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('captain_id')->nullable()->constrained()->nullOnDelete();
             $table->enum('status', ['package', 'offer', 'subscriptions', 'card','company','bonuses']);
             $table->string('amount');
             $table->string('payment_date');

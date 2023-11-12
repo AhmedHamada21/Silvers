@@ -306,4 +306,22 @@ class DriverAuthController extends Controller
 
         return $this->successResponse(new CaptionResources($checkUser), 'User Already Expecting');
     }
+
+
+    public function deleted(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+        ]);
+
+        $user = Captain::findorfail(auth('users-api')->id());
+
+
+        if (Hash::check($request->password ,$user->password)){
+
+            $user->delete();
+            return $this->successResponse('', 'Deleted Captain Successfully');
+        }
+        return $this->successResponse('', 'Error');
+    }
 }
