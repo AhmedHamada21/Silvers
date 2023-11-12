@@ -13,6 +13,7 @@ class Captain extends Authenticatable implements JWTSubject {
     'admin_id',
     'agent_id',
     'company_id',
+    'password',
     'employee_id', 'fcm_token', 'status'];
     protected $hidden = ['password','remember_token',];
     protected $casts = ['email_verified_at' => 'datetime','password' => 'hashed',];
