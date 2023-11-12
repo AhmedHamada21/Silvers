@@ -127,10 +127,78 @@ class OrderController extends Controller
 
         }
 
+//        if (isset($request->start_data) && isset($request->end_data)) {
+//            $orders = Order::where('captain_id', auth('captain-api')->id())->where('status','done')->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
+//            $OrderHour = OrderHour::where('captain_id', auth('captain-api')->id())->where('status','done')->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
+//            $OrderDay = OrderDay::where('captain_id', auth('captain-api')->id())->where('status','done')->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
+//
+//            $ordersSum = $orders->sum('total_price');
+//            $OrderHourSum = $OrderHour->sum('total_price');
+//            $OrderDaySum = $OrderDay->sum('total_price');
+//
+//            $data = $orders->concat($OrderHour)->concat($OrderDay);
+//            $total = $ordersSum + $OrderHourSum + $OrderDaySum;
+//
+//            $responseData = [
+//                'data' => OrdersAllResources::collection($data),
+//                'total' => getTotalPrice($total),
+//            ];
+//            return $this->successResponse($responseData, 'data returned successfully');
+//
+//        }
+
+
+//        if (isset($request->start_data) && isset($request->end_data)) {
+//            $captainId = auth('captain-api')->id();
+//
+//            $orders = Order::where('captain_id', $captainId)
+//                ->where('status', 'done')
+//                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+//                ->get();
+//
+//            $orderHour = OrderHour::where('captain_id', $captainId)
+//                ->where('status', 'done')
+//                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+//                ->get();
+//
+//            $orderDay = OrderDay::where('captain_id', $captainId)
+//                ->where('status', 'done')
+//                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+//                ->get();
+//
+//            $ordersSum = $orders->sum('total_price');
+//            $orderHourSum = $orderHour->sum('total_price');
+//            $orderDaySum = $orderDay->sum('total_price');
+//
+//            $data = $orders->concat($orderHour)->concat($orderDay);
+//            $total = $ordersSum + $orderHourSum + $orderDaySum;
+//
+//            $responseData = [
+//                'data' => OrdersAllResources::collection($data),
+//                'total' => getTotalPrice($total),
+//            ];
+//
+//            return $this->successResponse($responseData, 'Data returned successfully');
+//        }
+
+
         if (isset($request->start_data) && isset($request->end_data)) {
-            $orders = Order::where('captain_id', auth('captain-api')->id())->where('status','done')->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
-            $OrderHour = OrderHour::where('captain_id', auth('captain-api')->id())->where('status','done')->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
-            $OrderDay = OrderDay::where('captain_id', auth('captain-api')->id())->where('status','done')->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])->get();
+            $captainId = auth('captain-api')->id();
+
+            $orders = Order::where('captain_id', $captainId)
+                ->where('status', 'done')
+                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+                ->get();
+
+            $OrderHour = OrderHour::where('captain_id', $captainId)
+                ->where('status', 'done')
+                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+                ->get();
+
+            $OrderDay = OrderDay::where('captain_id', $captainId)
+                ->where('status', 'done')
+                ->whereBetween(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), [$request->start_data, $request->end_data])
+                ->get();
 
             $ordersSum = $orders->sum('total_price');
             $OrderHourSum = $OrderHour->sum('total_price');
@@ -141,11 +209,12 @@ class OrderController extends Controller
 
             $responseData = [
                 'data' => OrdersAllResources::collection($data),
-                'total' => $total,
+                'total' => getTotalPrice($total),
             ];
-            return $this->successResponse($responseData, 'data returned successfully');
 
+            return $this->successResponse($responseData, 'Data returned successfully');
         }
+
         return $this->errorResponse('Something went wrong, please try again later');
 
     }
