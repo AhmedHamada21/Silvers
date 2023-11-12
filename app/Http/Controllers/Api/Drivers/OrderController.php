@@ -104,7 +104,7 @@ class OrderController extends Controller
             return $this->errorResponse($validator->errors(), 422);
         }
 
-        if (isset($request->start_data)) {
+        if ($request->start_data) {
             $orders = Order::where('status','done')->where('captain_id', auth('captain-api')->id())
             ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)
             ->get();
