@@ -127,17 +127,17 @@ class OrderController extends Controller
 
             $orders = Order::where('captain_id', $captainId)
                 ->where('status', 'done')
-                ->where('date_created', [$request->start_data, $request->end_data])
+                ->whereBetween('date_created', [$request->start_data, $request->end_data])
                 ->get();
 
             $OrderHour = OrderHour::where('captain_id', $captainId)
                 ->where('status', 'done')
-                ->where('date_created', [$request->start_data, $request->end_data])
+                ->whereBetween('date_created', [$request->start_data, $request->end_data])
                 ->get();
 
             $OrderDay = OrderDay::where('captain_id', $captainId)
                 ->where('status', 'done')
-                ->where('date_created', [$request->start_data, $request->end_data])
+                ->whereBetween('date_created', [$request->start_data, $request->end_data])
                 ->get();
         }
 
