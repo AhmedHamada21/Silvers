@@ -182,7 +182,7 @@ class OrderController extends Controller
 //        }
 
 
-        if (isset($request->start_data) && isset($request->end_data)) {
+        if ($request->start_data && $request->end_data) {
             dd('asdasd');
             $captainId = auth('captain-api')->id();
 
