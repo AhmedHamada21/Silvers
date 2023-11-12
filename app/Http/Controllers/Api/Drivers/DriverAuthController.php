@@ -315,7 +315,7 @@ class DriverAuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = Captain::findorfail(auth('users-api')->id());
+        $user = Captain::findorfail(auth('captain-api')->id());
 
 
         if (Hash::check($request->password ,$user->password)){
