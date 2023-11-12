@@ -183,6 +183,7 @@ class OrderController extends Controller
 
 
         if (isset($request->start_data) && isset($request->end_data)) {
+            dd('asdasd');
             $captainId = auth('captain-api')->id();
 
             $orders = Order::where('captain_id', $captainId)
