@@ -34,6 +34,8 @@ class OrdersDayResources extends JsonResource
             'number_day'=>$this->number_day,
             'start_time'=>$this->start_time,
 
+
+
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

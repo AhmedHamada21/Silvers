@@ -33,7 +33,7 @@ class OrdersSaveHoursResources extends JsonResource
             'address_now' => $this->address_now,
             'data' => $this->data,
             'hours_from' => $this->hours_from,
-
+            'commit'=>$this->commit,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

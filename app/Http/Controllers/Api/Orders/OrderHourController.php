@@ -160,6 +160,7 @@ class OrderHourController extends Controller
                 'long_user' => $request->long_user,
                 'data' => $request->data,
                 'hours_from' => $request->hours_from,
+                'commit' => $request->commit,
 
             ]);
             sendNotificationUser($data->user_id, 'تم حجز الرحله بنجاح', 'حجز الرحله', true);

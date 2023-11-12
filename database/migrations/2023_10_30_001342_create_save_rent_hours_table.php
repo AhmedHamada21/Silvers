@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('address_now');
             $table->string('data');
             $table->string('hours_from');
+            $table->string('commit')->nullable();
             $table->timestamps();
         });
     }
