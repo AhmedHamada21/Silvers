@@ -107,10 +107,13 @@ class OrderController extends Controller
 
         $captainId = auth('captain-api')->id();
 
+
         $orders = Order::where('status', 'done')
             ->where('captain_id', $captainId)
             ->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $request->start_data)
             ->get();
+
+        dd($orders);
 
         $OrderHour = OrderHour::where('status', 'done')
             ->where('captain_id', $captainId)
