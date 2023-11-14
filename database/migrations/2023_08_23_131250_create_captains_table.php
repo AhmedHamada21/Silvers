@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreignId('agent_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('company_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('country_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
 

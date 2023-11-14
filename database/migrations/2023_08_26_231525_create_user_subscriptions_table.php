@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('user_subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('package_id')->nullable()->constrained('packages')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('subscription_id')->nullable()->constrained('subscriptions')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('offer_id')->nullable()->constrained('offers')->cascadeOnDelete()->cascadeOnUpdate();

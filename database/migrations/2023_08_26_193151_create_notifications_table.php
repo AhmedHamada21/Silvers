@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('agent_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('company_id')->nullable()->constrained()->cascadeOnDelete();
             $table->enum('type',['driver','user']);
-            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete()->cascadeOnUpdate();
-            $table->foreignId('captains_id')->nullable()->constrained('captains')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('captains_id')->nullable()->constrained('captains')->cascadeOnDelete()->cascadeOnUpdate();
             $table->text('notifications_title');
             $table->text('notifications_body');
             $table->timestamps();

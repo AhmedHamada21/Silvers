@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('cars_captions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('captain_id')->constrained('captains')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('captain_id')->constrained('captains')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('car_make_id')->nullable()->constrained('car_makes')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('car_model_id')->nullable()->constrained('car_models')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('car_type_id')->nullable()->constrained('car_types')->cascadeOnDelete()->cascadeOnUpdate();

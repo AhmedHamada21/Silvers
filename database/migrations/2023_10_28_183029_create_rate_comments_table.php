@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->foreignId('order_day_id')->nullable()->constrained('order_days')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('order_hour_id')->nullable()->constrained('order_hours')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('order_id')->nullable()->constrained('orders')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('captain_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('captain_id')->nullable()->constrained()->cascadeOnDelete();
             $table->tinyInteger('rate')->default(5);
             $table->text('comment')->nullable();
             $table->enum('type', ['user', 'caption'])->nullable();

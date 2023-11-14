@@ -20,10 +20,7 @@ return new class extends Migration {
             $table->tinyInteger('number_trips_cansel')->nullable();
             $table->tinyInteger('number_trips_cansel_hours')->nullable();
             $table->tinyInteger('number_trips_cansel_day')->nullable();
-            $table->foreignId('user_id')
-                ->constrained('users')
-                ->onUpdate('cascade')
-                ->onDelete('set null');
+            $table->foreignId('user_id')->constrained('users','id')->cascadeOnUpdate()->cascadeOnUpdate();
             $table->string('avatar')->nullable();
             $table->timestamps();
         });
