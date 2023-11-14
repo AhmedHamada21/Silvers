@@ -54,23 +54,23 @@ class OrderController extends Controller
 
         $orders = Order::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
-            ->paginate(15);
+            ->paginate(5);
 
         $orderSavesHours = SaveRentHour::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
-            ->paginate(15);
+            ->paginate(5);
 
         $orderSaveDay = SaveRentDay::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
-            ->paginate(15);
+            ->paginate(5);
 
         $orderHours = OrderHour::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
-            ->paginate(15);
+            ->paginate(5);
 
         $orderDay = OrderDay::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
-            ->paginate(15);
+            ->paginate(5);
 
         $dataAllOrders = $orders->concat($orderHours)->concat($orderDay)->concat($orderSavesHours)->concat($orderSaveDay);
 
@@ -78,12 +78,12 @@ class OrderController extends Controller
 
         $pagination = [
             'total' => $orders->total() + $orderHours->total() + $orderDay->total() + $orderSavesHours->total() + $orderSaveDay->total(),
-            'per_page' => $orders->perPage() + $orderHours->perPage() + $orderDay->perPage()  + $orderSavesHours->perPage() + $orderSaveDay->perPage(),
-            'current_page' => $orders->currentPage() + $orderHours->currentPage() + $orderDay->currentPage() + $orderSavesHours->currentPage() + $orderSaveDay->currentPage(),
-            'last_page' => $orders->lastPage() + $orderHours->lastPage() + $orderDay->lastPage() + $orderSavesHours->lastPage() + $orderSaveDay->lastPage(),
-            'from' => $orders->firstItem() + $orderHours->firstItem() + $orderDay->firstItem() + $orderSavesHours->firstItem() + $orderSaveDay->firstItem(),
-            'to' => $orders->lastItem() + $orderHours->lastItem() + $orderDay->lastItem() + $orderSavesHours->lastItem() + $orderSaveDay->lastItem(),
-            'next_page_url' => $orders->nextPageUrl() + $orderHours->nextPageUrl() + $orderDay->nextPageUrl() + $orderSavesHours->nextPageUrl() + $orderSaveDay->nextPageUrl(),
+            'per_page' => ($orders->perPage() ?? 0) + ($orderHours->perPage() ?? 0) + ($orderDay->perPage() ?? 0) + ($orderSavesHours->perPage() ?? 0) + ($orderSaveDay->perPage() ?? 0),
+            'current_page' => ($orders->currentPage() ?? 0) + ($orderHours->currentPage() ?? 0) + ($orderDay->currentPage() ?? 0) + ($orderSavesHours->currentPage() ?? 0) + ($orderSaveDay->currentPage() ?? 0),
+            'last_page' => ($orders->lastPage() ?? 0) + ($orderHours->lastPage() ?? 0) + ($orderDay->lastPage() ?? 0) + ($orderSavesHours->lastPage() ?? 0) + ($orderSaveDay->lastPage() ?? 0),
+            'from' => ($orders->firstItem() ?? 0) + ($orderHours->firstItem() ?? 0) + ($orderDay->firstItem() ?? 0) + ($orderSavesHours->firstItem() ?? 0) + ($orderSaveDay->firstItem() ?? 0),
+            'to' => ($orders->lastItem() ?? 0) + ($orderHours->lastItem() ?? 0) + ($orderDay->lastItem() ?? 0) + ($orderSavesHours->lastItem() ?? 0) + ($orderSaveDay->lastItem() ?? 0),
+            'next_page_url' => ($orders->nextPageUrl() ?? '') + ($orderHours->nextPageUrl() ?? '') + ($orderDay->nextPageUrl() ?? '') + ($orderSavesHours->nextPageUrl() ?? '') + ($orderSaveDay->nextPageUrl() ?? ''),
         ];
 
         $response = [
