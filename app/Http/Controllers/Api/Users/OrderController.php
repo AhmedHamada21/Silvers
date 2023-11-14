@@ -83,7 +83,7 @@ class OrderController extends Controller
             'last_page' => ($orders->lastPage() ?? 0) + ($orderHours->lastPage() ?? 0) + ($orderDay->lastPage() ?? 0) + ($orderSavesHours->lastPage() ?? 0) + ($orderSaveDay->lastPage() ?? 0),
             'from' => ($orders->firstItem() ?? 0) + ($orderHours->firstItem() ?? 0) + ($orderDay->firstItem() ?? 0) + ($orderSavesHours->firstItem() ?? 0) + ($orderSaveDay->firstItem() ?? 0),
             'to' => ($orders->lastItem() ?? 0) + ($orderHours->lastItem() ?? 0) + ($orderDay->lastItem() ?? 0) + ($orderSavesHours->lastItem() ?? 0) + ($orderSaveDay->lastItem() ?? 0),
-            'next_page_url' => ($orders->nextPageUrl() ?? '') + ($orderHours->nextPageUrl() ?? '') + ($orderDay->nextPageUrl() ?? '') + ($orderSavesHours->nextPageUrl() ?? '') + ($orderSaveDay->nextPageUrl() ?? ''),
+            'next_page_url' => ($orders->nextPageUrl() ?? '') . ($orderHours->nextPageUrl() ?? '') . ($orderDay->nextPageUrl() ?? '') . ($orderSavesHours->nextPageUrl() ?? '') . ($orderSaveDay->nextPageUrl() ?? ''),
         ];
 
         $response = [
