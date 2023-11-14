@@ -58,17 +58,17 @@ class OrderController extends Controller
         $orders = Order::byCaptain($captainId)
             ->whereIn('status', ['done', 'cancel'])
             ->orderByDesc('id')
-            ->paginate(5);
+            ->paginate(3);
 
         $ordersHours = OrderHour::byCaptain($captainId)
             ->whereIn('status', ['done', 'cancel'])
             ->orderByDesc('id')
-            ->paginate(5);
+            ->paginate(3);
 
         $orderDay = OrderDay::byCaptain($captainId)
             ->whereIn('status', ['done', 'cancel'])
             ->orderByDesc('id')
-            ->paginate(5);
+            ->paginate(3);
 
         $allData = $orders->concat($ordersHours)->concat($orderDay);
 
