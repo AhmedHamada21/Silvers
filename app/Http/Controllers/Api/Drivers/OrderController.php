@@ -80,6 +80,7 @@ class OrderController extends Controller
             'last_page' => ($orders->lastPage() ?? 0) + ($ordersHours->lastPage() ?? 0) + ($orderDay->lastPage() ?? 0),
             'from' => ($orders->firstItem() ?? 0) + ($ordersHours->firstItem() ?? 0) + ($orderDay->firstItem() ?? 0),
             'to' => ($orders->lastItem() ?? 0) + ($ordersHours->lastItem() ?? 0) + ($orderDay->lastItem() ?? 0),
+            'next_page_url' => ($orders->nextPageUrl() ?? 0) + ($ordersHours->nextPageUrl() ?? 0) +( $orderDay->nextPageUrl() ?? 0),
         ];
 
         $response = [
@@ -89,7 +90,6 @@ class OrderController extends Controller
 
         return $this->successResponse($response, 'Data returned successfully');
     }
-
 
 
     public function report(Request $request)
