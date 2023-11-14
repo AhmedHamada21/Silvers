@@ -75,12 +75,11 @@ class OrderController extends Controller
         $data = AllOrdersResources::collection($allData);
         $pagination = [
             'total' => $orders->total() + $ordersHours->total() + $orderDay->total(),
-            'per_page' => $orders->perPage() + $ordersHours->perPage() + $orderDay->perPage() ,
-            'current_page' => $orders->currentPage() + $ordersHours->currentPage() + $orderDay->currentPage(),
-            'last_page' => $orders->lastPage() + $ordersHours->lastPage() + $orderDay->lastPage(),
-            'from' => $orders->firstItem() + $ordersHours->firstItem() + $orderDay->firstItem(),
-            'to' => $orders->lastItem() + $ordersHours->lastItem() + $orderDay->lastItem(),
-            'next_page_url' => $orders->nextPageUrl() + $ordersHours->nextPageUrl() + $orderDay->nextPageUrl(),
+            'per_page' => ($orders->perPage() ?? 0) + ($ordersHours->perPage() ?? 0) + ($orderDay->perPage() ?? 0),
+            'current_page' => ($orders->currentPage() ?? 0) + ($ordersHours->currentPage() ?? 0) + ($orderDay->currentPage() ?? 0),
+            'last_page' => ($orders->lastPage() ?? 0) + ($ordersHours->lastPage() ?? 0) + ($orderDay->lastPage() ?? 0),
+            'from' => ($orders->firstItem() ?? 0) + ($ordersHours->firstItem() ?? 0) + ($orderDay->firstItem() ?? 0),
+            'to' => ($orders->lastItem() ?? 0) + ($ordersHours->lastItem() ?? 0) + ($orderDay->lastItem() ?? 0),
         ];
 
         $response = [
