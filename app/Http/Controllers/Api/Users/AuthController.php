@@ -130,7 +130,7 @@ class AuthController extends Controller
      */
     public function refresh($id)
     {
-        dd('asdasdasdasd');
+
         $user = User::findorfail($id);
         return $this->loginPhoneToken($user);
     }
