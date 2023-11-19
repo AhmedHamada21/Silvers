@@ -39,12 +39,12 @@ return new class extends Migration
 
         Schema::table('settings', function (Blueprint $table) {
             $table->dropColumn('price_day_premium');
-            $table->string('kilo_price_premium')->nullable();
+            $table->dropColumn('kilo_price_premium');
         });
 
         Schema::table('hours', function (Blueprint $table) {
             $table->dropColumn('price_premium');
-            $table->string('offer_price_premium')->nullable();
+            $table->dropColumn('offer_price_premium');
         });
     }
 };

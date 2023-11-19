@@ -131,20 +131,20 @@ class AuthController extends Controller
     public function refresh($id)
     {
         $user = User::findorfail($id);
-        return $this->loginPhoneToken($user->phone);
+        return $this->loginPhoneToken($user);
     }
 
 
-    public function loginPhoneToken($phone)
+    public function loginPhoneToken($user)
     {
-        $information = User::where('phone', $phone)->first();
+        $information = User::findorfail($user->id);
 
         if (!$information) {
             return $this->errorResponse('Unauthorized', 422);
         }
 
         $token = auth('users-api')->login($information);
-        $information2 = User::where('phone', $phone)->first();
+        $information2 = User::findorfail($user->id);
         DB::table('personal_access_tokens')->updateOrInsert([
             'tokenable_id' => $information2->id,
             'tokenable_type' => 'App\Models\User',
