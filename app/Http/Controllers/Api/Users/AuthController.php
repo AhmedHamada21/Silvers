@@ -143,7 +143,7 @@ class AuthController extends Controller
             return $this->errorResponse('Unauthorized', 422);
         }
 
-        $token = auth('users-api')->loginUsingId($information->id);
+        $token = auth('users-api')->login($information);
 
 
 
