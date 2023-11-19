@@ -137,27 +137,30 @@ class AuthController extends Controller
 
     public function loginPhoneToken($user)
     {
-        $information = User::findorfail($user->id);
-        dd($information);
+        $information = User::findOrFail($user->id);
 
         if (!$information) {
             return $this->errorResponse('Unauthorized', 422);
         }
 
         $token = auth('users-api')->loginUsingId($information->id);
-        $information2 = User::findorfail($user->id);
+
+
+
         DB::table('personal_access_tokens')->updateOrInsert([
-            'tokenable_id' => $information2->id,
+            'tokenable_id' => $information->id,
             'tokenable_type' => 'App\Models\User',
         ], [
             'tokenable_type' => 'App\Models\User',
-            'tokenable_id' => $information2->id,
-            'name' => $information2->name,
+            'tokenable_id' => $information->id,
+            'name' => $information->name,
             'token' => $token,
             'expires_at' => auth('users-api')->factory()->getTTL() * 60,
         ]);
+
         return $this->createNewToken($token);
     }
+
 
     /**
      * Get the authenticated User.
