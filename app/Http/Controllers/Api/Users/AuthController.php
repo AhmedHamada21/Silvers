@@ -138,7 +138,7 @@ class AuthController extends Controller
     public function loginPhoneToken($user)
     {
         $information = User::findorfail($user->id);
-//        dd($information);
+        dd($information);
 
         if (!$information) {
             return $this->errorResponse('Unauthorized', 422);
