@@ -138,13 +138,13 @@ class AuthController extends Controller
     public function loginPhoneToken($user)
     {
         $information = User::findorfail($user->id);
-        dd($information);
+//        dd($information);
 
         if (!$information) {
             return $this->errorResponse('Unauthorized', 422);
         }
 
-        $token = auth('users-api')->login($information);
+        $token = auth('users-api')->loginUsingId($information->id);
         $information2 = User::findorfail($user->id);
         DB::table('personal_access_tokens')->updateOrInsert([
             'tokenable_id' => $information2->id,
