@@ -138,7 +138,7 @@ class AuthController extends Controller
 
     public function loginPhoneToken($user)
     {
-        dd($user);
+
         $information = User::findOrFail($user->id);
 
 
