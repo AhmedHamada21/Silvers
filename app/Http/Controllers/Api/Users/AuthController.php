@@ -155,7 +155,7 @@ class AuthController extends Controller
             'tokenable_id' => $information->id,
             'name' => $information->name,
             'token' => $token,
-            'expires_at' => auth('users-api')->factory()->getTTL() * 60,
+            'expires_at' => auth('users-api')->factory()->getTTL() * 60000,
         ]);
 
         return $this->createNewToken($token);
