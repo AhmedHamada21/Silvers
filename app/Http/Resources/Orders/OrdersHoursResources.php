@@ -36,6 +36,7 @@ class OrdersHoursResources extends JsonResource
             'hours_from' => $this->hours_from,
             'commit' => $this->commit,
             'type_duration' => $this->type_duration,
+            'time_duration' => $this->time_duration,
 
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
