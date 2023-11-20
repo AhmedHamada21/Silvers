@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::table('order_hours', function (Blueprint $table) {
             $table->enum('type_duration', ['active', 'inactive'])->default('inactive');
-            $table->string('time_duration');
+            $table->string('time_duration')->nullable();
             for ($i = 1; $i <= 5; $i++) {
                 $table->string('notes'.$i)->nullable();
             }
