@@ -166,6 +166,8 @@ class OrdersController extends Controller
         $responsenull = [
             'orderCodeValue' => "",
             'trip_type_id' => "",
+            'longitude' => "",
+            'latitude' => "",
         ];
         return $this->successResponse($responsenull, 'No data found');
 
