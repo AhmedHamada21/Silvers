@@ -99,6 +99,8 @@ class OrderHourController extends Controller
                 'commit' => $request->commit,
                 'date_created' => Carbon::now()->format('Y-m-d'),
                 'time_duration' => $hour_id->number_hours,
+                'notes1' => $hour_id->offer_price,
+                'notes2' => $hour_id->discount_hours,
 
             ]);
 
@@ -347,13 +349,17 @@ class OrderHourController extends Controller
             ]);
 
 
-            if ($data){
+            if ($data) {
                 sendNotificationUser($findOrder->user_id, 'تم اضافه المده الجديده بنجاح', 'تمديد المده', true);
 
                 $findOrder->update([
-                    'total_price'=> $findOrder->total_price + $request->price,
-                    'hour_id'=> $request->hour_id,
-                    'time_duration'=> $findOrder->time_duration + $hour_id->number_hours,
+                    'total_price' => $findOrder->total_price + $request->price,
+                    'hour_id' => $request->hour_id,
+                    'time_duration' => $findOrder->time_duration + $hour_id->number_hours,
+                    // السعر قبل الخصم
+                    'notes1'=>$findOrder->notes1 + $hour_id->offer_price,
+                    // السعر بعد الخصم الخصم
+                    'notes2'=>$findOrder->notes2+ $hour_id->discount_hours,
                 ]);
             }
 
