@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\OrderHour;
 use App\Models\SaveRentHour;
+use App\Models\UserSaveRend;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 
@@ -32,6 +33,7 @@ class CheckOrderHours extends Command
         if ($ordersSaveHours->count() > 0) {
             foreach ($ordersSaveHours as $ordersSaveHour) {
                 $orders = SaveRentHour::findorfail($ordersSaveHour->id);
+                $check = UserSaveRend::where('user_id',$orders->user_id)->first();
                 if ($ordersSaveHour->status == 'cancel') {
                     $ordersSaveHour->delete();
                     $this->comment('Deleted Orders status cancel');
@@ -44,26 +46,38 @@ class CheckOrderHours extends Command
 
                     if ($timeDifferenceInMinutes == 20) {
 
-                        sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        if(!$check){
+                            UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
+                            sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        }
                         $orders->update([
                             'status' => "accepted"
                         ]);
                     }
 
                     if ($timeDifferenceInMinutes == 10) {
-                        sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        if(!$check){
+                            UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
+                            sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        }
                         $orders->update([
                             'status' => "accepted"
                         ]);;
                     }
                     if ($timeDifferenceInMinutes == 5) {
-                        sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        if(!$check){
+                            UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
+                            sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        }
                         $orders->update([
                             'status' => "accepted"
                         ]);
                     }
                     if ($timeDifferenceInMinutes == 1) {
-                        sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        if(!$check){
+                            UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
+                            sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        }
                         $orders->update([
                             'status' => "accepted"
                         ]);

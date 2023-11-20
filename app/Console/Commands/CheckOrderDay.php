@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\SaveRentDay;
+use App\Models\UserSaveRend;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 
@@ -31,6 +32,7 @@ class CheckOrderDay extends Command
         if ($ordersSaveDays->count() > 0) {
             foreach ($ordersSaveDays as $ordersSaveDay) {
                 $orders = SaveRentDay::findorfail($ordersSaveDay->id);
+                $check = UserSaveRend::where('user_id',$orders->user_id)->first();
                 if ($ordersSaveDay->status == 'cancel') {
                     $ordersSaveDay->delete();
                     $this->comment('Deleted Orders status cancel');
@@ -42,27 +44,39 @@ class CheckOrderDay extends Command
                     $timeDifferenceInMinutes = Carbon::now()->diffInMinutes($ordersSaveDay->start_time);
 
                     if ($timeDifferenceInMinutes == 20) {
-                        sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        if(!$check){
+                            UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_day_id' => $orders->id]);
+                            sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        }
                         $orders->update([
                             'status' => "accepted"
                         ]);
                     }
 
                     if ($timeDifferenceInMinutes == 10) {
-                        sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        if(!$check){
+                            UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_day_id' => $orders->id]);
+                            sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        }
                         $orders->update([
                             'status' => "accepted"
                         ]);;
                     }
                     if ($timeDifferenceInMinutes == 5) {
-                        sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        if(!$check){
+                            UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_day_id' => $orders->id]);
+                            sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        }
                         $orders->update([
                             'status' => "accepted"
                         ]);
                     }
 
                     if ($timeDifferenceInMinutes == 1) {
-                        sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        if(!$check){
+                            UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_day_id' => $orders->id]);
+                            sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                        }
                         $orders->update([
                             'status' => "accepted"
                         ]);
