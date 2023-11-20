@@ -10,6 +10,7 @@ use App\Models\CanselOrderHoursDay;
 use App\Models\Captain;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
+use App\Models\Hour;
 use App\Models\OrderHour;
 use App\Models\SaveRentHour;
 use App\Models\Traits\Api\ApiResponseTrait;
@@ -136,11 +137,13 @@ class OrderHourController extends Controller
 
         ]);
 
+
         if ($validator->fails()) {
             return $this->errorResponse($validator->errors(), 400);
         }
 
         $user = User::findOrfail($request->user_id);
+        $hour_id = Hour::findOrfail($request->hour_id);
 
         if (SaveRentHour::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('data', $request->data)->where('hours_from', $request->hours_from)->first()) {
             return $this->errorResponse('There is a flight already booked for the same date');
@@ -167,6 +170,7 @@ class OrderHourController extends Controller
                 'data' => $request->data,
                 'hours_from' => $request->hours_from,
                 'commit' => $request->commit,
+                'time_duration' => $hour_id->number_hours,
 
             ]);
             sendNotificationUser($data->user_id, 'تم حجز الرحله بنجاح', 'حجز الرحله', true);
@@ -332,6 +336,7 @@ class OrderHourController extends Controller
 
         try {
             $findOrder = OrderHour::where('order_code', $request->order_code)->first();
+            $hour_id = Hour::findOrfail($request->hour_id);
 
             $data = UserDuration::create([
                 'user_id' => auth('users-api')->id(),
@@ -342,12 +347,14 @@ class OrderHourController extends Controller
                 'value' => $request->value,
             ]);
 
+
             if ($data){
                 sendNotificationUser($findOrder->user_id, 'تم اضافه المده الجديده بنجاح', 'تمديد المده', true);
 
                 $findOrder->update([
                     'total_price'=> $findOrder->total_price + $request->price,
                     'hour_id'=> $request->hour_id,
+                    'time_duration'=> $findOrder->time_duration + $hour_id->number_hours,
                 ]);
             }
 
