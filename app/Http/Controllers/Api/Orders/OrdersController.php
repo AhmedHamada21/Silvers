@@ -85,13 +85,14 @@ class OrdersController extends Controller
         }
 
         $type = $request->type;
-        $captions = CaptionActivity::where('captain_id',$request->captain_id)->first();
+
 
         $orderQuery = Order::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
         $orderQuery2 = OrderHour::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
         $orderQuery3 = OrderDay::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
 
         $orderCode = $orderQuery->when($type == "captains", function ($query) use ($request) {
+            $captions = CaptionActivity::where('captain_id', $request->captain_id)->first();
             return $query->where('captain_id', $request->captain_id);
         }, function ($query) use ($request) {
             return $query->where('user_id', $request->user_id);
@@ -102,16 +103,19 @@ class OrdersController extends Controller
         if ($orderCode) {
             $orderCodeValue = optional($orderCode)->order_code;
             $trip_type_id = optional($orderCode)->trip_type_id;
+            $captions = $orderCode->captions ?? null;
             $responseData = [
                 'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue" : "",
                 'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
-                'longitude'=> "$captions->longitude" ? "$captions->longitude" : "",
-                'latitude'=> "$captions->latitude" ? "$captions->latitude" : "",
+                'longitude' => $captions ? $captions->longitude : "",
+                'latitude' => $captions ? $captions->latitude : "",
             ];
             return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
         }
 
         $orderCode2 = $orderQuery2->when($type == "captains", function ($query) use ($request) {
+            $captions = CaptionActivity::where('captain_id', $request->captain_id)->first();
+
             return $query->where('captain_id', $request->captain_id);
         }, function ($query) use ($request) {
             return $query->where('user_id', $request->user_id);
@@ -122,16 +126,18 @@ class OrdersController extends Controller
         if ($orderCode2) {
             $orderCodeValue = optional($orderCode2)->order_code;
             $trip_type_id = optional($orderCode2)->trip_type_id;
+            $captions = $orderCode2->captions ?? null;
             $responseData = [
                 'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue" : "",
                 'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
-                'longitude'=> "$captions->longitude" ? "$captions->longitude" : "",
-                'latitude'=> "$captions->latitude" ? "$captions->latitude" : "",
+                'longitude' => $captions ? $captions->longitude : "",
+                'latitude' => $captions ? $captions->latitude : "",
             ];
             return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
         }
 
         $orderCode3 = $orderQuery3->when($type == "captains", function ($query) use ($request) {
+            $captions = CaptionActivity::where('captain_id', $request->captain_id)->first();
             return $query->where('captain_id', $request->captain_id);
         }, function ($query) use ($request) {
             return $query->where('user_id', $request->user_id);
@@ -142,11 +148,12 @@ class OrdersController extends Controller
         if ($orderCode3) {
             $orderCodeValue = optional($orderCode3)->order_code;
             $trip_type_id = optional($orderCode3)->trip_type_id;
+            $captions = $orderCode3->captions ?? null;
             $responseData = [
                 'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue" : "",
                 'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
-                'longitude'=> "$captions->longitude" ? "$captions->longitude" : "",
-                'latitude'=> "$captions->latitude" ? "$captions->latitude" : "",
+                'longitude' => $captions ? $captions->longitude : "",
+                'latitude' => $captions ? $captions->latitude : "",
             ];
             return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
         }

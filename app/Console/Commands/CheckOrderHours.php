@@ -43,6 +43,7 @@ class CheckOrderHours extends Command
                     $timeDifferenceInMinutes = Carbon::now()->diffInMinutes($ordersSaveHour->hours_from);
 
                     if ($timeDifferenceInMinutes == 20) {
+
                         sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         $orders->update([
                             'status' => "accepted"
