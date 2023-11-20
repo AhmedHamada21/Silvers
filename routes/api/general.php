@@ -32,6 +32,7 @@ Route::group(['prefix' => 'order', 'middleware' => 'auth:users-api,captain-api']
         Route::post('createOrder', [OrderHourController::class, 'store']);
         Route::post('updateStatus', [OrderHourController::class, 'update']);
         Route::post('canselOrder', [OrderHourController::class, 'canselOrder']);
+        Route::post('UserDuration', [OrderHourController::class, 'UserDuration']);
     });
 
     ################# Create Orders Day #########################
@@ -42,6 +43,7 @@ Route::group(['prefix' => 'order', 'middleware' => 'auth:users-api,captain-api']
         Route::post('updateStatus', [OrderDayController::class, 'update']);
         Route::post('canselOrder', [OrderDayController::class, 'canselOrder']);
         Route::post('canselDay', [OrderDayController::class, 'canselDay']);
+        Route::post('UserDuration', [OrderDayController::class, 'UserDuration']);
     });
 
 

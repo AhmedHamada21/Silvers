@@ -13,6 +13,7 @@ use App\Models\OrderDay;
 use App\Models\SaveRentDay;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\User;
+use App\Models\UserDuration;
 use App\Models\UserProfile;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -313,5 +314,42 @@ class OrderDayController extends Controller
         ]);
         return $this->successResponse('Data cancel successfully');
 
+    }
+
+    public function UserDuration(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_code' => 'required|exists:order_days,order_code',
+            'price' => 'required',
+            'value' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+
+        try {
+            $findOrder = OrderDay::where('order_code', $request->order_code)->first();
+
+            $data = UserDuration::create([
+                'user_id' => auth('users-api')->id(),
+                'order_day_id' => $findOrder->id,
+                'type_order' => 'day',
+                'price' => $request->price,
+                'value' => $request->value,
+            ]);
+
+            if ($data){
+                sendNotificationUser($findOrder->user_id, 'تم اضافه المده الجديده بنجاح', 'تمديد المده', true);
+
+                $findOrder->update([
+                    'total_price'=> $findOrder->total_price + $request->price,
+                    'number_day'=>$request->value,
+                ]);
+            }
+
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+        }
     }
 }

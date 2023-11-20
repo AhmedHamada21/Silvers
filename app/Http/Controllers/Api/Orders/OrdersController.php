@@ -99,7 +99,7 @@ class OrdersController extends Controller
 
         $captionActivity = CaptionActivity::where('captain_id',$captainIdFromOrder)->first();
         $captionActivityHours = CaptionActivity::where('captain_id',$captainIdFromOrderHour)->first();
-        $captionActivityDay = CaptionActivity::where('captain_id',$captainIdFromOrderHour)->first();
+        $captionActivityDay = CaptionActivity::where('captain_id',$captainIdFromOrderDay)->first();
 
 
         $orderCode = $orderQuery->when($type == "captains", function ($query) use ($request) {

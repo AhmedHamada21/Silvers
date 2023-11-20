@@ -14,6 +14,7 @@ use App\Models\OrderHour;
 use App\Models\SaveRentHour;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\User;
+use App\Models\UserDuration;
 use App\Models\UserProfile;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -141,7 +142,7 @@ class OrderHourController extends Controller
 
         $user = User::findOrfail($request->user_id);
 
-        if (SaveRentHour::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('data',$request->data)->where('hours_from',$request->hours_from)->first()) {
+        if (SaveRentHour::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('data', $request->data)->where('hours_from', $request->hours_from)->first()) {
             return $this->errorResponse('There is a flight already booked for the same date');
         }
 
@@ -183,15 +184,15 @@ class OrderHourController extends Controller
     public function canselHours(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'order_code'=>'required|exists:save_rent_hours,order_code'
+            'order_code' => 'required|exists:save_rent_hours,order_code'
 
         ]);
         if ($validator->fails()) {
             return $this->errorResponse($validator->errors(), 400);
         }
 
-        $orders = SaveRentHour::where('order_code',$request->order_code)->update([
-            'status'=>'cancel'
+        $orders = SaveRentHour::where('order_code', $request->order_code)->update([
+            'status' => 'cancel'
         ]);
         sendNotificationUser($orders->user_id, 'تم الغاء الرحله', 'الغاء الحجز', true);
 
@@ -312,6 +313,46 @@ class OrderHourController extends Controller
             $captainProfile->update([
                 'number_trips_cansel_hours' => $captainProfile->number_trips_cansel_hours + 1
             ]);
+        }
+    }
+
+
+    public function UserDuration(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_code' => 'required|exists:order_hours,order_code',
+            'hour_id' => 'required|exists:hours,id',
+            'price' => 'required',
+            'value' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+
+        try {
+            $findOrder = OrderHour::where('order_code', $request->order_code)->first();
+
+            $data = UserDuration::create([
+                'user_id' => auth('users-api')->id(),
+                'order_hour_id' => $findOrder->id,
+                'type_order' => 'hours',
+                'hour_id' => $request->hour_id,
+                'price' => $request->price,
+                'value' => $request->value,
+            ]);
+
+            if ($data){
+                sendNotificationUser($findOrder->user_id, 'تم اضافه المده الجديده بنجاح', 'تمديد المده', true);
+
+                $findOrder->update([
+                    'total_price'=> $findOrder->total_price + $request->price,
+                    'hour_id'=> $request->hour_id,
+                ]);
+            }
+
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
         }
     }
 }
