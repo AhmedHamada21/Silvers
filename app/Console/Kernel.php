@@ -12,8 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-         $schedule->command('app:check-order-hours')->everySecond();
-         $schedule->command('app:check-order-day')->everySecond();
+         $schedule->command('app:check-order-hours')->everyTwoMinutes();
+         $schedule->command('app:check-order-day')->everyTwoMinutes();
     }
 
     /**
