@@ -14,15 +14,18 @@ return new class extends Migration {
         Schema::table('car_types', function (Blueprint $table) {
             $table->string('price_normal');
             $table->string('price_premium');
-            DB::table('car_types')->where('id', 1)->update([
-                'price_normal' => 50,
-                'price_premium' => 75,
-            ]);
-            DB::table('car_types')->where('id', 2)->update([
-                'price_normal' => 80,
-                'price_premium' => 95,
-            ]);
+
         });
+
+        DB::table('car_types')->where('id', 1)->update([
+            'price_normal' => '50', // قد تحتاج لتحويل القيم إلى نص
+            'price_premium' => '75',
+        ]);
+
+        DB::table('car_types')->where('id', 2)->update([
+            'price_normal' => '80',
+            'price_premium' => '95',
+        ]);
     }
 
     /**
