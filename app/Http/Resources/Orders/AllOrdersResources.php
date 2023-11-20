@@ -52,6 +52,7 @@ class AllOrdersResources extends JsonResource
             'number_day' => $this->number_day ?? null,
             'start_time' => $this->start_time ?? null,
             'commit' => $this->commit ?? null,
+            'type_duration' => $this->type_duration ?? null,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

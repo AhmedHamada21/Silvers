@@ -34,6 +34,7 @@ class OrdersDayResources extends JsonResource
             'number_day'=>$this->number_day,
             'start_time'=>$this->start_time,
             'commit'=>$this->commit,
+            'type_duration'=>$this->type_duration,
 
 
 
