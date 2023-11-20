@@ -73,7 +73,7 @@ class OrderHourController extends Controller
             return $this->errorResponse('This captain is already on a journey');
         }
         try {
-
+            $hour_id = Hour::findOrfail($request->hour_id);
             $latestOrderId = optional(OrderHour::latest()->first())->id;
             $orderCode = 'orderH_' . $latestOrderId . generateRandomString(5);
             $chatId = 'chatH_' . generateRandomString(4);
@@ -98,6 +98,7 @@ class OrderHourController extends Controller
                 'hours_from' => $request->hours_from,
                 'commit' => $request->commit,
                 'date_created' => Carbon::now()->format('Y-m-d'),
+                'time_duration' => $hour_id->number_hours,
 
             ]);
 
@@ -143,7 +144,6 @@ class OrderHourController extends Controller
         }
 
         $user = User::findOrfail($request->user_id);
-        $hour_id = Hour::findOrfail($request->hour_id);
 
         if (SaveRentHour::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('data', $request->data)->where('hours_from', $request->hours_from)->first()) {
             return $this->errorResponse('There is a flight already booked for the same date');
@@ -170,7 +170,6 @@ class OrderHourController extends Controller
                 'data' => $request->data,
                 'hours_from' => $request->hours_from,
                 'commit' => $request->commit,
-                'time_duration' => $hour_id->number_hours,
 
             ]);
             sendNotificationUser($data->user_id, 'تم حجز الرحله بنجاح', 'حجز الرحله', true);
