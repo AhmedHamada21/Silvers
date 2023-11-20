@@ -27,6 +27,7 @@ class OrderHour extends Model
         'commit',
         'date_created',
         'type_duration',
+        'time_duration',
     ];
 
     public function user()
