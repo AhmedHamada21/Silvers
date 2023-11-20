@@ -101,9 +101,8 @@ class OrderDayController extends Controller
 
         if ($data) {
 
-            sendNotificationCaptain($request->captain_id, 'تم قبول الرحله من قبل العميل  ' . $user->name, 'New Trips', true);
-            sendNotificationUser($request->user_id, 'تم قبول الرحله من قبل الكابتن ' . $caption->name, 'New Trips', true);
-
+            sendNotificationCaptain($request->captain_id, 'تم قبول الرحله من قبل العميل  ' . $user->name, 'رحله جديده', true);
+            sendNotificationUser($request->user_id, 'تم قبول الرحله من قبل الكابتن ' . $caption->name, 'رحله جديده', true);
 
 
             createInFirebaseDay($request->user_id, $request->captain_id, $data->id);
