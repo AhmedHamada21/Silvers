@@ -21,11 +21,15 @@ class CarTypeSeeder extends Seeder
         CarType::create([
             'name' => 'سيدان',
             'status' => true,
+            'price_normal'=>50,
+            'price_premium'=>75,
         ]);
 
         CarType::create([
             'name' => 'Suv',
             'status' => true,
+            'price_normal'=>65,
+            'price_premium'=>85,
         ]);
 
 
