@@ -85,6 +85,7 @@ class OrdersController extends Controller
         }
 
         $type = $request->type;
+        $captions = CaptionActivity::where('captain_id',$request->captain_id)->first();
 
         $orderQuery = Order::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
         $orderQuery2 = OrderHour::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
@@ -104,6 +105,8 @@ class OrdersController extends Controller
             $responseData = [
                 'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue" : "",
                 'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
+                'longitude'=> "$captions->longitude" ? "$captions->longitude" : "",
+                'latitude'=> "$captions->latitude" ? "$captions->latitude" : "",
             ];
             return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
         }
@@ -122,6 +125,8 @@ class OrdersController extends Controller
             $responseData = [
                 'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue" : "",
                 'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
+                'longitude'=> "$captions->longitude" ? "$captions->longitude" : "",
+                'latitude'=> "$captions->latitude" ? "$captions->latitude" : "",
             ];
             return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
         }
@@ -140,6 +145,8 @@ class OrdersController extends Controller
             $responseData = [
                 'orderCodeValue' => "$orderCodeValue" ? "$orderCodeValue" : "",
                 'trip_type_id' => "$trip_type_id" ? "$trip_type_id" : "",
+                'longitude'=> "$captions->longitude" ? "$captions->longitude" : "",
+                'latitude'=> "$captions->latitude" ? "$captions->latitude" : "",
             ];
             return $this->successResponse($responseData != null ? $responseData : "", 'Data returned successfully');
         }

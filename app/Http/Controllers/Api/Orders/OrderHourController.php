@@ -191,6 +191,8 @@ class OrderHourController extends Controller
         $orders = SaveRentHour::where('order_code',$request->order_code)->update([
             'status'=>'cancel'
         ]);
+        sendNotificationUser($orders->user_id, 'تم الغاء الرحله', 'الغاء الحجز', true);
+
         return $this->successResponse('Data cancel successfully');
 
     }
