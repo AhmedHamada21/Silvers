@@ -26,6 +26,7 @@ class HourSeeder extends Seeder
             'price_premium' => '200',
             'offer_price_premium' => '350',
             'car_type_id' => 1,
+            'category_car_id' => 1,
         ]);
         Hour::create([
             'number_hours' => '1',
@@ -35,6 +36,7 @@ class HourSeeder extends Seeder
             'price_premium' => '250',
             'offer_price_premium' => '450',
             'car_type_id' => 2,
+            'category_car_id' => 1,
         ]);
 
         Hour::create([
@@ -45,6 +47,7 @@ class HourSeeder extends Seeder
             'price_premium' => '350',
             'offer_price_premium' => '450',
             'car_type_id' => 2,
+            'category_car_id' => 2,
         ]);
 
         Hour::create([
@@ -55,6 +58,7 @@ class HourSeeder extends Seeder
             'price_premium' => '550',
             'offer_price_premium' => '650',
             'car_type_id' => 2,
+            'category_car_id' => 2,
         ]);
         Hour::create([
             'number_hours' => '4',
@@ -64,6 +68,7 @@ class HourSeeder extends Seeder
             'price_premium' => '600',
             'offer_price_premium' => '850',
             'car_type_id' => 2,
+            'category_car_id' => 2,
         ]);
 
 
