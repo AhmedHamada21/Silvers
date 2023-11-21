@@ -124,12 +124,12 @@ class MainSettingController extends Controller
 
     public function hours()
     {
-//        try {
+        try {
             return $this->successResponse(HoursResources::collection(Hour::all()),'data Return Successfully');
 
-//        } catch (\Exception $exception) {
-//            return $this->errorResponse('Something went wrong, please try again later');
-//        }
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+        }
     }
 
     public function subscriptionCaption()
