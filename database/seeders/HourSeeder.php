@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CarType;
 use App\Models\Hour;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,8 +18,9 @@ class HourSeeder extends Seeder
     {
         Schema::disableForeignKeyConstraints();
         DB::table('hours')->truncate();
+        $carType = CarType::all();
 
-        Hour::create([
+        $hour = Hour::create([
             'number_hours' => '1',
             'offer_price' => '0',
             'discount_hours' => '0',
@@ -28,7 +30,9 @@ class HourSeeder extends Seeder
             'car_type_id' => 1,
             'category_car_id' => 1,
         ]);
-        Hour::create([
+        $hour->hour_car_type()->attach($carType->random(rand(1, 4))->pluck('id')->toArray());
+
+        $hour2 = Hour::create([
             'number_hours' => '1',
             'offer_price' => '0',
             'discount_hours' => '0',
@@ -38,8 +42,9 @@ class HourSeeder extends Seeder
             'car_type_id' => 2,
             'category_car_id' => 1,
         ]);
+        $hour2->hour_car_type()->attach($carType->random(rand(1, 4))->pluck('id')->toArray());
 
-        Hour::create([
+        $hour3 = Hour::create([
             'number_hours' => '2',
             'discount_hours' => '10',
             'offer_price' => '10',
@@ -49,8 +54,9 @@ class HourSeeder extends Seeder
             'car_type_id' => 2,
             'category_car_id' => 2,
         ]);
+        $hour3->hour_car_type()->attach($carType->random(rand(1, 4))->pluck('id')->toArray());
 
-        Hour::create([
+        $hour4 = Hour::create([
             'number_hours' => '3',
             'discount_hours' => '15',
             'offer_price' => '15',
@@ -60,7 +66,9 @@ class HourSeeder extends Seeder
             'car_type_id' => 2,
             'category_car_id' => 2,
         ]);
-        Hour::create([
+        $hour4->hour_car_type()->attach($carType->random(rand(1, 4))->pluck('id')->toArray());
+
+        $hour5 = Hour::create([
             'number_hours' => '4',
             'discount_hours' => '20',
             'offer_price' => '20',
@@ -70,6 +78,7 @@ class HourSeeder extends Seeder
             'car_type_id' => 2,
             'category_car_id' => 2,
         ]);
+        $hour5->hour_car_type()->attach($carType->random(rand(1, 4))->pluck('id')->toArray());
 
 
         Schema::enableForeignKeyConstraints();

@@ -20,12 +20,13 @@ class Hour extends Model
         'category_car_id',
     ];
 
-    public function car_type()
-    {
-        return $this->belongsTo(CarType::class,'car_type_id');
-    }
+
     public function category_car()
     {
         return $this->belongsTo(CategoryCar::class,'category_car_id');
+    }
+
+    public function hour_car_type() {
+        return $this->belongsToMany(Hour::class, 'hour_car_type');
     }
 }

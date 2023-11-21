@@ -22,7 +22,7 @@ class HoursResources extends JsonResource
             'price_hours' => $this->price_hours,
             'price_premium' => $this->price_premium,
             'offer_price_premium' => $this->offer_price_premium,
-            'car_type' => new CarTypeResources($this->car_type) ,
+            'car_type' => CarTypeResources::collection($this->hour_car_type) ,
             'category_car' => new CategoryCarResources($this->category_car),
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),

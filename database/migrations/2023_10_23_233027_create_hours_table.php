@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('price_hours');
             $table->string('price_premium')->nullable();
             $table->string('offer_price_premium')->nullable();
-            $table->foreignId('car_type_id')->constrained('car_types')->cascadeOnUpdate()->cascadeOnDelete();
+            //$table->foreignId('car_type_id')->constrained('car_types')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('category_car_id')->constrained('category_cars')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });

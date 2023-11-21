@@ -25,4 +25,8 @@ class CarType extends Model
     {
         return $this->whereStatus(true)->get();
     }
+
+    public function hour_car_type() {
+        return $this->belongsToMany(CarType::class, 'hour_car_type');
+    }
 }
