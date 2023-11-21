@@ -129,6 +129,8 @@ class OrderHourController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
+            'car_type_id' => 'required|exists:car_types,id',
+            'status_price' => 'required|in:premium,normal',
             'hour_id' => 'required|exists:hours,id',
             'total_price' => 'required|numeric',
             'payments' => 'required|in:cash,masterCard,wallet',
@@ -172,6 +174,8 @@ class OrderHourController extends Controller
                 'data' => $request->data,
                 'hours_from' => $request->hours_from,
                 'commit' => $request->commit,
+                'car_type_id' => $request->car_type_id,
+                'status_price' => $request->status_price,
 
             ]);
             sendNotificationUser($data->user_id, 'تم حجز الرحله بنجاح', 'حجز الرحله', true);

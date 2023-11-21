@@ -24,6 +24,8 @@ class SaveRentHour extends Model
         'hours_from',
         'hour_id',
         'commit',
+        'car_type_id',
+        'status_price',
     ];
 
     public function user()

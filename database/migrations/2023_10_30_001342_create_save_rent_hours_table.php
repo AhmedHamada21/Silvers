@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('data');
             $table->string('hours_from');
             $table->string('commit')->nullable();
+            $table->foreignId('car_type_id')->constrained('car_types')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->enum('status_price',['premium','normal']);
             $table->timestamps();
         });
     }
