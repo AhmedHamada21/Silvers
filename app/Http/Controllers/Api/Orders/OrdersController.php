@@ -45,32 +45,32 @@ class OrdersController extends Controller
     }
 
 
-//    public function OrderExiting(Request $request)
-//    {
-//        $validator = Validator::make($request->all(), [
-//            'user_id' => 'required_if:type,user|exists:users,id',
-//            'captain_id' => 'required_if:type,captains|exists:captains,id',
-//            'type' => 'required|in:captains,user',
-//        ]);
-//
-//        if ($validator->fails()) {
-//            return $this->errorResponse($validator->errors(), 400);
-//        }
-//
-//        $type = $request->type;
-//        $orderQuery = Order::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
-//
-//        $orderCode = $orderQuery->when($type == "captains", function ($query) use ($request) {
-//            return $query->where('captain_id', $request->captain_id);
-//        }, function ($query) use ($request) {
-//            return $query->where('user_id', $request->user_id);
-//        })->firstOr(fn() => null);
-//
-//        $orderCodeValue = optional($orderCode)->order_code  . ' (Trip_Id) '.optional($orderCode)->trip_type_id;
-//
-//        return $this->successResponse($orderCodeValue ? $orderCodeValue : "", 'Data returned successfully');
-//
-//    }
+    //    public function OrderExiting(Request $request)
+    //    {
+    //        $validator = Validator::make($request->all(), [
+    //            'user_id' => 'required_if:type,user|exists:users,id',
+    //            'captain_id' => 'required_if:type,captains|exists:captains,id',
+    //            'type' => 'required|in:captains,user',
+    //        ]);
+    //
+    //        if ($validator->fails()) {
+    //            return $this->errorResponse($validator->errors(), 400);
+    //        }
+    //
+    //        $type = $request->type;
+    //        $orderQuery = Order::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
+    //
+    //        $orderCode = $orderQuery->when($type == "captains", function ($query) use ($request) {
+    //            return $query->where('captain_id', $request->captain_id);
+    //        }, function ($query) use ($request) {
+    //            return $query->where('user_id', $request->user_id);
+    //        })->firstOr(fn() => null);
+    //
+    //        $orderCodeValue = optional($orderCode)->order_code  . ' (Trip_Id) '.optional($orderCode)->trip_type_id;
+    //
+    //        return $this->successResponse($orderCodeValue ? $orderCodeValue : "", 'Data returned successfully');
+    //
+    //    }
 
     public function OrderExiting(Request $request)
     {
@@ -97,9 +97,9 @@ class OrdersController extends Controller
         $captainIdFromOrderHour = $orderQuery2->pluck('captain_id')->first();
         $captainIdFromOrderDay = $orderQuery3->pluck('captain_id')->first();
 
-        $captionActivity = CaptionActivity::where('captain_id',$captainIdFromOrder)->first();
-        $captionActivityHours = CaptionActivity::where('captain_id',$captainIdFromOrderHour)->first();
-        $captionActivityDay = CaptionActivity::where('captain_id',$captainIdFromOrderDay)->first();
+        $captionActivity = CaptionActivity::where('captain_id', $captainIdFromOrder)->first();
+        $captionActivityHours = CaptionActivity::where('captain_id', $captainIdFromOrderHour)->first();
+        $captionActivityDay = CaptionActivity::where('captain_id', $captainIdFromOrderDay)->first();
 
 
         $orderCode = $orderQuery->when($type == "captains", function ($query) use ($request) {
@@ -170,7 +170,6 @@ class OrdersController extends Controller
             'latitude' => "",
         ];
         return $this->successResponse($responsenull, 'No data found');
-
     }
 
     public function deletedOrder(Request $request)
@@ -209,7 +208,6 @@ class OrdersController extends Controller
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
-
     }
 
 
@@ -385,7 +383,7 @@ class OrdersController extends Controller
             return $this->errorResponse('Order not found', 404);
         }
 
-//        $this->sendNotationsCalculator();
+        //        $this->sendNotationsCalculator();
 
         $findOrder->update([
             'lat_caption' => $request->lat_caption,
@@ -508,20 +506,28 @@ class OrdersController extends Controller
     {
         $user = auth('users-api')->user();
 
-        $ordersHours = SaveRentHour::where('user_id', $user->id)
+        $ordersHourSaved = SaveRentHour::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
             ->orderBy('id', 'DESC')
             ->get();
 
-        $ordersDay = SaveRentDay::where('user_id', $user->id)
+        $ordersDaySaved = SaveRentDay::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
             ->orderBy('id', 'DESC')
             ->get();
 
-        $data = $ordersHours->concat($ordersDay);
+        $ordersHours = OrderHour::where('user_id', $user->id)
+            ->whereIn('status', ['pending', 'accepted'])
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        $ordersDay = OrderDay::where('user_id', $user->id)
+            ->whereIn('status', ['pending', 'accepted'])
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        $data = $ordersHourSaved->concat($ordersDaySaved)->concat($ordersHours)->concat($ordersDay);
 
         return $this->successResponse(AllOrdersSavedRentResources::collection($data), 'Data returned successfully');
     }
-
-
 }
