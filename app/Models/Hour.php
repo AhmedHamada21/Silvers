@@ -17,10 +17,15 @@ class Hour extends Model
         'price_premium',
         'offer_price_premium',
         'car_type_id',
+        'category_car_id',
     ];
 
     public function car_type()
     {
         return $this->belongsTo(CarType::class,'car_type_id');
+    }
+    public function category_car()
+    {
+        return $this->belongsTo(CategoryCar::class,'category_car_id');
     }
 }
