@@ -18,6 +18,8 @@ class CarTypeResources extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'status' => $this->status(),
+            'price_normal' => $this->price_normal,
+            'price_premium' => $this->price_premium,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at
