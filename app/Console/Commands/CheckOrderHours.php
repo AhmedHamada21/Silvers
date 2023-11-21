@@ -33,7 +33,7 @@ class CheckOrderHours extends Command
         if ($ordersSaveHours->count() > 0) {
             foreach ($ordersSaveHours as $ordersSaveHour) {
                 $orders = SaveRentHour::findorfail($ordersSaveHour->id);
-                $check = UserSaveRend::where('user_id',$orders->user_id)->first();
+                $check = UserSaveRend::where('user_id',$orders->user_id)->where('save_rent_hour_id',$orders->id)->first();
                 if ($ordersSaveHour->status == 'cancel') {
                     $ordersSaveHour->delete();
                     $this->comment('Deleted Orders status cancel');

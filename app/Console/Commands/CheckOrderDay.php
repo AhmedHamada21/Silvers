@@ -32,7 +32,7 @@ class CheckOrderDay extends Command
         if ($ordersSaveDays->count() > 0) {
             foreach ($ordersSaveDays as $ordersSaveDay) {
                 $orders = SaveRentDay::findorfail($ordersSaveDay->id);
-                $check = UserSaveRend::where('user_id',$orders->user_id)->first();
+                $check = UserSaveRend::where('user_id',$orders->user_id)->where('save_rent_day_id',$orders->id)->first();
                 if ($ordersSaveDay->status == 'cancel') {
                     $ordersSaveDay->delete();
                     $this->comment('Deleted Orders status cancel');

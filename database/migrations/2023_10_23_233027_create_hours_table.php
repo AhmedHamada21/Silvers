@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('offer_price')->comment('السعر قبل الخصم');
             $table->string('discount_hours')->comment('السعر بعد الخصم');
             $table->string('price_hours');
+            $table->string('price_premium')->nullable();
+            $table->string('offer_price_premium')->nullable();
+            $table->foreignId('car_type_id')->constrained('car_types')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }
