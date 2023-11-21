@@ -19,6 +19,7 @@ class AllOrdersSavedRentResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'user_id' => $this->user_id,
             'trip_type_id' => new TripTypeResources($this->trip_type),
             'typeOrders' => $this->hour_id == true ? "OrderHours" : "OrderDay",
