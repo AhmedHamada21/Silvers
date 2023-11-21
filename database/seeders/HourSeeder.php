@@ -29,8 +29,7 @@ class HourSeeder extends Seeder
             'offer_price_premium' => '350',
             'category_car_id' => 1,
         ]);
-
-        $hour->hour_car_type()->attach($carType->random(rand(1, 2))->pluck('id')->toArray());
+        $hour->hour_car_type()->attach($carType->random(rand(1, 4))->pluck('id')->toArray());
 
         $hour2 = Hour::create([
             'number_hours' => '1',
@@ -41,8 +40,7 @@ class HourSeeder extends Seeder
             'offer_price_premium' => '450',
             'category_car_id' => 1,
         ]);
-
-        $hour2->hour_car_type()->attach($carType->random(rand(1, 2))->pluck('id')->toArray());
+        $hour2->hour_car_type()->attach($carType->random(rand(1, 4))->pluck('id')->toArray());
 
         $hour3 = Hour::create([
             'number_hours' => '2',
@@ -53,8 +51,7 @@ class HourSeeder extends Seeder
             'offer_price_premium' => '450',
             'category_car_id' => 2,
         ]);
-
-        $hour3->hour_car_type()->attach($carType->random(rand(1, 2))->pluck('id')->toArray());
+        $hour3->hour_car_type()->attach($carType->random(rand(1, 4))->pluck('id')->toArray());
 
         $hour4 = Hour::create([
             'number_hours' => '3',
@@ -65,7 +62,7 @@ class HourSeeder extends Seeder
             'offer_price_premium' => '650',
             'category_car_id' => 2,
         ]);
-        $hour4->hour_car_type()->attach($carType->random(rand(1, 2))->pluck('id')->toArray());
+        $hour4->hour_car_type()->attach($carType->random(rand(1, 4))->pluck('id')->toArray());
 
         $hour5 = Hour::create([
             'number_hours' => '4',
@@ -76,8 +73,7 @@ class HourSeeder extends Seeder
             'offer_price_premium' => '850',
             'category_car_id' => 2,
         ]);
-
-        $hour5->hour_car_type()->attach($carType->random(rand(1, 2))->pluck('id')->toArray());
+        $hour5->hour_car_type()->attach($carType->random(rand(1, 4))->pluck('id')->toArray());
 
 
         Schema::enableForeignKeyConstraints();
