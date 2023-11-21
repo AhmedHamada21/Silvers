@@ -26,6 +26,6 @@ class Hour extends Model
     }
 
     public function hour_car_type() {
-        return $this->belongsToMany(Hour::class, 'hour_car_type');
+        return $this->belongsToMany(CarType::class, 'hour_car_type');
     }
 }

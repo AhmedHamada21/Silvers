@@ -29,6 +29,7 @@ class HourSeeder extends Seeder
             'offer_price_premium' => '350',
             'category_car_id' => 1,
         ]);
+
         $hour->hour_car_type()->attach($carType->random(rand(1, 2))->pluck('id')->toArray());
 
         $hour2 = Hour::create([
@@ -40,6 +41,7 @@ class HourSeeder extends Seeder
             'offer_price_premium' => '450',
             'category_car_id' => 1,
         ]);
+
         $hour2->hour_car_type()->attach($carType->random(rand(1, 2))->pluck('id')->toArray());
 
         $hour3 = Hour::create([
@@ -51,6 +53,7 @@ class HourSeeder extends Seeder
             'offer_price_premium' => '450',
             'category_car_id' => 2,
         ]);
+
         $hour3->hour_car_type()->attach($carType->random(rand(1, 2))->pluck('id')->toArray());
 
         $hour4 = Hour::create([
@@ -73,6 +76,7 @@ class HourSeeder extends Seeder
             'offer_price_premium' => '850',
             'category_car_id' => 2,
         ]);
+
         $hour5->hour_car_type()->attach($carType->random(rand(1, 2))->pluck('id')->toArray());
 
 
