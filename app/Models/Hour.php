@@ -16,7 +16,6 @@ class Hour extends Model
         'price_hours',
         'price_premium',
         'offer_price_premium',
-        'car_type_id',
         'category_car_id',
     ];
 
