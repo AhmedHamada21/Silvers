@@ -339,7 +339,7 @@ class OrderHourController extends Controller
                 'order_hour_id' => $findOrder->id,
                 'type_order' => 'hours',
                 'hour_id' => $request->hour_id,
-                'price' => $findOrder->status_price == "premium" ? ($findOrder->price + $carType->price_premium) : ($findOrder->price + $carType->price_normal),
+                'price' => $findOrder->status_price == "premium" ? $findOrder->price + $carType->price_premium : $findOrder->price + $carType->price_normal,
                 'value' => $hour_id->number_hours,
             ]);
 
@@ -348,13 +348,13 @@ class OrderHourController extends Controller
                 sendNotificationUser($findOrder->user_id, 'تم اضافه المده الجديده بنجاح', 'تمديد المده', true);
 
                 $findOrder->update([
-                    'total_price' => $findOrder->status_price == "premium" ? ($findOrder->price + $carType->price_premium) : ($findOrder->price + $carType->price_normal),
+                    'total_price' => $findOrder->status_price == "premium" ? $findOrder->price + $carType->price_premium : $findOrder->price + $carType->price_normal,
                     'hour_id' => $request->hour_id,
                     'time_duration' => $findOrder->time_duration + $hour_id->number_hours,
                     // السعر قبل الخصم
-                    'notes1' => $findOrder->status_price == "premium" ? ($findOrder->notes1 + $carType->before_price_premium) : ($findOrder->notes1 + $carType->before_price_normal),
+                    'notes1' => $findOrder->status_price == "premium" ? $findOrder->notes1 + $carType->before_price_premium : $findOrder->notes1 + $carType->before_price_normal,
                     // السعر بعد الخصم الخصم
-                    'notes2' => $findOrder->status_price == "premium" ? ($findOrder->notes2 + $carType->discount_price_premium) : ($findOrder->notes2 + $carType->discount_price_normal),
+                    'notes2' => $findOrder->status_price == "premium" ? $findOrder->notes2 + $carType->discount_price_premium : $findOrder->notes2 + $carType->discount_price_normal,
                 ]);
             }
         } catch (\Exception $exception) {
