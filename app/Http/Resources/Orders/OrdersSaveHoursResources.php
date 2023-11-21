@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Orders;
 
+use App\Http\Resources\CarTypeResources;
 use App\Http\Resources\Drivers\CaptionResources;
 use App\Http\Resources\HoursResources;
 use App\Http\Resources\TripTypeResources;
@@ -23,6 +24,7 @@ class OrdersSaveHoursResources extends JsonResource
             'user_id' => new UsersResources($this->user),
             'trip_type_id' => new TripTypeResources($this->trip_type),
             'hour_id' => new HoursResources($this->hour),
+            'cart_type' => new CarTypeResources($this->car_type),
             'order_code' => $this->order_code,
             'total_price' => $this->total_price,
             'chat_id' => $this->chat_id,

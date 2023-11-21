@@ -30,16 +30,20 @@ class SaveRentHour extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
 
     public function trip_type()
     {
-        return $this->belongsTo(TripType::class,'trip_type_id');
+        return $this->belongsTo(TripType::class, 'trip_type_id');
     }
     public function hour()
     {
-        return $this->belongsTo(Hour::class,'hour_id');
+        return $this->belongsTo(Hour::class, 'hour_id');
+    }
+    public function car_type()
+    {
+        return $this->belongsTo(CarType::class, 'car_type_id');
     }
 }

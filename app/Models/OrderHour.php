@@ -30,6 +30,8 @@ class OrderHour extends Model
         'time_duration',
         'notes1',
         'notes2',
+        'car_type_id',
+        'status_price',
     ];
 
     public function user()

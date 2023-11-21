@@ -99,8 +99,8 @@ class OrderHourController extends Controller
                 'commit' => $request->commit,
                 'date_created' => Carbon::now()->format('Y-m-d'),
                 'time_duration' => $hour_id->number_hours,
-                'notes1' => $hour_id->offer_price,
-                'notes2' => $hour_id->discount_hours,
+                'car_type_id'=>$request->car_type_id,
+                'status_price'=>$request->status_price,
 
             ]);
 
