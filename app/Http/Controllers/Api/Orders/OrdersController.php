@@ -510,24 +510,25 @@ class OrdersController extends Controller
             ->whereIn('status', ['pending', 'accepted'])
             ->orderBy('id', 'DESC')
             ->get();
-
+        
         $ordersDaySaved = SaveRentDay::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
             ->orderBy('id', 'DESC')
             ->get();
-
+        
         $ordersHours = OrderHour::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
             ->orderBy('id', 'DESC')
             ->get();
-
+        
         $ordersDay = OrderDay::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
             ->orderBy('id', 'DESC')
             ->get();
-
-        $data = $ordersHourSaved->concat($ordersDaySaved)->concat($ordersHours)->concat($ordersDay);
-
+        
+        $data = $ordersHourSaved->union($ordersDaySaved)->union($ordersHours)->union($ordersDay);
+        
         return $this->successResponse(AllOrdersSavedRentResources::collection($data), 'Data returned successfully');
+        
     }
 }
