@@ -10,6 +10,7 @@ use App\Models\CanselOrderHoursDay;
 use App\Models\Captain;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
+use App\Models\CarType;
 use App\Models\Hour;
 use App\Models\OrderHour;
 use App\Models\SaveRentHour;
@@ -99,8 +100,8 @@ class OrderHourController extends Controller
                 'commit' => $request->commit,
                 'date_created' => Carbon::now()->format('Y-m-d'),
                 'time_duration' => $hour_id->number_hours,
-                'car_type_id'=>$request->car_type_id,
-                'status_price'=>$request->status_price,
+                'car_type_id' => $request->car_type_id,
+                'status_price' => $request->status_price,
 
             ]);
 
@@ -112,16 +113,11 @@ class OrderHourController extends Controller
 
 
                 createInFirebaseHours($request->user_id, $request->captain_id, $data->id);
-
-
             }
             return $this->successResponse(new OrdersHoursResources($data), 'Data created successfully');
-
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
-
-
     }
 
 
@@ -181,12 +177,9 @@ class OrderHourController extends Controller
             sendNotificationUser($data->user_id, 'تم حجز الرحله بنجاح', 'حجز الرحله', true);
 
             return $this->successResponse(new OrdersSaveHoursResources($data), 'Data created successfully');
-
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
-
-
     }
 
 
@@ -206,7 +199,6 @@ class OrderHourController extends Controller
         sendNotificationUser($orders->user_id, 'تم الغاء الرحله', 'الغاء الحجز', true);
 
         return $this->successResponse('Data cancel successfully');
-
     }
 
     public function update(Request $request)
@@ -331,8 +323,6 @@ class OrderHourController extends Controller
         $validator = Validator::make($request->all(), [
             'order_code' => 'required|exists:order_hours,order_code',
             'hour_id' => 'required|exists:hours,id',
-            'price' => 'required',
-            'value' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -341,6 +331,7 @@ class OrderHourController extends Controller
 
         try {
             $findOrder = OrderHour::where('order_code', $request->order_code)->first();
+            $carType = CarType::where('id', $findOrder->car_type_id)->first();
             $hour_id = Hour::findOrfail($request->hour_id);
 
             $data = UserDuration::create([
@@ -348,8 +339,8 @@ class OrderHourController extends Controller
                 'order_hour_id' => $findOrder->id,
                 'type_order' => 'hours',
                 'hour_id' => $request->hour_id,
-                'price' => $request->price,
-                'value' => $request->value,
+                'price' => $findOrder->status_price == "premium" ? $findOrder->price + $carType->price_premium : $findOrder->price + $carType->price_normal,
+                'value' => $hour_id->number_hours,
             ]);
 
 
@@ -357,16 +348,15 @@ class OrderHourController extends Controller
                 sendNotificationUser($findOrder->user_id, 'تم اضافه المده الجديده بنجاح', 'تمديد المده', true);
 
                 $findOrder->update([
-                    'total_price' => $findOrder->total_price + $request->price,
+                    'total_price' => $findOrder->status_price == "premium" ? $findOrder->price + $carType->price_premium : $findOrder->price + $carType->price_normal,
                     'hour_id' => $request->hour_id,
                     'time_duration' => $findOrder->time_duration + $hour_id->number_hours,
                     // السعر قبل الخصم
-                    'notes1'=>$findOrder->notes1 + $hour_id->offer_price,
+                    'notes1' => $findOrder->status_price == "premium" ? ($findOrder->notes1 + $carType->before_price_premium) : ($findOrder->notes1 + $carType->before_price_normal),
                     // السعر بعد الخصم الخصم
-                    'notes2'=>$findOrder->notes2+ $hour_id->discount_hours,
+                    'notes2' => $findOrder->status_price == "premium" ? ($findOrder->notes2 + $carType->discount_price_premium) : ($findOrder->notes2 + $carType->discount_price_normal),
                 ]);
             }
-
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
