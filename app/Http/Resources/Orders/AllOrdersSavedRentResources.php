@@ -23,7 +23,7 @@ class AllOrdersSavedRentResources extends JsonResource
             'trip_type_id' => new TripTypeResources($this->trip_type),
             'typeOrders' => $this->hour_id == true ? "OrderHours" : "OrderDay",
             'hour_id' => $this->hour_id == true ? new HoursResources($this->hour) : null,
-            'car_type' => $this->car_type_id == true ? new CarTypeResources($this->car_type) : null,
+            'car_type' => $this->hour_id == true ? new CarTypeResources($this->car_type) : null,
             'order_code' => $this->order_code ?? null,
             'total_price' => $this->total_price ?? null,
             'chat_id' => $this->chat_id ?? null,
