@@ -14,6 +14,10 @@ class CarType extends Model
         'status',
         'price_normal',
         'price_premium',
+        'before_price_normal',
+        'discount_price_normal',
+        'discount_price_premium',
+        'before_price_premium',
     ];
 
     public function status()
