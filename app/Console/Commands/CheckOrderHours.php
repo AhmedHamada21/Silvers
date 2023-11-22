@@ -33,7 +33,7 @@ class CheckOrderHours extends Command
         if ($ordersSaveHours->count() > 0) {
             foreach ($ordersSaveHours as $ordersSaveHour) {
                 $orders = SaveRentHour::findorfail($ordersSaveHour->id);
-                $check = UserSaveRend::where('user_id',$orders->user_id)->where('save_rent_hour_id',$orders->id)->first();
+                $check = UserSaveRend::where('user_id', $orders->user_id)->where('save_rent_hour_id', $orders->id)->first();
                 if ($ordersSaveHour->status == 'cancel') {
                     $ordersSaveHour->delete();
                     $this->comment('Deleted Orders status cancel');
@@ -46,7 +46,7 @@ class CheckOrderHours extends Command
 
                     if ($timeDifferenceInMinutes == 20) {
 
-                        if(!$check){
+                        if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
                             sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         }
@@ -56,16 +56,16 @@ class CheckOrderHours extends Command
                     }
 
                     if ($timeDifferenceInMinutes == 10) {
-                        if(!$check){
+                        if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
                             sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         }
                         $orders->update([
                             'status' => "accepted"
-                        ]);;
+                        ]);
                     }
                     if ($timeDifferenceInMinutes == 5) {
-                        if(!$check){
+                        if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
                             sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         }
@@ -74,7 +74,7 @@ class CheckOrderHours extends Command
                         ]);
                     }
                     if ($timeDifferenceInMinutes == 1) {
-                        if(!$check){
+                        if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
                             sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
                         }
@@ -87,23 +87,16 @@ class CheckOrderHours extends Command
                 }
 
 
-
-
-
                 // Check Time Out
 
                 $dataCheck = $ordersSaveHour->data . $ordersSaveHour->hours_from;
                 $dataCheckTimeOut = Carbon::parse($dataCheck)->addMinutes(20)->format('Y-m-d g:i A');
-                $dataNowCheckTimeOut =Carbon::now()->format('Y-m-d g:i A');
+                $dataNowCheckTimeOut = Carbon::now()->format('Y-m-d g:i A');
 
-                if ($dataCheckTimeOut == $dataNowCheckTimeOut){
+                if ($dataCheckTimeOut == $dataNowCheckTimeOut) {
                     sendNotificationUser($ordersSaveHour->user_id, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
                     $ordersSaveHour->delete();
                 }
-
-
-
-
 
 
                 //Check Orders Sub Dayes
@@ -112,7 +105,7 @@ class CheckOrderHours extends Command
 
                 $dataSub = Carbon::now()->subDay()->format('Y-m-d');
                 $checks = $dataCheck == $dataSub;
-                if ($checks == true){
+                if ($checks == true) {
                     sendNotificationUser($ordersSaveHour->user_id, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
                     $ordersSaveHour->delete();
                 }
