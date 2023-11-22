@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\OrderDay;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -19,6 +20,7 @@ class ModifiedDayNotify extends Command
             ->select('id', 'user_id', 'captain_id', 'order_code', 'start_day', 'end_day', 'number_day', 'start_time')
             ->get();
         foreach ($order_days as $order_day) {
+            $orders = OrderDay::findorfail($order_day->id);
             $check = DB::table('user_save_rends')->where('order_day_id', $order_day->id)->where('user_id', $order_day->user_id)->first();
             $startTime = Carbon::parse($order_day->start_time);
             $modifiedStartTime = $startTime->subMinutes(20)->format('h:i A');
@@ -26,11 +28,17 @@ class ModifiedDayNotify extends Command
                 if (!$check) {
                     sendNotificationUser($order_day->user_id, 'هل ترغب تمديد المده ', 'تمديد الرحله', true);
                     createInFirebaseDay($order_day->user_id, $order_day->captain_id, $order_day->id);
+
                     $this->info('Created User Notification Successfuly and Push firebase');
                     UserSaveRend::create([
                         'order_day_id' => $order_day->id,
                         'user_id' => $order_day->user_id,
                         'notify_status' => true
+                    ]);
+
+
+                    $orders->update([
+                        "type_duration" => "active",
                     ]);
                 }
                 $this->info('Created UserSaveRend Successfuly');
