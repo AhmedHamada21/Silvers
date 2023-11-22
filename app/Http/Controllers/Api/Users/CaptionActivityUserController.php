@@ -202,7 +202,6 @@ class CaptionActivityUserController extends Controller
 
             if (!empty($carTypes)) {
                 $carTypeCaptains = CarsCaption::whereIn('car_type_id', [$carTypes])->pluck('captain_id')->toArray();
-                dd($carTypeCaptains);
                 $captains->whereIn('captain_id', $carTypeCaptains);
                 dd($captains);
             }
