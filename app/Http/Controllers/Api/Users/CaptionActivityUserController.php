@@ -141,33 +141,37 @@ class CaptionActivityUserController extends Controller
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
             $radius = 50;
-            $categoryCars = $request->category_car_id;
+            $categoryCars = in_array($request->category_car_id, [1, 2]) ? [1, 2] : [3, 4];
             $carTypes = $request->car_type_id;
-
+        
             $captains = CaptionActivity::where('status_captain_work', 'active')
                 ->where('status_captain', 'active')
                 ->where('type_captain', 'active')
                 ->selectRaw("*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
                 ->having('distance', '<', $radius);
-
-            if ($categoryCars) {
-                $captains->whereIn('captain_id', CarsCaption::where('category_car_id', $categoryCars)->pluck('id'));
+        
+            if (!empty($categoryCars)) {
+                $captains->whereIn('captain_id', CarsCaption::whereIn('category_car_id', $categoryCars)->pluck('id'));
             }
-
-            if ($carTypes) {
+        
+            if (!empty($carTypes)) {
                 $captains->whereIn('captain_id', CarType::whereIn('category_car_id', $carTypes)->pluck('id'));
             }
-
-            if ($categoryCars && $carTypes) {
-                $captains->whereIn('captain_id', CarType::whereIn('category_car_id', $categoryCars)->get()->concat(CarsCaption::whereIn('category_car_id', $carTypes)->get())->pluck('id'));
+        
+            if (!empty($categoryCars) && !empty($carTypes)) {
+                $captains->whereIn('captain_id', CarType::whereIn('category_car_id', $categoryCars)
+                    ->pluck('id')
+                    ->concat(CarsCaption::whereIn('category_car_id', $carTypes)->pluck('id'))
+                );
             }
-
+        
             $captains = $captains->orderBy('distance')->get();
-
+        
             return $this->successResponse(CaptionActivityUserResources::collection($captains), 'Data returned successfully');
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
+        
     }
 
 }
