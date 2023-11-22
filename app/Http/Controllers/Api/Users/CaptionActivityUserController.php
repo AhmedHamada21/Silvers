@@ -155,7 +155,7 @@ class CaptionActivityUserController extends Controller
             }
         
             if (!empty($carTypes)) {
-                $captains->whereIn('captain_id', CarType::whereIn('category_car_id', $carTypes)->pluck('id'));
+                $captains->whereIn('captain_id', CarsCaption::whereIn('category_car_id', $carTypes)->pluck('id'));
             }
         
             if (!empty($categoryCars) && !empty($carTypes)) {
