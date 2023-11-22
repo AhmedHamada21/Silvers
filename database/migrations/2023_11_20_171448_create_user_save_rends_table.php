@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('save_rent_day_id')->nullable()->constrained('save_rent_days','id')->cascadeOnUpdate()->cascadeOnUpdate();
             $table->foreignId('save_rent_hour_id')->nullable()->constrained('save_rent_hours','id')->cascadeOnUpdate()->cascadeOnUpdate();
             $table->boolean('notify_status')->comment('User Notification Status Active or Not Active');
+            $table->foreignId('order_day_id')->nullable()->constrained('order_days','id')->cascadeOnUpdate()->cascadeOnUpdate();
+            $table->foreignId('order_hour_id')->nullable()->constrained('order_hours','id')->cascadeOnUpdate()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

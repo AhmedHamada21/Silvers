@@ -13,6 +13,8 @@ class UserSaveRend extends Model
         'user_id',
         'save_rent_day_id',
         'save_rent_hour_id',
-        'notify_status'
+        'notify_status',
+        'order_day_id',
+        'order_hour_id',
     ];
 }
