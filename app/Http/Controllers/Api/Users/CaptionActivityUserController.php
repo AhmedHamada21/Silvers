@@ -202,6 +202,7 @@ class CaptionActivityUserController extends Controller
 
             if (!empty($carTypes)) {
                 $captains->whereIn('captain_id',CarsCaption::whereIn('car_type_id',$carTypes)->pluck('id'));
+                dd($captains);
             }
 
             $captains = $captains->orderBy('distance')->get();
