@@ -54,22 +54,27 @@ class OrderController extends Controller
 
         $orders = Order::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
+            ->orderByDesc('date_created')
             ->paginate(5);
 
         $orderSavesHours = SaveRentHour::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
+            ->orderByDesc('date_created')
             ->paginate(5);
 
         $orderSaveDay = SaveRentDay::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
+            ->orderByDesc('date_created')
             ->paginate(5);
 
         $orderHours = OrderHour::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
+            ->orderByDesc('date_created')
             ->paginate(5);
 
         $orderDay = OrderDay::where('user_id', $userId)
             ->whereIn('status', ['done', 'cancel'])
+            ->orderByDesc('date_created')
             ->paginate(5);
 
         $dataAllOrders = $orders->concat($orderHours)->concat($orderDay)->concat($orderSavesHours)->concat($orderSaveDay);
