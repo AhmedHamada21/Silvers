@@ -145,31 +145,30 @@ class CaptionActivityUserController extends Controller
             $carTypes = ($request->car_type_id == 1) ? 1 : (($request->car_type_id == 2) ? 2 : null);
         
             $captains = CaptionActivity::where('status_captain_work', 'active')
-                ->where('status_captain', 'active')
-                ->where('type_captain', 'active')
-                ->selectRaw("*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
-                ->having('distance', '<', $radius);
-
-
+            ->where('status_captain', 'active')
+            ->where('type_captain', 'active')
+            ->selectRaw("*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
+            ->whereRaw("(6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) < $radius");
         
-            if (!empty($categoryCars)) {
-                $captains->whereIn('captain_id', CarsCaption::whereIn('category_car_id', $categoryCars)->pluck('id'));
-            }
+        if (!empty($categoryCars)) {
+            $captains->whereIn('captain_id', CarsCaption::whereIn('category_car_id', $categoryCars)->pluck('id'));
+        }
         
-            if (!empty($carTypes)) {
-                $captains->whereIn('captain_id', CarsCaption::whereIn('car_type_id', $carTypes)->pluck('id'));
-            }
+        if (!empty($carTypes)) {
+            $captains->whereIn('captain_id', CarsCaption::whereIn('car_type_id', $carTypes)->pluck('id'));
+        }
         
-            if (!empty($categoryCars) && !empty($carTypes)) {
-                $captains->whereIn('captain_id', CarsCaption::whereIn('category_car_id', $categoryCars)
-                    ->pluck('id')
-                    ->concat(CarsCaption::whereIn('category_car_id', $carTypes)->pluck('id'))
-                );
-            }
+        if (!empty($categoryCars) && !empty($carTypes)) {
+            $captains->whereIn('captain_id', CarsCaption::whereIn('category_car_id', $categoryCars)
+                ->pluck('id')
+                ->concat(CarsCaption::whereIn('category_car_id', $carTypes)->pluck('id'))
+            );
+        }
         
-            $captains = $captains->orderBy('distance')->get();
+        $captains = $captains->orderBy('distance')->get();
         
-            return $this->successResponse(CaptionActivityUserResources::collection($captains), 'Data returned successfully');
+        return $this->successResponse(CaptionActivityUserResources::collection($captains), 'Data returned successfully');
+        
         // } catch (\Exception $exception) {
         //     return $this->errorResponse('Something went wrong, please try again later');
         // }
