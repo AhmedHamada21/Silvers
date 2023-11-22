@@ -508,22 +508,22 @@ class OrdersController extends Controller
 
         $ordersHourSaved = SaveRentHour::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
-            ->orderBy('date_created', 'DESC')
+            ->orderByDesc('date_created')
             ->get();
         
         $ordersDaySaved = SaveRentDay::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
-            ->orderBy('date_created', 'DESC')
+            ->orderByDesc('date_created')
             ->get();
         
         $ordersHours = OrderHour::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
-            ->orderBy('date_created', 'DESC')
+            ->orderByDesc('date_created')
             ->get();
         
         $ordersDay = OrderDay::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
-            ->orderBy('date_created', 'DESC')
+            ->orderByDesc('date_created')
             ->get();
         
         $data = $ordersHourSaved->union($ordersDaySaved)->union($ordersHours)->union($ordersDay);
