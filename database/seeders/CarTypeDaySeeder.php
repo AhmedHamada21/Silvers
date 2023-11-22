@@ -21,19 +21,16 @@ class CarTypeDaySeeder extends Seeder
         CarTypeDay::create([
             'name' => 'سيدان',
             'status' => true,
-            'before_price_normal' => 250,
-            'discount_price_normal' => 50,
-            'discount_price_premium' => 100,
-            'before_price_premium' => 350,
+            'price_normal' => 250,
+            'price_premium' => 100,
+    
         ]);
 
         CarTypeDay::create([
             'name' => 'Suv',
             'status' => true,
-            'before_price_normal' => 350,
-            'discount_price_normal' => 50,
-            'discount_price_premium' => 200,
-            'before_price_premium' => 450,
+            'price_normal' => 350,
+            'price_premium' => 200,
         ]);
 
 

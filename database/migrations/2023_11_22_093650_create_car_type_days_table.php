@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->boolean('status')->default(false);
-            $table->string('before_price_normal')->nullable();
-            $table->string('discount_price_normal')->nullable();
-            $table->string('discount_price_premium')->nullable();
-            $table->string('before_price_premium')->nullable();
+            $table->string('price_normal')->nullable();
+            $table->string('price_premium')->nullable();
             $table->timestamps();
         });
     }

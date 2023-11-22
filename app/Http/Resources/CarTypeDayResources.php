@@ -20,10 +20,6 @@ class CarTypeDayResources extends JsonResource
             'status' => $this->status(),
             'price_normal' => $this->price_normal,
             'price_premium' => $this->price_premium,
-            'before_price_normal' => $this->before_price_normal,
-            'discount_price_normal' => $this->discount_price_normal,
-            'discount_price_premium' => $this->discount_price_premium,
-            'before_price_premium' => $this->before_price_premium,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at
