@@ -142,7 +142,7 @@ class CaptionActivityUserController extends Controller
             $longitude = $request->input('longitude');
             $radius = 50;
             $categoryCars = in_array($request->category_car_id, [1, 2]) ? [1, 2] : [3, 4];
-            $carTypes = is_array($request->car_type_id) ? $request->car_type_id : $request->car_type_id;
+            $carTypes = $request->car_type_id == 1 ? 1 : 2;
         
             $captains = CaptionActivity::where('status_captain_work', 'active')
                 ->where('status_captain', 'active')
