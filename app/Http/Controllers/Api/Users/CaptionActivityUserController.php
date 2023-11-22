@@ -214,7 +214,7 @@ class CaptionActivityUserController extends Controller
 
             if (!empty($categoryCars) && !empty($carTypes)) {
                 $categoryCaptions = CarsCaption::whereIn('category_car_id', $categoryCars)->pluck('captain_id')->toArray();
-                $carTypeCaptains = CarsCaption::whereIn('car_type_id', $carTypes)->pluck('captain_id')->toArray();
+                $carTypeCaptains = CarsCaption::whereIn('car_type_id', [$carTypes])->pluck('captain_id')->toArray();
                 $combinedCaptains = array_merge($categoryCaptions, $carTypeCaptains);
                 $captains->whereIn('captain_id', $combinedCaptains);
             }
