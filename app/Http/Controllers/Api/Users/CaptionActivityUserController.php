@@ -125,6 +125,57 @@ class CaptionActivityUserController extends Controller
     //    }
 
 
+//    public function captionActivity(Request $request)
+//    {
+//        $validator = Validator::make($request->all(), [
+//            'latitude' => 'required',
+//            'longitude' => 'required',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return $this->errorResponse($validator->errors()->first(), 422);
+//        }
+//
+//        // try {
+//        $latitude = $request->input('latitude');
+//        $longitude = $request->input('longitude');
+//        $radius = 50;
+//        $categoryCars = in_array($request->category_car_id, [1, 2]) ? [1, 2] : [3, 4];
+//        $carTypes = $request->car_type_id;
+//
+//        $captains = CaptionActivity::where('status_captain_work', 'active')
+//            ->where('status_captain', 'active')
+//            ->where('type_captain', 'active')
+//            ->selectRaw("*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
+//            ->whereRaw("(6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) < $radius");
+//
+//        if (!empty($categoryCars)) {
+//            $captains->whereIn('captain_id', CarsCaption::whereIn('category_car_id', $categoryCars)->pluck('id'));
+//        }
+//
+//        if (!empty($carTypes)) {
+//            $captains->whereIn('captain_id', CarsCaption::whereIn('car_type_id', $carTypes)->pluck('id'));
+//        }
+//
+//        if (!empty($categoryCars) && !empty($carTypes)) {
+//            $captains->whereIn(
+//                'captain_id',
+//                CarsCaption::whereIn('category_car_id', $categoryCars)
+//                    ->pluck('id')
+//                    ->concat(CarsCaption::whereIn('category_car_id', $carTypes)->pluck('id'))
+//            );
+//        }
+//
+//        $captains = $captains->orderBy('distance')->get();
+//
+//        return $this->successResponse(CaptionActivityUserResources::collection($captains), 'Data returned successfully');
+//
+//        // } catch (\Exception $exception) {
+//        //     return $this->errorResponse('Something went wrong, please try again later');
+//        // }
+//
+//    }
+
     public function captionActivity(Request $request)
     {
         $validator = Validator::make($request->all(), [
