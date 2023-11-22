@@ -191,7 +191,7 @@ class CaptionActivityUserController extends Controller
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
             $radius = 50;
-            $categoryCars = $request->category_car_id;
+            $categoryCars = $request->category_car_id == 1 ? [1, 2] : [3, 4];
             $carTypes = $request->car_type_id;
 
             $captains = CaptionActivity::where('status_captain_work', 'active')
@@ -199,6 +199,13 @@ class CaptionActivityUserController extends Controller
                 ->where('type_captain', 'active')
                 ->selectRaw("*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
                 ->whereRaw("(6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) < $radius");
+
+
+            if (!empty($categoryCars)) {
+                dd($categoryCars);
+                $categoryCaptions = CarsCaption::where('category_car_id', $categoryCars)->pluck('captain_id')->toArray();
+                $captains->whereIn('captain_id', $categoryCaptions);
+            }
 
             if (!empty($carTypes)) {
                 $carTypeCaptains = CarsCaption::whereIn('car_type_id', [$carTypes])->pluck('captain_id')->toArray();
