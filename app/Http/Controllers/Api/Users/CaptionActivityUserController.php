@@ -137,7 +137,7 @@ class CaptionActivityUserController extends Controller
             return $this->errorResponse($validator->errors()->first(), 422);
         }
 
-        try {
+        // try {
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
             $radius = 50;
@@ -169,9 +169,9 @@ class CaptionActivityUserController extends Controller
             $captains = $captains->orderBy('distance')->get();
         
             return $this->successResponse(CaptionActivityUserResources::collection($captains), 'Data returned successfully');
-        } catch (\Exception $exception) {
-            return $this->errorResponse('Something went wrong, please try again later');
-        }
+        // } catch (\Exception $exception) {
+        //     return $this->errorResponse('Something went wrong, please try again later');
+        // }
         
     }
 
