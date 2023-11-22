@@ -328,6 +328,7 @@ class OrderDayController extends Controller
         }
 
         try {
+
             $findOrder = OrderDay::where('order_code', $request->order_code)->first();
             $carType = CarTypeDay::findorfail($findOrder->car_type_day_id);
             $data = UserDuration::create([
@@ -343,7 +344,8 @@ class OrderDayController extends Controller
 
                 $findOrder->update([
                     'total_price' => $findOrder->status_price == "premium" ? $findOrder->total_price + ($request->value * $carType->price_premium) : $findOrder->total_price + ($carType->price_normal * $request->value),
-                    'number_day' => $request->value,
+                    'number_day' => $findOrder->number_day + $request->value,
+                    'end_day' => Carbon::parse($findOrder->end_day)->addDays($request->value)->toDateString(),
                 ]);
             }
         } catch (\Exception $exception) {
