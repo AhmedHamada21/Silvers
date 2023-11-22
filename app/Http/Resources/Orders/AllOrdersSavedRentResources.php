@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Orders;
 
+use App\Http\Resources\CarTypeDayResources;
 use App\Http\Resources\CarTypeResources;
 use App\Http\Resources\HoursResources;
 use App\Http\Resources\TripTypeResources;
@@ -24,8 +25,8 @@ class AllOrdersSavedRentResources extends JsonResource
             'trip_type_id' => new TripTypeResources($this->trip_type),
             'typeOrders' => $this->hour_id == true ? "OrderHours" : "OrderDay",
             'hour_id' => $this->hour_id == true ? new HoursResources($this->hour) : null,
-            'car_type' => $this->hour_id == true ? new CarTypeResources($this->car_type) : null,
-            'status_price' => $this->hour_id == true ? $this->status_price : null,
+            'car_type' => $this->hour_id == true ? new CarTypeResources($this->car_type) :  new CarTypeDayResources($this->car_type_day),
+            'status_price' => $this->hour_id == true ? $this->status_price : $this->status_price,
             'order_code' => $this->order_code ?? null,
             'total_price' => $this->total_price ?? null,
             'chat_id' => $this->chat_id ?? null,
@@ -40,7 +41,7 @@ class AllOrdersSavedRentResources extends JsonResource
             'start_time' => $this->start_time ?? null,
             'data' => $this->data ?? null,
             'hours_from' => $this->hours_from ?? null,
-            'commit'=>$this->commit,
+            'commit' => $this->commit,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at
