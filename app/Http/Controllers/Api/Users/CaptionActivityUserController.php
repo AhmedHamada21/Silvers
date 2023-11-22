@@ -142,7 +142,7 @@ class CaptionActivityUserController extends Controller
             $longitude = $request->input('longitude');
             $radius = 50;
             $categoryCars = in_array($request->category_car_id, [1, 2]) ? [1, 2] : [3, 4];
-            $carTypes = $request->car_type_id == 1 ? 1 : 2;
+            $carTypes = ($request->car_type_id == 1) ? 1 : (($request->car_type_id == 2) ? 2 : null);
         
             $captains = CaptionActivity::where('status_captain_work', 'active')
                 ->where('status_captain', 'active')
@@ -157,7 +157,7 @@ class CaptionActivityUserController extends Controller
             }
         
             if (!empty($carTypes)) {
-                $captains->whereIn('captain_id', CarsCaption::where('car_type_id', $carTypes)->pluck('id'));
+                $captains->whereIn('captain_id', CarsCaption::whereIn('car_type_id', $carTypes)->pluck('id'));
             }
         
             if (!empty($categoryCars) && !empty($carTypes)) {
