@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
     {
          $schedule->command('app:check-order-hours')->everyTwoMinutes();
          $schedule->command('app:check-order-day')->everyTwoMinutes();
+         $schedule->command('app:modified-day-notify')->everyTwoMinutes();
+         $schedule->command('app:modified-hour-notify')->everyTwoMinutes();
     }
 
     /**
