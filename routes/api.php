@@ -51,6 +51,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('carType/{id}', [CarTypeController::class, 'show']);
 
     // TripType ::
+    Route::get('carTypeday', [CarTypeController::class, 'index_day']);
+    Route::get('carType/{id}', [CarTypeController::class, 'show_day']);
+
+    // TripType ::
     Route::get('categoryCar', [CategoryCarController::class, 'index']);
     Route::get('categoryCar/{id}', [CategoryCarController::class, 'show']);
 
