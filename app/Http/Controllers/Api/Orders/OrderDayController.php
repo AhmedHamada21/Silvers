@@ -9,6 +9,7 @@ use App\Models\CanselOrderHoursDay;
 use App\Models\Captain;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
+use App\Models\CarTypeDay;
 use App\Models\OrderDay;
 use App\Models\SaveRentDay;
 use App\Models\Traits\Api\ApiResponseTrait;
@@ -50,6 +51,8 @@ class OrderDayController extends Controller
             'captain_id' => 'required|exists:captains,id',
             'total_price' => 'required|numeric',
             'payments' => 'required|in:cash,masterCard,wallet',
+            'car_type_day_id' => 'required|exists:car_type_days,id',
+            'status_price' => 'required|in:premium,normal',
             'lat_user' => 'required',
             'long_user' => 'required',
             'address_now' => 'required',
@@ -73,57 +76,57 @@ class OrderDayController extends Controller
         }
         try {
 
-        $latestOrderId = optional(OrderDay::latest()->first())->id;
-        $orderCode = 'orderD_' . $latestOrderId . generateRandomString(5);
-        $chatId = 'chatD_' . generateRandomString(4);
-        $user = User::findorfail($request->user_id);
-        $caption = Captain::findorfail($request->captain_id);
-        $data = OrderDay::create([
-            'address_now' => $request->address_now,
-            'user_id' => $request->user_id,
-            'captain_id' => $request->captain_id,
-            'trip_type_id' => 3,
-            'order_code' => $orderCode,
-            'total_price' => $request->total_price,
-            'chat_id' => $chatId,
-            'status' => 'pending',
-            'payments' => $request->payments,
-            'lat_user' => $request->lat_user,
-            'long_user' => $request->long_user,
-            'start_day' => $request->start_day,
-            'end_day' => $request->end_day,
-            'number_day' => $request->number_day,
-            'start_time' => $request->start_time,
-            'commit' => $request->commit,
-            'date_created' => Carbon::now()->format('Y-m-d'),
+            $latestOrderId = optional(OrderDay::latest()->first())->id;
+            $orderCode = 'orderD_' . $latestOrderId . generateRandomString(5);
+            $chatId = 'chatD_' . generateRandomString(4);
+            $user = User::findorfail($request->user_id);
+            $caption = Captain::findorfail($request->captain_id);
+            $data = OrderDay::create([
+                'address_now' => $request->address_now,
+                'user_id' => $request->user_id,
+                'captain_id' => $request->captain_id,
+                'trip_type_id' => 3,
+                'order_code' => $orderCode,
+                'total_price' => $request->total_price,
+                'chat_id' => $chatId,
+                'status' => 'pending',
+                'payments' => $request->payments,
+                'lat_user' => $request->lat_user,
+                'long_user' => $request->long_user,
+                'start_day' => $request->start_day,
+                'end_day' => $request->end_day,
+                'number_day' => $request->number_day,
+                'start_time' => $request->start_time,
+                'commit' => $request->commit,
+                'type_duration' => 'inactive',
+                'date_created' => Carbon::now()->format('Y-m-d'),
+                'car_type_day_id' => $request->car_type_day_id,
+                'status_price' => $request->status_price,
 
 
-        ]);
+            ]);
 
-        if ($data) {
+            if ($data) {
 
-            sendNotificationCaptain($request->captain_id, 'تم قبول الرحله من قبل العميل  ' . $user->name, 'رحله جديده', true);
-            sendNotificationUser($request->user_id, 'تم قبول الرحله من قبل الكابتن ' . $caption->name, 'رحله جديده', true);
-
-
-            createInFirebaseDay($request->user_id, $request->captain_id, $data->id);
+                sendNotificationCaptain($request->captain_id, 'تم قبول الرحله من قبل العميل  ' . $user->name, 'رحله جديده', true);
+                sendNotificationUser($request->user_id, 'تم قبول الرحله من قبل الكابتن ' . $caption->name, 'رحله جديده', true);
 
 
-        }
-        return $this->successResponse(new OrdersDayResources($data), 'Data created successfully');
-
+                createInFirebaseDay($request->user_id, $request->captain_id, $data->id);
+            }
+            return $this->successResponse(new OrdersDayResources($data), 'Data created successfully');
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
-
-
     }
 
     public function saveDay(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
+            'car_type_day_id' => 'required|exists:car_type_days,id',
             'total_price' => 'required|numeric',
+            'status_price' => 'required|in:premium,normal',
             'payments' => 'required|in:cash,masterCard,wallet',
             'lat_user' => 'required',
             'long_user' => 'required',
@@ -142,7 +145,6 @@ class OrderDayController extends Controller
 
         if (SaveRentDay::where('user_id', $request->user_id)->whereNotIn('status', ['done', 'cancel', 'accepted'])->where('start_day', $request->start_day)->where('end_day', $request->end_day)->first()) {
             return $this->errorResponse('There is a flight already booked for the same date');
-
         }
 
         $user = User::findOrfail($request->user_id);
@@ -169,18 +171,17 @@ class OrderDayController extends Controller
                 'number_day' => $request->number_day,
                 'start_time' => $request->start_time,
                 'commit' => $request->commit,
+                'car_type_day_id' => $request->car_type_day_id,
+                'status_price' => $request->status_price,
 
 
             ]);
             sendNotificationUser($data->user_id, 'تم حجز الرحله بنجاح', 'حجز الرحله', true);
 
             return $this->successResponse(new OrdersSaveDayResources($data), 'Data created successfully');
-
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
-
-
     }
 
     public function update(Request $request)
@@ -313,14 +314,12 @@ class OrderDayController extends Controller
             'status' => 'cancel'
         ]);
         return $this->successResponse('Data cancel successfully');
-
     }
 
     public function UserDuration(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'order_code' => 'required|exists:order_days,order_code',
-            'price' => 'required',
             'value' => 'required',
         ]);
 
@@ -330,24 +329,23 @@ class OrderDayController extends Controller
 
         try {
             $findOrder = OrderDay::where('order_code', $request->order_code)->first();
-
+            $carType = CarTypeDay::findorfail($findOrder->car_type_day_id);
             $data = UserDuration::create([
                 'user_id' => auth('users-api')->id(),
                 'order_day_id' => $findOrder->id,
                 'type_order' => 'day',
-                'price' => $request->price,
+                'price' => $findOrder->status_price == "premium" ?  $carType->price_premium : $carType->price_normal,
                 'value' => $request->value,
             ]);
 
-            if ($data){
+            if ($data) {
                 sendNotificationUser($findOrder->user_id, 'تم اضافه المده الجديده بنجاح', 'تمديد المده', true);
 
                 $findOrder->update([
-                    'total_price'=> $findOrder->total_price + $request->price,
-                    'number_day'=>$request->value,
+                    'total_price' => $findOrder->status_price == "premium" ? $findOrder->total_price + ($request->value * $carType->price_premium) : $findOrder->total_price + ($carType->price_normal * $request->value),
+                    'number_day' => $request->value,
                 ]);
             }
-
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }

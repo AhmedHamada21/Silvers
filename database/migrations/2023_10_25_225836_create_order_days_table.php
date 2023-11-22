@@ -29,6 +29,9 @@ return new class extends Migration {
             $table->string('start_time')->nullable()->comment('وقت البدايه');
             $table->string('commit')->nullable();
             $table->string('date_created')->nullable();
+            $table->enum('type_duration', ['active', 'inactive'])->default('inactive');
+            $table->foreignId('car_type_day_id')->constrained('car_type_days')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->enum('status_price',['premium','normal']);
             $table->timestamps();
         });
     }

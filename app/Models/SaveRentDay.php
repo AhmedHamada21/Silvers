@@ -24,6 +24,8 @@ class SaveRentDay extends Model
         'number_day',
         'start_time',
         'commit',
+        'car_type_day_id',
+        'status_price',
     ];
 
     public function user()
@@ -35,5 +37,10 @@ class SaveRentDay extends Model
     public function trip_type()
     {
         return $this->belongsTo(TripType::class, 'trip_type_id');
+    }
+
+    public function car_type_day()
+    {
+        return $this->belongsTo(CarTypeDay::class, 'car_type_day_id');
     }
 }

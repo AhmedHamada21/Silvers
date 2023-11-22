@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('trip_type_id')->constrained('trip_types')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('car_type_day_id')->constrained('car_type_days')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('order_code');
             $table->string('total_price');
             $table->string('lat_user');
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->string('number_day')->nullable()->comment('عدد الايام');
             $table->string('start_time')->nullable()->comment('وقت البدايه');
             $table->string('commit')->nullable();
+            $table->enum('status_price',['premium','normal']);
             $table->timestamps();
         });
     }

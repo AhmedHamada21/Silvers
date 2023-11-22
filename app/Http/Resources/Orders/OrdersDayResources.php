@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Orders;
 
+use App\Http\Resources\CarTypeDayResources;
 use App\Http\Resources\Drivers\CaptionResources;
 use App\Http\Resources\TripTypeResources;
 use App\Http\Resources\Users\UsersResources;
@@ -35,9 +36,10 @@ class OrdersDayResources extends JsonResource
             'start_time'=>$this->start_time,
             'commit'=>$this->commit,
             'type_duration'=>$this->type_duration,
-
-
-
+            'status_price'=>$this->status_price,
+            'type_duration'=>$this->type_duration,
+            'car_type_day'=> new CarTypeDayResources($this->car_type_day),
+    
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

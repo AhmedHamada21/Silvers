@@ -26,7 +26,9 @@ class OrderDay extends Model
         'start_time',
         'commit',
         'date_created',
-        'type_duration',
+        'type_duration',   
+        'car_type_day_id',
+        'status_price',
     ];
 
     public function user()
@@ -47,5 +49,11 @@ class OrderDay extends Model
     public function scopeByCaptain($query, $captainId)
     {
         return $query->where('captain_id', $captainId);
+    }
+
+    
+    public function car_type_day()
+    {
+        return $this->belongsTo(CarTypeDay::class, 'car_type_day_id');
     }
 }
