@@ -201,7 +201,7 @@ class CaptionActivityUserController extends Controller
                 ->whereRaw("(6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) < $radius");
 
             if (!empty($carTypes)) {
-                $carTypeCaptains = CarsCaption::whereIn('car_type_id', $carTypes)->pluck('captain_id')->toArray();
+                $carTypeCaptains = CarsCaption::whereIn('car_type_id', [$carTypes])->pluck('captain_id')->toArray();
                 dd($carTypeCaptains);
                 $captains->whereIn('captain_id', $carTypeCaptains);
                 dd($captains);
