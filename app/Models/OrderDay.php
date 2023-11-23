@@ -26,7 +26,7 @@ class OrderDay extends Model
         'start_time',
         'commit',
         'date_created',
-        'type_duration',   
+        'type_duration',
         'car_type_day_id',
         'status_price',
     ];
@@ -51,9 +51,36 @@ class OrderDay extends Model
         return $query->where('captain_id', $captainId);
     }
 
-    
+
     public function car_type_day()
     {
         return $this->belongsTo(CarTypeDay::class, 'car_type_day_id');
+    }
+
+
+    public function status()
+    {
+        $result = "";
+        switch ($this->status) {
+            case 'done':
+                $result = "تم اتمام الرحله بنجاح";
+                break;
+            case 'waiting':
+                $result = "في انتظارك";
+                break;
+            case 'pending':
+                $result = "تم طلب الرحله";
+                break;
+            case 'cancel':
+                $result = "تم الغاء الرحله بنجاح";
+                break;
+            case 'accepted':
+                $result = "تم الوصول";
+                break;
+            default:
+                // Handle any other cases or provide a default action
+                break;
+        }
+        return $result;
     }
 }

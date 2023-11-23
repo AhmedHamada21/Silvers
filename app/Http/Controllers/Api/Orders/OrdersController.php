@@ -344,8 +344,8 @@ class OrdersController extends Controller
     {
         $order->update(['status' => $status]);
 
-        sendNotificationUser($order->user_id, 'تغير حاله الطلب', $status, true);
-        sendNotificationCaptain($order->captain_id, 'تغير حاله الطلب', $status, true);
+        sendNotificationUser($order->user_id, 'تغير حاله الطلب', $order->status(), true);
+        sendNotificationCaptain($order->captain_id, 'تغير حاله الطلب', $order->status(), true);
     }
 
     private function updateUserProfile($userId)
@@ -510,25 +510,25 @@ class OrdersController extends Controller
             ->whereIn('status', ['pending', 'accepted'])
             ->orderBy('id', 'DESC')
             ->get();
-        
+
         $ordersDaySaved = SaveRentDay::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
             ->orderBy('id', 'DESC')
             ->get();
-        
+
         $ordersHours = OrderHour::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
             ->orderBy('id', 'DESC')
             ->get();
-        
+
         $ordersDay = OrderDay::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'accepted'])
             ->orderByDesc('date_created')
             ->get();
-        
+
         $data = $ordersHourSaved->union($ordersDaySaved)->union($ordersHours)->union($ordersDay);
-        
+
         return $this->successResponse(AllOrdersSavedRentResources::collection($data), 'Data returned successfully');
-        
+
     }
 }

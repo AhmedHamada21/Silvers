@@ -227,8 +227,8 @@ class OrderDayController extends Controller
     {
         $order->update(['status' => $status]);
 
-        sendNotificationUser($order->user_id, 'تغير حاله الطلب', $status, true);
-        sendNotificationCaptain($order->captain_id, 'تغير حاله الطلب', $status, true);
+        sendNotificationUser($order->user_id, 'تغير حاله الطلب', $order->status(), true);
+        sendNotificationCaptain($order->captain_id, 'تغير حاله الطلب', $order->status(), true);
     }
 
 

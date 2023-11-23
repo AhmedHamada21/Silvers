@@ -57,4 +57,30 @@ class OrderHour extends Model
     {
         return $query->where('captain_id', $captainId);
     }
+
+    public function status()
+    {
+        $result = "";
+        switch ($this->status) {
+            case 'done':
+                $result = "تم اتمام الرحله بنجاح";
+                break;
+            case 'waiting':
+                $result = "في انتظارك";
+                break;
+            case 'pending':
+                $result = "تم طلب الرحله";
+                break;
+            case 'cancel':
+                $result = "تم الغاء الرحله بنجاح";
+                break;
+            case 'accepted':
+                $result = "تم الوصول";
+                break;
+            default:
+                // Handle any other cases or provide a default action
+                break;
+        }
+        return $result;
+    }
 }
