@@ -16,7 +16,7 @@ class ModifiedHourNotify extends Command
     {
         // Get All Orders Hour ::
         $order_hours = DB::table('order_hours')
-            ->where('status', 'done')
+            ->where('status', 'accepted')
             ->where('data', Carbon::now()->format('Y-m-d'))
             ->join('hours', 'order_hours.hour_id', '=', 'hours.id')
             ->select(
@@ -32,12 +32,11 @@ class ModifiedHourNotify extends Command
             ->get();
         foreach ($order_hours as $order_hour) {
             $check = DB::table('user_save_rends')->where('order_hour_id', $order_hour->id)->where('user_id', $order_hour->user_id)->first();
-            //dd($check);
+
             $timeCut = str_replace('pm', '', $order_hour->hours_from);
             $orderTime = Carbon::parse($timeCut);
             $totalHours = $orderTime->addHours($order_hour->number_hours)->subMinutes(15)->format('h:i');
             $checkTime = $totalHours == Carbon::now()->format('h:i');
-            //dd($totalHours);
             if ($checkTime) {
                 if (!$check) {
                     UserSaveRend::create([
