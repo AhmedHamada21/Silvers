@@ -193,7 +193,7 @@ if (!function_exists("getStatisticsGoogle")) {
             "origin" => $latUser . ',' . $longUser,
             "destination" => $latDriver . ',' . $longDriver,
             "language" => "en",
-            "key" => "AIzaSyCSGP2IG1S0M2-Nt9Pr_yDQmrjjysoH4Ek"
+            "key" => "AIzaSyC7utopx-MvNoEyiNdeerXgv3vpQFq9k7U"
         ]);
 
         if ($response->ok()) {
