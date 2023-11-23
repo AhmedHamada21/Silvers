@@ -99,7 +99,7 @@ class CheckOrderHours extends Command
 
                 if ($dataCheckTimeOut == $dataNowCheckTimeOut) {
                     sendNotificationUser($ordersSaveHour->user_id, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
-                    $ordersSaveHour->delete();
+                    $orders->delete();
                 }
 
 
@@ -111,7 +111,7 @@ class CheckOrderHours extends Command
                 $checks = $dataCheck == $dataSub;
                 if ($checks == true) {
                     sendNotificationUser($ordersSaveHour->user_id, 'لقد تم الغاء الرحله لعدم التأكيد', 'الغاء الرحله', true);
-                    $ordersSaveHour->delete();
+                    $orders->delete();
                 }
 
 
