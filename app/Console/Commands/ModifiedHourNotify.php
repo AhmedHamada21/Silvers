@@ -36,7 +36,7 @@ class ModifiedHourNotify extends Command
             $timeCut = str_replace('pm', '', $order_hour->hours_from);
             $orderTime = Carbon::parse($timeCut);
             $totalHours = $orderTime->addHours($order_hour->number_hours)->subMinutes(15)->format('h:i');
-            dd($totalHours);
+//            dd($totalHours);
             $checkTime = $totalHours == Carbon::now()->format('h:i');
             if ($checkTime) {
                 if (!$check) {
