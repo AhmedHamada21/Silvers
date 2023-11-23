@@ -81,7 +81,7 @@ class OrderHourController extends Controller
 
             $user = User::findorfail($request->user_id);
             $caption = Captain::findorfail($request->captain_id);
-
+            $carType = CarType::where('id', $request->car_type_id)->first();
             $data = OrderHour::create([
                 'hour_id' => $request->hour_id,
                 'address_now' => $request->address_now,
@@ -102,7 +102,8 @@ class OrderHourController extends Controller
                 'time_duration' => $hour_id->number_hours,
                 'car_type_id' => $request->car_type_id,
                 'status_price' => $request->status_price,
-
+                'notes1' => $request->status_price == "premium" ? $carType->before_price_premium : $carType->before_price_normal,
+                'notes2' => $request->status_price == "premium" ? $carType->discount_price_premium : $carType->discount_price_normal,
             ]);
 
             if ($data) {
@@ -339,13 +340,15 @@ class OrderHourController extends Controller
                 'order_hour_id' => $findOrder->id,
                 'type_order' => 'hours',
                 'hour_id' => $request->hour_id,
-                'price' => $findOrder->status_price == "premium" ?  $carType->price_premium : $carType->price_normal,
+                'price' => $findOrder->status_price == "premium" ? $carType->price_premium : $carType->price_normal,
                 'value' => $hour_id->number_hours,
             ]);
 
 
             if ($data) {
                 sendNotificationUser($findOrder->user_id, 'تم اضافه المده الجديده بنجاح', 'تمديد المده', true);
+                sendNotificationCaptain($findOrder->captain_id, 'لقد تم تمديد المده بنجاح', 'تمديد المده', true);
+                sendNotationsFirebase($findOrder->id);
 
                 $findOrder->update([
                     'total_price' => $findOrder->status_price == "premium" ? $findOrder->total_price + $carType->price_premium : $findOrder->total_price + $carType->price_normal,

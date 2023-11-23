@@ -231,7 +231,7 @@ if (!function_exists('getTotalAmountDay')) {
             ->where('captain_id', $id_caption)
             ->sum('total_price');
 
-        $totalOrders = $ordersTotal +  $ordersTotalHours +  $ordersTotalDay;
+        $totalOrders = $ordersTotal + $ordersTotalHours + $ordersTotalDay;
 
         return number_format($totalOrders - ($totalOrders * $commission), 2);
     }
@@ -244,7 +244,7 @@ if (!function_exists('getTotalAmount')) {
         $commissionPercentage = \App\Models\Settings::first()->company_commission ?? 0;
         $commission = $commissionPercentage / 100;
         $dailyTotal = \App\Models\Order::findorfail($id_order);
-        if ($dailyTotal){
+        if ($dailyTotal) {
             $ordersTotal = 0;
             $ordersTotal += $dailyTotal->total_price;
             return number_format($ordersTotal - ($ordersTotal * $commission), 2);
@@ -260,14 +260,14 @@ if (!function_exists('getTotalAmountCaptions')) {
         $commissionPercentage = \App\Models\Settings::first()->company_commission ?? 0;
         $commission = $commissionPercentage / 100;
 
-        $dailyTotal = \App\Models\Order::where('order_code',$id_order)->first();
+        $dailyTotal = \App\Models\Order::where('order_code', $id_order)->first();
 
         if (!$dailyTotal) {
-            $dailyTotal = \App\Models\OrderDay::where('order_code',$id_order)->first();
+            $dailyTotal = \App\Models\OrderDay::where('order_code', $id_order)->first();
         }
 
         if (!$dailyTotal) {
-            $dailyTotal = \App\Models\OrderHour::where('order_code',$id_order)->first();
+            $dailyTotal = \App\Models\OrderHour::where('order_code', $id_order)->first();
         }
 
         if ($dailyTotal) {
@@ -424,11 +424,29 @@ if (!function_exists('getImageCaption')) {
     {
         $caption = Captain::findorfail($id);
         $name_image = DB::table('images')->where('imageable_type', 'App\Models\Captain')->where('photo_type', 'personal_avatar')->where('imageable_id', $id)->first();
-        if ($name_image){
+        if ($name_image) {
             $captainFolderName = str_replace(' ', '_', $caption->name) . '_' . $caption->captainProfile->uuid;
-            return asset('dashboard/img/' . $captainFolderName . '/' . 'personal' .'/' .$name_image->filename);
+            return asset('dashboard/img/' . $captainFolderName . '/' . 'personal' . '/' . $name_image->filename);
 
         }
-       return  null;
+        return null;
+    }
+}
+
+
+if (!function_exists('sendNotationsFirebase')) {
+    function sendNotationsFirebase($order_id)
+    {
+        $order = \App\Models\OrderHour::findorfail($order_id);
+        $response = Http::post('https://s9ylu6er-tri0yngle-tripu-0zy32-default-rtdb.firebaseio.com/' . $order->order_code . '.json', [
+            "order_code" => $order->order_code,
+            "total_price" => $order->total_price,
+            "user_id" => $order->user_id,
+            "captain_id" => $order->captain_id,
+        ]);
+        if ($response->ok()) {
+            return true;
+        }
+        return false;
     }
 }

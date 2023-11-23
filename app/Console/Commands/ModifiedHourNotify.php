@@ -50,9 +50,10 @@ class ModifiedHourNotify extends Command
                     $order_hour_model->update([
                         "type_duration" => 'active',
                     ]);
+
                     $this->info('Update OrderHour Status Successfuly');
                     sendNotificationUser($order_hour->user_id, 'هل ترغب تمديد المده ', 'تمديد الرحله', true);
-                    createInFirebaseHours($order_hour->user_id, $order_hour->captain_id, $order_hour->id);
+                    sendNotationsFirebase($order_hour->id);
                     echo "UserId: " . "Order ID: " . $order_hour->id . " - Modified Hour: " . $totalHours . PHP_EOL;
                 }
             }
