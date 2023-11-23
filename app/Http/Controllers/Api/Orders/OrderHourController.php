@@ -347,7 +347,7 @@ class OrderHourController extends Controller
 
             if ($data) {
                 sendNotificationUser($findOrder->user_id, 'تم اضافه المده الجديده بنجاح', 'تمديد المده', true);
-                sendNotificationCaptain($findOrder->captain_id, 'لقد تم تمديد المده بنجاح', 'تمديد المده', true);
+                sendNotificationCaptain($findOrder->captain_id, "لقد تم تمديد المده  {$hour_id->number_hours}  ساعات بنجاح", 'تمديد المده', true);
                 sendNotationsFirebase($findOrder->id);
 
                 $findOrder->update([

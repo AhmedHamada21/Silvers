@@ -15,7 +15,7 @@ class ModifiedDayNotify extends Command
     public function handle()
     {
         // Get All Orders Days ::
-        $order_days = DB::table('order_days')->where('status', 'done')
+        $order_days = DB::table('order_days')->where('status', 'accepted')
             ->where('end_day', Carbon::now()->format('Y-m-d'))
             ->select('id', 'user_id', 'captain_id', 'order_code', 'start_day', 'end_day', 'number_day', 'start_time')
             ->get();
@@ -27,8 +27,7 @@ class ModifiedDayNotify extends Command
             if ($order_day->end_day == date('Y-m-d') && $modifiedStartTime == now()->format('h:i A')) {
                 if (!$check) {
                     sendNotificationUser($order_day->user_id, 'هل ترغب تمديد المده ', 'تمديد الرحله', true);
-                    createInFirebaseDay($order_day->user_id, $order_day->captain_id, $order_day->id);
-
+                    sendNotationsFirebase($order_day->id);
                     $this->info('Created User Notification Successfuly and Push firebase');
                     UserSaveRend::create([
                         'order_day_id' => $order_day->id,

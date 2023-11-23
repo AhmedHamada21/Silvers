@@ -28,8 +28,7 @@ class ModifiedHourNotify extends Command
                 'order_hours.hour_id',
                 'hours.price_hours',
                 'hours.number_hours'
-            )
-            ->get();
+            ) ->get();
         foreach ($order_hours as $order_hour) {
             $check = DB::table('user_save_rends')->where('order_hour_id', $order_hour->id)->where('user_id', $order_hour->user_id)->first();
 

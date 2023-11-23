@@ -341,6 +341,7 @@ class OrderDayController extends Controller
 
             if ($data) {
                 sendNotificationUser($findOrder->user_id, 'تم اضافه المده الجديده بنجاح', 'تمديد المده', true);
+                sendNotificationCaptain($findOrder->captain_id, "لقد تم تمديد المده  {$request->value}  ساعات بنجاح", 'تمديد المده', true);
 
                 $findOrder->update([
                     'total_price' => $findOrder->status_price == "premium" ? $findOrder->total_price + ($request->value * $carType->price_premium) : $findOrder->total_price + ($carType->price_normal * $request->value),
