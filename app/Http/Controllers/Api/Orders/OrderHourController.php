@@ -351,6 +351,7 @@ class OrderHourController extends Controller
                 sendNotationsFirebase($findOrder->id);
 
                 $findOrder->update([
+                    'type_duration'=> "inactive",
                     'total_price' => $findOrder->status_price == "premium" ? $findOrder->total_price + $carType->price_premium : $findOrder->total_price + $carType->price_normal,
                     'hour_id' => $request->hour_id,
                     'time_duration' => $findOrder->time_duration + $hour_id->number_hours,
