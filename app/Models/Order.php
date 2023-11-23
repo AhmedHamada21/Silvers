@@ -79,7 +79,7 @@ class Order extends Model
                 $result = "تم اتمام الرحله بنجاح";
                 break;
             case 'waiting':
-                $result = "في انتظارك";
+                $result = "تم الوصول";
                 break;
             case 'pending':
                 $result = "تم طلب الرحله";
@@ -88,7 +88,7 @@ class Order extends Model
                 $result = "تم الغاء الرحله بنجاح";
                 break;
             case 'accepted':
-                $result = "تم الوصول";
+                $result = "بدأ الرحله";
                 break;
             default:
                 // Handle any other cases or provide a default action
