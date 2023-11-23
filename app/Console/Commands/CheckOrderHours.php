@@ -44,7 +44,7 @@ class CheckOrderHours extends Command
 
                     $timeDifferenceInMinutes = Carbon::now()->diffInMinutes($ordersSaveHour->hours_from);
 
-                    if ($timeDifferenceInMinutes == 20) {
+                    if ($timeDifferenceInMinutes == 19) { // 20
 
                         if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
@@ -55,7 +55,7 @@ class CheckOrderHours extends Command
                         ]);
                     }
 
-                    if ($timeDifferenceInMinutes == 10) {
+                    if ($timeDifferenceInMinutes == 9) { // 10 M
                         if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
                             sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
@@ -64,7 +64,7 @@ class CheckOrderHours extends Command
                             'status' => "accepted"
                         ]);
                     }
-                    if ($timeDifferenceInMinutes == 5) {
+                    if ($timeDifferenceInMinutes == 4) { // 5 M
                         if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
                             sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
