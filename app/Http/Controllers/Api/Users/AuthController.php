@@ -79,7 +79,7 @@ class AuthController extends Controller
             'tokenable_id' => $information2->id,
             'name' => $information2->name,
             'token' => $token,
-            'expires_at' => auth('users-api')->factory()->getTTL() * 60,
+            'expires_at' => auth('users-api')->factory()->getTTL() * 60000000,
         ]);
 
         return $this->createNewToken($token);
@@ -158,7 +158,7 @@ class AuthController extends Controller
             'tokenable_id' => $information->id,
             'name' => $information->name,
             'token' => $token,
-            'expires_at' => auth('users-api')->factory()->getTTL() * 60000,
+            'expires_at' => auth('users-api')->factory()->getTTL() * 60000000,
         ]);
 
         return $this->createNewToken($token);
@@ -187,7 +187,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('users-api')->factory()->getTTL() * 80000000,
+            'expires_in' => auth('users-api')->factory()->getTTL() * 60000000,
             'user' => new UsersResources(auth('users-api')->user())
         ]);
     }
