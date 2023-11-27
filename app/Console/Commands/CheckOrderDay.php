@@ -47,6 +47,7 @@ class CheckOrderDay extends Command
                         if(!$check){
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_day_id' => $orders->id]);
                             sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+
                         }
                         $orders->update([
                             'status' => "accepted"

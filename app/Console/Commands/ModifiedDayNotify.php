@@ -27,7 +27,7 @@ class ModifiedDayNotify extends Command
             if ($order_day->end_day == date('Y-m-d') && $modifiedStartTime == now()->format('h:i A')) {
                 if (!$check) {
                     sendNotificationUser($order_day->user_id, 'هل ترغب تمديد المده ', 'تمديد الرحله', true);
-                    sendNotationsFirebase($order_day->id);
+                    sendNotationsFirebaseDay($order_day->id);
                     $this->info('Created User Notification Successfuly and Push firebase');
                     UserSaveRend::create([
                         'order_day_id' => $order_day->id,

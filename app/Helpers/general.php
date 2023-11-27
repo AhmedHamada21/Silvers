@@ -450,3 +450,19 @@ if (!function_exists('sendNotationsFirebase')) {
         return false;
     }
 }
+if (!function_exists('sendNotationsFirebaseDay')) {
+    function sendNotationsFirebaseDay($order_id)
+    {
+        $order = \App\Models\OrderDay::findorfail($order_id);
+        $response = Http::post('https://s9ylu6er-tri0yngle-tripu-0zy32-default-rtdb.firebaseio.com/' . $order->order_code . '.json', [
+            "order_code" => $order->order_code,
+            "total_price" => $order->total_price,
+            "user_id" => $order->user_id,
+            "captain_id" => $order->captain_id,
+        ]);
+        if ($response->ok()) {
+            return true;
+        }
+        return false;
+    }
+}
