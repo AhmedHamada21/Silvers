@@ -6,7 +6,7 @@ use App\Models\{Settings, SettingPeekTimeFee};
 use Illuminate\Support\Facades\DB;
 class SettingsController extends Controller {
     public function index() {
-        return view('dashboard.admin.settings.index', ['title' => 'Main Settings','setting' => Settings::first()]);
+        return view('dashboard.admin.settings.index', ['title' => 'Main Settings','setting' => Settings::latest()->first()]);
     }
 
     public function update(Request $request) {
@@ -21,7 +21,7 @@ class SettingsController extends Controller {
             'waiting_price' => 2,
             'country_tax' => 10,
             'kilo_price' => 5,
-            'api_secret_key' => fake()->name(),
+            //'api_secret_key' => fake()->name(),
             'ocean' => 2,
             'company_commission' => 5,
             'company_tax' => 6,], $settingData);
