@@ -33,4 +33,8 @@ class Agent extends Authenticatable implements JWTSubject {
     public function getJWTCustomClaims() {
         return [];
     }
+
+    public function scopeActive() {
+        return $this->whereStatus('active')->get();
+    }
 }

@@ -198,6 +198,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
         'Country' => App\Models\Country::class,
         'CarMake' => App\Models\CarMake::class,
+        'Captain' => App\Models\Captain::class,
     ])->toArray(),
 
 ];

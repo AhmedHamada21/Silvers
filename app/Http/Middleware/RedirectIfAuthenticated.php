@@ -13,24 +13,26 @@ class RedirectIfAuthenticated
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
-    public function handle(Request $request, Closure $next, string ...$guards): Response {
+    public function handle(Request $request, Closure $next, string ...$guards): Response
+    {
         $guards = empty($guards) ? [null] : $guards;
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 if ($guard === 'admin') {
                     return redirect(RouteServiceProvider::ADMIN_DASHBOARD);
-                }
-                elseif($guard === 'employee') {
+                } elseif ($guard === 'employee') {
                     return redirect(RouteServiceProvider::EMPLOYEE_DASHBOARD);
-                }
-                elseif($guard === 'company') {
+                } elseif ($guard === 'company') {
                     return redirect(RouteServiceProvider::COMPANY_DASHBOARD);
-                } elseif($guard === 'agent') {
+                } elseif ($guard === 'agent') {
                     return redirect(RouteServiceProvider::AGENT_DASHBOARD);
+
+                } elseif ($guard === 'call-center') {
+                    return redirect(RouteServiceProvider::CALL_CENTER_DASHBOARD);
                 }
-                
+
             }
         }
         return $next($request);

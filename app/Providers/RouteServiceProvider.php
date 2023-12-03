@@ -22,6 +22,7 @@ class RouteServiceProvider extends ServiceProvider
     public const EMPLOYEE_DASHBOARD = '/employee/dashboard';
     public const COMPANY_DASHBOARD = '/company/dashboard';
     public const AGENT_DASHBOARD = '/agent/dashboard';
+    public const CALL_CENTER_DASHBOARD = '/callCenter/dashboard';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -40,6 +41,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')->group(base_path('routes/dashboard/employee.php'));
             Route::middleware('web')->group(base_path('routes/dashboard/company.php'));
             Route::middleware('web')->group(base_path('routes/dashboard/agent.php'));
+            Route::middleware('web')->group(base_path('routes/dashboard/callCenter.php'));
         });
     }
 }

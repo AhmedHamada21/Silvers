@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\{Company,Employee,Agent,Admin};
+use App\Http\Controllers\Auth\{Company,Employee,Agent,Admin, CallCenter};
 // Admins ::
 Route::middleware('guest:admin')->prefix('admin')->group(function () {
     Route::get('login', [Admin\AdminAuthenticatedSessionController::class, 'create'])->name('admin.login');
@@ -39,4 +39,14 @@ Route::middleware('guest:agent')->prefix('agent')->group(function () {
 
 Route::middleware('auth:agent')->prefix('agent')->group(function () {
     Route::post('logout', [Agent\AgentAuthenticatedSessionController::class, 'destroy'])->name('agent.logout');
+});
+
+// Call-Center ::
+Route::middleware('guest:call-center')->prefix('callCenter')->group(function () {
+    Route::get('login', [CallCenter\CallCenterAuthenticatedSessionController::class, 'create'])->name('callCenter.login');
+    Route::post('login', [CallCenter\CallCenterAuthenticatedSessionController::class, 'store']);
+});
+
+Route::middleware('auth:call-center')->prefix('callCenter')->group(function () {
+    Route::post('logout', [CallCenter\CallCenterAuthenticatedSessionController::class, 'destroy'])->name('callCenter.logout');
 });
