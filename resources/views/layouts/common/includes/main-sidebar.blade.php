@@ -7,5 +7,7 @@
         @include('layouts.common.includes.sidebar.company_sidebar')
     @elseif (auth('agent')->check())
         @include('layouts.common.includes.sidebar.agent_sidebar')
+    @elseif (auth('call-center')->check())
+        @include('layouts.common.includes.sidebar.call-center_sidebar')
     @endif
 </div>

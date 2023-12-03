@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
             CompaniesTableSeeder::class,
             EmployeeTableSeeder::class,
+            CallcenterSeeder::class,
             CaptainTableSeeder::class,
             CarMakeAndModelSeeder::class,
             TripTypeSeeder::class,

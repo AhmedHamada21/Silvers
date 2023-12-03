@@ -16,6 +16,16 @@ Route::group(
         Route::resource('admins', Admin\AdminController::class);
         Route::post('admins/{adminId}/update-password', [Admin\AdminController::class, 'updatePassword'])->name('admins.update-password');
 
+        // Call-Center ::
+        Route::resource('callCenters', Admin\CallCenterController::class);
+        Route::post('callCenters/{callCentereId}/update-password', [Admin\CallCenterController::class, 'updatePassword'])->name('callCenters.update-password');
+        Route::post('callCenters/update-status/{id}', [Admin\CallCenterController::class, 'updateStatus'])->name('callCenters.updateStatus');
+        Route::post('callCenters/{callCentereId}/update-status', [Admin\CallCenterController::class, 'updateStatus'])->name('callCenters.update-status');
+        Route::post('callCenters/{callCentereId}/update-type', [Admin\CallCenterController::class, 'updateType'])->name('callCenters.update-type');
+        Route::get('activity', [Admin\CallCenterActivityController::class, 'getActivity'])->name('callCenters.activity');
+
+        // Attendances ::
+        Route::resource('attendances', Admin\AttendaceController::class);
 
         // users ::
         Route::resource('users', Admin\UserController::class);
@@ -40,7 +50,7 @@ Route::group(
         Route::get('captains/{captainId}/notifications', [Admin\CaptainController::class, 'notifications'])->name('captains.notifications');
         Route::post('captains/{captainId}/sendNotifications', [Admin\CaptainController::class, 'sendNotifications'])->name('captains.sendNotifications');
         Route::get('captains/{captainId}/getCaptainActivity', [Admin\CaptainController::class, 'getCaptainActivity'])->name('captains.activity');
-        
+
         Route::post('/captains/upload-media', [Admin\CaptainController::class, 'uploadPersonalMedia'])->name('captains.uploadMedia');
         Route::post('/captains/update-media-status/{id}', [Admin\CaptainController::class, 'updatePersonalMediaStatus'])->name('captains.updateMediaStatus');
 
