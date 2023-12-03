@@ -31,7 +31,7 @@ Route::group(['prefix' => 'order', 'middleware' => 'auth:users-api,captain-api']
         Route::post('canselHours', [OrderHourController::class, 'canselHours']);
         Route::post('createOrder', [OrderHourController::class, 'store']);
 //        Route::post('updateStatus', [OrderHourController::class, 'update']);
-        Route::post('canselOrder', [OrderHourController::class, 'canselOrder']);
+//        Route::post('canselOrder', [OrderHourController::class, 'canselOrder']);
         Route::post('UserDuration', [OrderHourController::class, 'UserDuration']);
     });
 
@@ -41,7 +41,7 @@ Route::group(['prefix' => 'order', 'middleware' => 'auth:users-api,captain-api']
         Route::post('createOrder', [OrderDayController::class, 'store']);
         Route::post('saveDay', [OrderDayController::class, 'saveDay']);
 //        Route::post('updateStatus', [OrderDayController::class, 'update']);
-        Route::post('canselOrder', [OrderDayController::class, 'canselOrder']);
+//        Route::post('canselOrder', [OrderDayController::class, 'canselOrder']);
         Route::post('canselDay', [OrderDayController::class, 'canselDay']);
         Route::post('UserDuration', [OrderDayController::class, 'UserDuration']);
     });
