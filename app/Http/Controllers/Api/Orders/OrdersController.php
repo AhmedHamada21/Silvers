@@ -91,9 +91,9 @@ class OrdersController extends Controller
 
         $type = $request->type;
 
-        $orderQuery = Order::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
-        $orderQuery2 = OrderHour::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
-        $orderQuery3 = OrderDay::whereNotIn('status', ['done', 'cancel', 'accepted'])->latest();
+        $orderQuery = Order::whereNotIn('status', ['done', 'cancel'])->latest();
+        $orderQuery2 = OrderHour::whereNotIn('status', ['done', 'cancel'])->latest();
+        $orderQuery3 = OrderDay::whereNotIn('status', ['done', 'cancel'])->latest();
 
         $captainIdFromOrder = $orderQuery->pluck('captain_id')->first();
         $captainIdFromOrderHour = $orderQuery2->pluck('captain_id')->first();
