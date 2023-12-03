@@ -24,7 +24,7 @@ class CallCenterDataTable extends BaseDataTable {
                 return $this->formatBadge($this->formatDate($callCenter->updated_at));
             })
             ->editColumn('name', function (Callcenter $callCenter) {
-                return '<a href="' . route('callCenters.show', $callCenter->profile->uuid) . '">' . $callCenter->name . '</a>';
+                return '<a href="' . route('callCenters.show', $callCenter->profile->uuid) . '">' . $callCenter->name . '</a>' ?? null;
             })
             ->editColumn('status', function (Callcenter $callCenter) {
                 return $this->formatStatus($callCenter->status);
