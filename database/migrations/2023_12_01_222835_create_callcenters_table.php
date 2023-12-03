@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('last_seen')->nullable()->after('type');
+            $table->timestamp('last_seen')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->foreignId('admin_id')->nullable()->constrained('admins')->cascadeOnDelete();
             $table->foreignId('agent_id')->nullable()->constrained('agents')->cascadeOnDelete();
