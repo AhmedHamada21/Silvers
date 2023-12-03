@@ -15,7 +15,7 @@ Route::group(['prefix' => 'order', 'middleware' => 'auth:users-api,captain-api']
     Route::post('updateStatus', [OrdersController::class, 'update']);
     Route::post('takingOrder', [OrdersController::class, 'takingOrder']);
     Route::post('takingCompleted', [OrdersController::class, 'takingCompleted']);
-    Route::post('canselOrder', [OrdersController::class, 'canselOrder']);
+    Route::post('canselOrder', [OrdersController::class, 'cancelOrder']);
     // Deleted Orders
 //    Route::post('deletedOrder', [OrdersController::class, 'deletedOrder']);
     Route::post('checkOrder', [OrdersController::class, 'checkOrder']);
