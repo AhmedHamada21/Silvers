@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Drivers\CaptionResources;
 use App\Models\Captain;
 use App\Models\CaptionActivity;
+use App\Models\OtpMessages;
 use App\Models\Traits\Api\ApiResponseTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -320,7 +321,7 @@ class DriverAuthController extends Controller
             $user = Captain::findorfail(auth('captain-api')->id());
 
             if (Hash::check($request->password, $user->password)) {
-                DB::table('personal_access_tokens')->where('tokenable_type','App\Models\Captain')->where('tokenable_id',$user->id)->delete();
+                DB::table('personal_access_tokens')->where('tokenable_type', 'App\Models\Captain')->where('tokenable_id', $user->id)->delete();
                 $user->delete();
                 return $this->successResponse('', 'Deleted Captain Successfully');
             }
@@ -329,6 +330,68 @@ class DriverAuthController extends Controller
             return $this->errorResponse('Something went wrong, please try again later');
         }
 
+    }
 
+    public function sendOtp(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+            'type' => 'required|in:caption',
+            'status' => 'required|in:new,forget',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+
+        try {
+
+            $data = OtpMessages::create([
+                'type' => 'caption',
+                'status' => $request->status,
+                'code' => generateRandomString(5),
+                'date' => date('Y-m-d'),
+                'phone' => $request->phone,
+            ]);
+
+            if ($data) {
+                sendTemplate($data->phone, $data->code);
+                saveWhatsapp($data->phone,$data->code);
+                return $this->successResponse('', 'Send Messages successfully');
+            }
+
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+
+        }
+    }
+
+
+    public function checkPhoneMessages(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+            'type' => 'required|in:caption',
+            'code' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+
+        try {
+            $check = OtpMessages::where('type', 'caption')->where('phone', $request->phone)->first();
+            if ($check) {
+                $code = $check->code == $request->code;
+                if ($code){
+                    return $this->successResponse('', 'successfully');
+                }else{
+                    return $this->errorResponse('Code Error please try again later');
+                }
+            }
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+
+        }
     }
 }

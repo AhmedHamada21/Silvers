@@ -26,6 +26,8 @@ Route::group([
     Route::post('/change-password', [DriverAuthController::class, 'changePassword']);
     Route::post('restPassword', [DriverAuthController::class, 'restPassword']);
     Route::post('checkPhone', [DriverAuthController::class, 'checkPhone']);
+    Route::post('sendOtp', [DriverAuthController::class, 'sendOtp']);
+    Route::post('checkPhoneMessages', [DriverAuthController::class, 'checkPhoneMessages']);
     Route::post('deleted', [DriverAuthController::class, 'deleted']);
 });
 

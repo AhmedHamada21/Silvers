@@ -466,3 +466,104 @@ if (!function_exists('sendNotationsFirebaseDay')) {
         return false;
     }
 }
+
+if (!function_exists('generateRandomString')) {
+    function generateRandomString($length = 5)
+    {
+        $characters = '0123456789';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+}
+
+
+if (!function_exists('baseUrl')) {
+    function baseUrl($data)
+    {
+        $response = Http::withOptions([
+            'verify' => false,
+        ])->withHeaders([
+            "Authorization" => "Bearer " . env('TOKEN_WHATSAPP'),
+            "Content-Type" => "application/json",
+        ])->withBody(json_encode($data), 'application/json')->post('https://graph.facebook.com/' . env('VERSION_WHATSAPP') . '/' . env('PHONE_ID_WHATSAPP') . '/messages');
+
+        if ($response->status() == 200) {
+            return response()->json("data Send", 200);
+        } else {
+            return response()->json("data Error Send Messages", 400);
+        }
+    }
+}
+
+
+if (!function_exists('sendTemplate')) {
+    function sendTemplate($phone, $code)
+    {
+
+        $data = [
+            "messaging_product" => "whatsapp",
+            "recipient_type" => "individual",
+            "to" => $phone,
+            "type" => "template",
+            "template" => [
+                "name" => env('NAME_TEMPLATE'),
+                "language" => [
+                    "code" => "en_US"
+                ]
+            ],
+            "components" =>
+                [
+                    [
+                        "type" => "header",
+                        "parameters" => [
+                            [
+                                "type" => "image",
+                                "image" => [
+                                    "link" => "https://tripu.net/finshWebsite/images/%D8%A7%D9%84%D8%AA%D8%B3%D9%84%D9%8A%D9%85/%D8%A7%D9%84%D8%AA%D8%B3%D9%84%D9%8A%D9%85/%D9%85%D9%88%D9%83%D8%A7%D8%A8/noBackground.png"
+                                ]
+                            ]
+                        ]
+
+                    ],
+                    "type" => "body",
+                    "parameters" => [
+                        [
+                            "type" => "text",
+                            "text" => $code,
+                        ]
+                    ]
+                ]
+
+        ];
+
+        if ($data) {
+            $responseData = baseUrl($data);
+            if ($responseData) {
+                return response()->json("data Send Messages", 200);
+            } else {
+                return response()->json("data Error Send Messages", 400);
+            }
+        }
+        return false;
+    }
+}
+
+
+if (!function_exists('saveWhatsapp')){
+    function saveWhatsapp($phone,$code_messages)
+    {
+        $response = Http::post('',[
+            "phone" => $phone,
+            'code' => "silver",
+            'code_messages' => $code_messages,
+        ]);
+
+        if ($response->ok()){
+            return true;
+        }
+    }
+}

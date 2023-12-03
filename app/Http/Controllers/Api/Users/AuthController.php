@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Users\UsersResources;
+use App\Models\OtpMessages;
 use App\Models\Traits\Api\ApiResponseTrait;
 use App\Models\User;
 use App\Models\UserProfile;
@@ -342,5 +343,69 @@ class AuthController extends Controller
             return $this->successResponse('', 'Deleted Users Successfully');
         }
         return $this->successResponse('', 'Error');
+    }
+
+
+    public function sendOtp(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+            'type' => 'required|in:user',
+            'status' => 'required|in:new,forget',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+
+        try {
+
+            $data = OtpMessages::create([
+                'type' => 'user',
+                'status' => $request->status,
+                'code' => generateRandomString(5),
+                'date' => date('Y-m-d'),
+                'phone' => $request->phone,
+            ]);
+
+            if ($data) {
+                sendTemplate($data->phone, $data->code);
+                saveWhatsapp($data->phone,$data->code);
+                return $this->successResponse('', 'Send Messages successfully');
+            }
+
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+
+        }
+    }
+
+
+    public function checkPhoneMessages(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+            'type' => 'required|in:user',
+            'code' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+
+        try {
+            $check = OtpMessages::where('type', 'user')->where('phone', $request->phone)->first();
+            if ($check) {
+                $code = $check->code == $request->code;
+                if ($code){
+                    return $this->successResponse('', 'successfully');
+                }else{
+                    return $this->errorResponse('Code Error please try again later');
+                }
+            }
+        } catch (\Exception $exception) {
+            return $this->errorResponse('Something went wrong, please try again later');
+
+        }
     }
 }

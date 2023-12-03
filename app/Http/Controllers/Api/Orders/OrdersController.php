@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api\Orders;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Orders\AllOrdersSavedRentResources;
+use App\Http\Resources\Orders\OrdersDayResources;
+use App\Http\Resources\Orders\OrdersHoursResources;
 use App\Http\Resources\Orders\OrdersResources;
 use App\Models\CanselOrder;
+use App\Models\CanselOrderHoursDay;
 use App\Models\Captain;
 use App\Models\CaptainProfile;
 use App\Models\CaptionActivity;
@@ -22,6 +25,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use function Symfony\Component\String\b;
 
 class OrdersController extends Controller
 {
@@ -83,8 +87,6 @@ class OrdersController extends Controller
         if ($validator->fails()) {
             return $this->errorResponse($validator->errors(), 400);
         }
-
-
 
 
         $type = $request->type;
@@ -195,6 +197,7 @@ class OrdersController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'order_code' => 'required|exists:orders,order_code',
+            'type_order' => 'required|in:order,orderHours,orderDay'
 
         ]);
         if ($validator->fails()) {
@@ -202,9 +205,22 @@ class OrdersController extends Controller
         }
 
         try {
+            switch ($request->type_order) {
+                case 'order':
+                    $order = Order::where('order_code', $request->order_code)->firstOrFail();
+                    return $this->successResponse(new OrdersResources($order), 'data returned successfully');
 
-            $order = Order::where('order_code', $request->order_code)->firstOrFail();
-            return $this->successResponse(new OrdersResources($order), 'data return successfully');
+                case 'orderHours':
+                    $orderHour = OrderHour::where('order_code', $request->order_code)->firstOrFail();
+                    return $this->successResponse(new OrdersHoursResources($orderHour), 'data returned successfully');
+
+                case 'orderDay':
+                    $orderDay = OrderDay::where('order_code', $request->order_code)->firstOrFail();
+                    return $this->successResponse(new OrdersDayResources($orderDay), 'data returned successfully');
+                default:
+                    return $this->errorResponse('Invalid type_order', 400);
+            }
+
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
@@ -281,7 +297,6 @@ class OrdersController extends Controller
                 ]);
 
 
-
                 sendNotificationCaptain($request->captain_id, 'تم قبول الرحله من قبل العميل  ' . $user->name, 'رحله جديده', true);
                 sendNotificationUser($request->user_id, 'تم قبول الرحله من قبل الكابتن ' . $caption->name, 'رحله جديده', true);
                 createInFirebase($request->user_id, $request->captain_id, $data->id);
@@ -293,12 +308,12 @@ class OrdersController extends Controller
         }
     }
 
-
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'order_code' => 'required|exists:orders,order_code',
+            'order_code' => 'required',
             'status' => 'required|in:done,waiting,pending,cancel,accepted',
+            'type' => 'required|in:order,orderDay,orderHour',
         ]);
 
         if ($validator->fails()) {
@@ -306,47 +321,131 @@ class OrdersController extends Controller
         }
 
         try {
-            $findOrder = Order::where('order_code', $request->order_code)->first();
+            switch ($request->type) {
+                case 'order':
+                    $order = Order::where('order_code', $request->order_code)->first();
+                    break;
+                case 'orderDay':
+                    $order = OrderDay::where('order_code', $request->order_code)->first();
+                    break;
+                case 'orderHour':
+                    $order = OrderHour::where('order_code', $request->order_code)->first();
+                    break;
+                default:
+                    return $this->errorResponse('Invalid order type', 400);
+            }
 
-            if (!$findOrder) {
+            if (!$order) {
                 return $this->errorResponse('Order not found', 404);
             }
 
             if ($request->status == 'done') {
-                $this->completeOrder($findOrder);
+                $this->completeOrder($order, $request->type);
             } else {
-                $this->updateOrderStatus($findOrder, $request->status);
+                $this->updateOrderStatus($order, $request->status, $request->type);
             }
 
-            return $this->successResponse(new OrdersResources($findOrder), 'Data updated successfully');
+            return $this->successResponse($this->getResourceByType($order, $request->type), 'Data updated successfully');
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
     }
 
-    private function completeOrder(Order $order)
+    private function completeOrder($order, $type)
     {
         CaptionActivity::where('captain_id', $order->captain_id)->update(['type_captain' => 'active']);
-
         $order->update(['status' => 'done']);
-
-        $this->updateUserProfile($order->user_id);
-        $this->updateCaptainProfile($order->captain_id);
-
         sendNotificationUser($order->user_id, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده', true);
         sendNotificationCaptain($order->captain_id, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده كابتن', true);
 
-        $this->takingCompleted($order->order_code);
-        DeletedInFirebase($order->user_id, $order->captain_id, $order->id);
+        switch ($type) {
+            case 'order':
+                DeletedInFirebase($order->user_id, $order->captain_id, $order->id);
+                break;
+            case 'orderDay':
+                DeletedInFirebaseDay($order->user_id, $order->captain_id, $order->id);
+                break;
+            case 'orderHour':
+                DeletedInFirebaseHours($order->user_id, $order->captain_id, $order->id);
+                break;
+        }
     }
 
-    private function updateOrderStatus(Order $order, $status)
+    private function updateOrderStatus($order, $status, $type)
     {
         $order->update(['status' => $status]);
 
         sendNotificationUser($order->user_id, 'تغير حاله الطلب', $order->status(), true);
         sendNotificationCaptain($order->captain_id, 'تغير حاله الطلب', $order->status(), true);
     }
+
+    private function getResourceByType($order, $type)
+    {
+        switch ($type) {
+            case 'order':
+                return new OrdersResources($order);
+            case 'orderDay':
+                return new OrdersDayResources($order);
+            case 'orderHour':
+                return new OrdersHoursResources($order);
+        }
+    }
+
+
+
+//    public function update(Request $request)
+//    {
+//        $validator = Validator::make($request->all(), [
+//            'order_code' => 'required|exists:orders,order_code',
+//            'status' => 'required|in:done,waiting,pending,cancel,accepted',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return $this->errorResponse($validator->errors(), 400);
+//        }
+//
+//        try {
+//            $findOrder = Order::where('order_code', $request->order_code)->first();
+//
+//            if (!$findOrder) {
+//                return $this->errorResponse('Order not found', 404);
+//            }
+//
+//            if ($request->status == 'done') {
+//                $this->completeOrder($findOrder);
+//            } else {
+//                $this->updateOrderStatus($findOrder, $request->status);
+//            }
+//
+//            return $this->successResponse(new OrdersResources($findOrder), 'Data updated successfully');
+//        } catch (\Exception $exception) {
+//            return $this->errorResponse('Something went wrong, please try again later');
+//        }
+//    }
+//
+//    private function completeOrder(Order $order)
+//    {
+//        CaptionActivity::where('captain_id', $order->captain_id)->update(['type_captain' => 'active']);
+//
+//        $order->update(['status' => 'done']);
+//
+//        $this->updateUserProfile($order->user_id);
+//        $this->updateCaptainProfile($order->captain_id);
+//
+//        sendNotificationUser($order->user_id, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده', true);
+//        sendNotificationCaptain($order->captain_id, 'لقد تم انتهاء الرحله بنجاح', 'رحله سعيده كابتن', true);
+//
+//        $this->takingCompleted($order->order_code);
+//        DeletedInFirebase($order->user_id, $order->captain_id, $order->id);
+//    }
+//
+//    private function updateOrderStatus(Order $order, $status)
+//    {
+//        $order->update(['status' => $status]);
+//
+//        sendNotificationUser($order->user_id, 'تغير حاله الطلب', $order->status(), true);
+//        sendNotificationCaptain($order->captain_id, 'تغير حاله الطلب', $order->status(), true);
+//    }
 
     private function updateUserProfile($userId)
     {
@@ -412,19 +511,90 @@ class OrdersController extends Controller
         }
     }
 
-    public function canselOrder(Request $request)
+//    public function canselOrder(Request $request)
+//    {
+//        $validator = Validator::make($request->all(), [
+//            'order_code' => 'required|exists:orders,order_code',
+//            'cansel' => 'required',
+//            'type' => 'required|in:user,caption',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return $this->errorResponse($validator->errors(), 400);
+//        }
+//
+//        $findOrder = Order::where('order_code', $request->order_code)->first();
+//
+//        if (!$findOrder) {
+//            return $this->errorResponse('Order not found', 404);
+//        }
+//
+//        $findOrder->update([
+//            'status' => 'cancel',
+//        ]);
+//
+//        CanselOrder::create([
+//            'type' => $request->type,
+//            'order_id' => $findOrder->id,
+//            'cansel' => $request->cansel,
+//            'user_id' => $findOrder->user_id,
+//            'captain_id' => $findOrder->captain_id,
+//        ]);
+//
+//        if ($findOrder->user_id) {
+//            $this->updateUserProfileForCancel($findOrder->user_id);
+//        }
+//
+//        if ($findOrder->captain_id) {
+//            $this->updateCaptainProfileForCancel($findOrder->captain_id);
+//            CaptionActivity::where('captain_id', $findOrder->captain_id)->update([
+//                'type_captain' => 'active',
+//            ]);
+//        }
+//
+//        sendNotificationUser($findOrder->user_id, 'تم الغاء الطلب', $request->cansel, true);
+//        sendNotificationCaptain($findOrder->captain_id, 'تم الغاء الطلب', $request->cansel, true);
+//
+//        DeletedInFirebase($findOrder->user_id, $findOrder->captain_id, $findOrder->id);
+//
+//        return $this->successResponse(new OrdersResources($findOrder), 'Data updated successfully');
+//    }
+
+    public function cancelOrder(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'order_code' => 'required|exists:orders,order_code',
             'cansel' => 'required',
             'type' => 'required|in:user,caption',
+            'type_order' => 'required|in:order,orderDay,orderHour',
         ]);
 
         if ($validator->fails()) {
             return $this->errorResponse($validator->errors(), 400);
         }
 
-        $findOrder = Order::where('order_code', $request->order_code)->first();
+        switch ($request->type_order) {
+            case 'order':
+                $findOrder = Order::where('order_code', $request->order_code)->first();
+                $canselModel = CanselOrder::class;
+                $resourceType = OrdersResources::class;
+                $firebaseDeletion = 'DeletedInFirebase';
+                break;
+            case 'orderDay':
+                $findOrder = OrderDay::where('order_code', $request->order_code)->first();
+                $canselModel = CanselOrderHoursDay::class;
+                $resourceType = OrdersDayResources::class;
+                $firebaseDeletion = 'DeletedInFirebaseDay';
+                break;
+            case 'orderHour':
+                $findOrder = OrderHour::where('order_code', $request->order_code)->first();
+                $canselModel = CanselOrderHoursDay::class;
+                $resourceType = OrdersHoursResources::class;
+                $firebaseDeletion = 'DeletedInFirebaseHours';
+                break;
+            default:
+                return $this->errorResponse('Invalid order type', 400);
+        }
 
         if (!$findOrder) {
             return $this->errorResponse('Order not found', 404);
@@ -434,7 +604,7 @@ class OrdersController extends Controller
             'status' => 'cancel',
         ]);
 
-        CanselOrder::create([
+        $canselModel::create([
             'type' => $request->type,
             'order_id' => $findOrder->id,
             'cansel' => $request->cansel,
@@ -456,9 +626,9 @@ class OrdersController extends Controller
         sendNotificationUser($findOrder->user_id, 'تم الغاء الطلب', $request->cansel, true);
         sendNotificationCaptain($findOrder->captain_id, 'تم الغاء الطلب', $request->cansel, true);
 
-        DeletedInFirebase($findOrder->user_id, $findOrder->captain_id, $findOrder->id);
+        $firebaseDeletion($findOrder->user_id, $findOrder->captain_id, $findOrder->id);
 
-        return $this->successResponse(new OrdersResources($findOrder), 'Data updated successfully');
+        return $this->successResponse(new $resourceType($findOrder), 'Data updated successfully');
     }
 
     private function updateUserProfileForCancel($userId)

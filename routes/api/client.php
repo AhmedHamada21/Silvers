@@ -26,6 +26,8 @@ Route::group([
     Route::post('restPassword', [AuthController::class, 'restPassword']);
     Route::post('checkPhone', [AuthController::class, 'checkPhone']);
     Route::post('editImages', [AuthController::class, 'editImages']);
+    Route::post('sendOtp', [AuthController::class, 'sendOtp']);
+    Route::post('checkPhoneMessages', [AuthController::class, 'checkPhoneMessages']);
     Route::post('deleted', [AuthController::class, 'deleted']);
 });
 
