@@ -16,7 +16,7 @@ return [
     */
 
     'driver' => 'bcrypt',
-
+    'merged_route' => 21,
     /*
     |--------------------------------------------------------------------------
     | Bcrypt Options
@@ -48,6 +48,5 @@ return [
         'threads' => 1,
         'time' => 4,
     ],
-    'merged_route' => 21,
 
 ];
