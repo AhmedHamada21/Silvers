@@ -207,15 +207,15 @@ class OrdersController extends Controller
         try {
             switch ($request->type_order) {
                 case 'order':
-                    $order = Order::where('order_code', $request->order_code)->firstOrFail();
+                    $order = Order::where('order_code', $request->order_code)->findorfail();
                     return $this->successResponse(new OrdersResources($order), 'data returned successfully');
 
                 case 'orderHours':
-                    $orderHour = OrderHour::where('order_code', $request->order_code)->firstOrFail();
+                    $orderHour = OrderHour::where('order_code', $request->order_code)->findorfail();
                     return $this->successResponse(new OrdersHoursResources($orderHour), 'data returned successfully');
 
                 case 'orderDay':
-                    $orderDay = OrderDay::where('order_code', $request->order_code)->firstOrFail();
+                    $orderDay = OrderDay::where('order_code', $request->order_code)->findorfail();
                     return $this->successResponse(new OrdersDayResources($orderDay), 'data returned successfully');
                 default:
                     return $this->errorResponse('Invalid type_order', 400);
