@@ -205,34 +205,32 @@ class OrdersController extends Controller
         }
 
         try {
-//            $order = null;
+            $order = null;
 
             switch ($request->type_order) {
                 case 'order':
-                    $order = Order::where('order_code', $request->order_code)->findorfail();
+                    $order = Order::where('order_code', $request->order_code)->firstOrFail();
                     break;
 
                 case 'orderHours':
-                    $order = OrderHour::where('order_code', $request->order_code)->findorfail();
+                    $order = OrderHour::where('order_code', $request->order_code)->firstOrFail();
                     break;
 
                 case 'orderDay':
-                    $order = OrderDay::where('order_code', $request->order_code)->findorfail();
+                    $order = OrderDay::where('order_code', $request->order_code)->firstOrFail();
                     break;
 
                 default:
                     return $this->errorResponse('Invalid type_order', 400);
             }
 
-            if (!$order) {
-                return $this->errorResponse('Order not found', 404);
-            }
             return $this->successResponse($this->getResourceByType($order, $request->type_order), 'Data return successfully');
 
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
         }
     }
+
 
 
     public function store(Request $request)
