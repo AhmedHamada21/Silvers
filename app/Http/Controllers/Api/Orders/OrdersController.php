@@ -196,7 +196,7 @@ class OrdersController extends Controller
     public function index(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'order_code' => 'required|exists:orders,order_code',
+            'order_code' => 'required',
             'type_order' => 'required|in:order,orderHours,orderDay'
 
         ]);
