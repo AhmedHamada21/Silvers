@@ -360,6 +360,10 @@ class AuthController extends Controller
 
         try {
 
+            $checkData = OtpMessages::where('type', 'user')->where('phone', $request->phone)->where('status', $request->status)->first();
+            if ($checkData) {
+                return $this->errorResponse('The Phone Is existing');
+            }
             $data = OtpMessages::create([
                 'type' => 'user',
                 'status' => $request->status,

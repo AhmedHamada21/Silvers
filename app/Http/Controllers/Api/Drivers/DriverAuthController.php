@@ -346,6 +346,11 @@ class DriverAuthController extends Controller
 
         try {
 
+            $checkData = OtpMessages::where('type', 'caption')->where('phone', $request->phone)->where('status', $request->status)->first();
+            if ($checkData) {
+                return $this->errorResponse('The Phone Is existing');
+            }
+
             $data = OtpMessages::create([
                 'type' => 'caption',
                 'status' => $request->status,
@@ -356,7 +361,7 @@ class DriverAuthController extends Controller
 
             if ($data) {
                 sendTemplate($data->phone, $data->code);
-                saveWhatsapp($data->phone,$data->code);
+                saveWhatsapp($data->phone, $data->code);
                 return $this->successResponse('', 'Send Messages successfully');
             }
 
@@ -383,9 +388,9 @@ class DriverAuthController extends Controller
             $check = OtpMessages::where('type', 'caption')->where('phone', $request->phone)->first();
             if ($check) {
                 $code = $check->code == $request->code;
-                if ($code){
+                if ($code) {
                     return $this->successResponse('', 'successfully');
-                }else{
+                } else {
                     return $this->errorResponse('Code Error please try again later');
                 }
             }
