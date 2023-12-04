@@ -209,15 +209,15 @@ class OrdersController extends Controller
 
             switch ($request->type_order) {
                 case 'order':
-                    $order = Order::where('order_code', $request->order_code)->firstOrFail();
+                    $order = Order::where('order_code', $request->order_code)->findorfail();
                     break;
 
                 case 'orderHours':
-                    $order = OrderHour::where('order_code', $request->order_code)->firstOrFail();
+                    $order = OrderHour::where('order_code', $request->order_code)->findorfail();
                     break;
 
                 case 'orderDay':
-                    $order = OrderDay::where('order_code', $request->order_code)->firstOrFail();
+                    $order = OrderDay::where('order_code', $request->order_code)->findorfail();
                     break;
 
                 default:
@@ -227,7 +227,7 @@ class OrdersController extends Controller
             if (!$order) {
                 return $this->errorResponse('Order not found', 404);
             }
-            return $this->successResponse($this->getResourceByType($order, $request->type_order), 'Data updated successfully');
+            return $this->successResponse($this->getResourceByType($order, $request->type_order), 'Data return successfully');
 
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
