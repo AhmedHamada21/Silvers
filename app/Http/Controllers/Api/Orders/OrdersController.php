@@ -197,29 +197,37 @@ class OrdersController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'order_code' => 'required',
-            'type_order' => 'required|in:order,orderHours,orderDay'
-
+            'type_order' => 'required|in:order,orderHours,orderDay',
         ]);
+
         if ($validator->fails()) {
             return $this->errorResponse($validator->errors(), 400);
         }
 
         try {
+//            $order = null;
+
             switch ($request->type_order) {
                 case 'order':
-                    $order = Order::where('order_code', $request->order_code)->findorfail();
-                    return $this->successResponse(new OrdersResources($order), 'data returned successfully');
+                    $order = Order::where('order_code', $request->order_code)->firstOrFail();
+                    break;
 
                 case 'orderHours':
-                    $orderHour = OrderHour::where('order_code', $request->order_code)->findorfail();
-                    return $this->successResponse(new OrdersHoursResources($orderHour), 'data returned successfully');
+                    $order = OrderHour::where('order_code', $request->order_code)->firstOrFail();
+                    break;
 
                 case 'orderDay':
-                    $orderDay = OrderDay::where('order_code', $request->order_code)->findorfail();
-                    return $this->successResponse(new OrdersDayResources($orderDay), 'data returned successfully');
+                    $order = OrderDay::where('order_code', $request->order_code)->firstOrFail();
+                    break;
+
                 default:
                     return $this->errorResponse('Invalid type_order', 400);
             }
+
+            if (!$order) {
+                return $this->errorResponse('Order not found', 404);
+            }
+            return $this->successResponse($this->getResourceByType($order, $request->type_order), 'Data updated successfully');
 
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
