@@ -224,7 +224,7 @@ class OrdersController extends Controller
                     return $this->errorResponse('Invalid type_order', 400);
             }
 
-            return $this->successResponse($this->getResourceByType($order, $request->type_order), 'Data return successfully');
+            return $this->successResponse($this->getResourceByTypeOrders($order, $request->type_order), 'Data return successfully');
 
         } catch (\Exception $exception) {
             return $this->errorResponse('Something went wrong, please try again later');
@@ -393,6 +393,17 @@ class OrdersController extends Controller
             case 'orderDay':
                 return new OrdersDayResources($order);
             case 'orderHour':
+                return new OrdersHoursResources($order);
+        }
+    }
+    private function getResourceByTypeOrders($order, $type)
+    {
+        switch ($type) {
+            case 'order':
+                return new OrdersResources($order);
+            case 'orderDay':
+                return new OrdersDayResources($order);
+            case 'orderHours':
                 return new OrdersHoursResources($order);
         }
     }
