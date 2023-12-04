@@ -7,10 +7,10 @@ use App\Http\Controllers\Api\Orders\OrderHourController;
 use App\Http\Controllers\Api\Orders\OrdersController;
 use App\Http\Controllers\Api\Wallet\WalletController;
 use Illuminate\Support\Facades\Route;
-
-Route::post('rest', [OrdersController::class, 'rest']);
+Route::post('getOrder', [OrdersController::class, 'index']);
+//Route::post('rest', [OrdersController::class, 'rest']);
 Route::group(['prefix' => 'order', 'middleware' => 'auth:users-api,captain-api'], function () {
-    Route::post('getOrder', [OrdersController::class, 'index']);
+
     Route::post('createOrder', [OrdersController::class, 'store']);
     Route::post('updateStatus', [OrdersController::class, 'update']);
     Route::post('takingOrder', [OrdersController::class, 'takingOrder']);
