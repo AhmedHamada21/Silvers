@@ -208,26 +208,56 @@ if (!function_exists("getStatisticsGoogle")) {
     }
 }
 
+//if (!function_exists('getTotalAmountDay')) {
+//    function getTotalAmountDay($id_caption)
+//    {
+//        $commissionPercentage = optional(\App\Models\Settings::first())->company_commission ?? 0;
+//        $commission = $commissionPercentage / 100;
+//
+//        $ordersTotal = \App\Models\Order::where('status', 'done')
+//            ->where('date_created', Carbon::now()->format('Y-m-d'))
+//            ->where('captain_id', $id_caption)
+//            ->sum('total_price');
+//
+//
+//        $ordersTotalHours = \App\Models\OrderHour::where('status', 'done')
+//            ->where('date_created', Carbon::now()->format('Y-m-d'))
+//            ->where('captain_id', $id_caption)
+//            ->sum('total_price');
+//
+//
+//        $ordersTotalDay = \App\Models\OrderDay::where('status', 'done')
+//            ->where('date_created', Carbon::now()->format('Y-m-d'))
+//            ->where('captain_id', $id_caption)
+//            ->sum('total_price');
+//
+//        $totalOrders = $ordersTotal + $ordersTotalHours + $ordersTotalDay;
+//
+//        return number_format($totalOrders - ($totalOrders * $commission), 2);
+//    }
+//}
+
 if (!function_exists('getTotalAmountDay')) {
     function getTotalAmountDay($id_caption)
     {
         $commissionPercentage = optional(\App\Models\Settings::first())->company_commission ?? 0;
         $commission = $commissionPercentage / 100;
 
+        $startDate = now()->subDays(6)->startOfDay();
+        $endDate = now()->endOfDay();
+
         $ordersTotal = \App\Models\Order::where('status', 'done')
-            ->where('date_created', Carbon::now()->format('Y-m-d'))
+            ->whereBetween('date_created', [$startDate, $endDate])
             ->where('captain_id', $id_caption)
             ->sum('total_price');
-
 
         $ordersTotalHours = \App\Models\OrderHour::where('status', 'done')
-            ->where('date_created', Carbon::now()->format('Y-m-d'))
+            ->whereBetween('date_created', [$startDate, $endDate])
             ->where('captain_id', $id_caption)
             ->sum('total_price');
 
-
         $ordersTotalDay = \App\Models\OrderDay::where('status', 'done')
-            ->where('date_created', Carbon::now()->format('Y-m-d'))
+            ->whereBetween('date_created', [$startDate, $endDate])
             ->where('captain_id', $id_caption)
             ->sum('total_price');
 
@@ -236,6 +266,7 @@ if (!function_exists('getTotalAmountDay')) {
         return number_format($totalOrders - ($totalOrders * $commission), 2);
     }
 }
+
 
 if (!function_exists('getTotalAmount')) {
     function getTotalAmount($id_order)
