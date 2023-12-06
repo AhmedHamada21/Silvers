@@ -196,7 +196,7 @@ class CaptionActivityUserController extends Controller
             $radius = 50;
             $categoryCars = $request->category_car_id == 1 ? [1, 2] : [3, 4];
             $carTypes = $request->car_type_id;
-            $gender = $request->gender == 1 ? 'male' : 'female';
+            $gender = $request->gender == 1 ? 'male' : ($request->gender == 2 ? 'female' : '');
 
             $captains = CaptionActivity::where('status_captain_work', 'active')
                 ->where('status_captain', 'active')
@@ -211,11 +211,10 @@ class CaptionActivityUserController extends Controller
                 $captains->whereIn('captain_id', $categoryCaptions);
             }
 
-            if (isset($gender) && !empty($gender)) {
+            if (!empty($gender)) {
                 $GenderCaptions = Captain::whereIn('gender', [$gender])->pluck('id')->toArray();
                 $captains->whereIn('captain_id', $GenderCaptions);
             }
-
 
             if (!empty($carTypes)) {
                 $carTypeCaptains = CarsCaption::whereIn('car_type_id', [$carTypes])->pluck('captain_id')->toArray();
