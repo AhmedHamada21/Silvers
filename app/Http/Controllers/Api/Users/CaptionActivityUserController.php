@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Users\CaptionActivityUserResources;
+use App\Models\Captain;
 use App\Models\CaptionActivity;
 use App\Models\CarsCaption;
 use App\Models\CarType;
@@ -176,6 +177,8 @@ class CaptionActivityUserController extends Controller
 //
 //    }
 
+
+    // Code
     public function captionActivity(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -193,6 +196,7 @@ class CaptionActivityUserController extends Controller
             $radius = 50;
             $categoryCars = $request->category_car_id == 1 ? [1, 2] : [3, 4];
             $carTypes = $request->car_type_id;
+            $gender = $request->gender == 1 ? 'male' : 'female';
 
             $captains = CaptionActivity::where('status_captain_work', 'active')
                 ->where('status_captain', 'active')
@@ -205,6 +209,11 @@ class CaptionActivityUserController extends Controller
 
                 $categoryCaptions = CarsCaption::whereIn('category_car_id', $categoryCars)->pluck('captain_id')->toArray();
                 $captains->whereIn('captain_id', $categoryCaptions);
+            }
+
+            if (!empty($gender)){
+                $GenderCaptions = Captain::whereIn('gender', [$gender])->pluck('id')->toArray();
+                $captains->whereIn('captain_id', $GenderCaptions);
             }
 
             if (!empty($carTypes)) {
@@ -227,4 +236,59 @@ class CaptionActivityUserController extends Controller
         }
 
     }
+
+
+
+//    public function captionActivity(Request $request)
+//    {
+//        $validator = Validator::make($request->all(), [
+//            'latitude' => 'required',
+//            'longitude' => 'required',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return $this->errorResponse($validator->errors()->first(), 422);
+//        }
+//
+//        try {
+//            $latitude = $request->input('latitude');
+//            $longitude = $request->input('longitude');
+//            $radius = 50;
+//            $categoryCars = $request->category_car_id == 1 ? [1, 2] : [3, 4];
+//            $carTypes = $request->car_type_id;
+//            $gender = $request->gender == 1 ? 'male' : 'female';
+//
+//            $captains = CaptionActivity::where('status_captain_work', 'active')
+//                ->where('status_captain', 'active')
+//                ->where('type_captain', 'active')
+//                ->selectRaw("*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
+//                ->whereRaw("(6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) < $radius");
+//
+//            $this->applyFilter($captains, 'captain_id', CarsCaption::whereIn('category_car_id', $categoryCars)->pluck('captain_id'));
+//            $this->applyFilter($captains, 'captain_id', Captain::whereIn('gender', [$gender])->pluck('id'));
+//            $this->applyFilter($captains, 'captain_id', CarsCaption::whereIn('car_type_id', [$carTypes])->pluck('captain_id'));
+//
+//            if (!empty($categoryCars) && !empty($carTypes)) {
+//                $combinedCaptains = array_merge(
+//                    CarsCaption::whereIn('category_car_id', $categoryCars)->pluck('captain_id')->toArray(),
+//                    CarsCaption::whereIn('car_type_id', [$carTypes])->pluck('captain_id')->toArray()
+//                );
+//                $this->applyFilter($captains, 'captain_id', $combinedCaptains);
+//            }
+//
+//            $captains = $captains->orderBy('distance')->get();
+//
+//            return $this->successResponse(CaptionActivityUserResources::collection($captains), 'Data returned successfully');
+//        } catch (\Exception $exception) {
+//            return $this->errorResponse('Something went wrong, please try again later');
+//        }
+//    }
+//
+//    private function applyFilter($query, $column, $values)
+//    {
+//        if (!empty($values)) {
+//            $query->whereIn($column, $values);
+//        }
+//    }
+
 }
