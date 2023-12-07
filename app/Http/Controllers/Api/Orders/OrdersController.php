@@ -33,20 +33,20 @@ class OrdersController extends Controller
     use ApiResponseTrait;
 
 
-    public function rest()
-    {
-        Order::query()->delete();
-        OrderHour::query()->delete();
-        OrderDay::query()->delete();
-        CanselOrder::query()->delete();
-        TakingOrder::query()->delete();
-        CaptionActivity::where('captain_id', 3)->update([
-            'type_captain' => 'active',
-            'status_captain' => 'active',
-            'status_captain_work' => 'active',
-        ]);
-        return response()->json('ok');
-    }
+//    public function rest()
+//    {
+//        Order::query()->delete();
+//        OrderHour::query()->delete();
+//        OrderDay::query()->delete();
+//        CanselOrder::query()->delete();
+//        TakingOrder::query()->delete();
+//        CaptionActivity::where('captain_id', 3)->update([
+//            'type_captain' => 'active',
+//            'status_captain' => 'active',
+//            'status_captain_work' => 'active',
+//        ]);
+//        return response()->json('ok');
+//    }
 
 
     //    public function OrderExiting(Request $request)
@@ -580,7 +580,7 @@ class OrdersController extends Controller
     public function cancelOrder(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'order_code' => 'required|exists:orders,order_code',
+            'order_code' => 'required',
             'cansel' => 'required',
             'type' => 'required|in:user,caption',
             'type_order' => 'required|in:order,orderDay,orderHour',
