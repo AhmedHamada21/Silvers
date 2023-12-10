@@ -39,14 +39,14 @@ class OrdersDayResources extends JsonResource
             'status_price'=>$this->status_price,
             'type_duration'=>$this->type_duration,
             'car_type_day'=> new CarTypeDayResources($this->car_type_day),
-    
+
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at
             ],
             'update_dates' => [
                 'updated_at_human' => $this->updated_at->diffForHumans(),
-                'updated_at' => $this->updated_at
+               'updated_at' => $this->updated_at->format('y-m-d h:i:s')
             ]
         ];
     }

@@ -50,7 +50,7 @@ class OrdersResources extends JsonResource
             ],
             'update_dates' => [
                 'updated_at_human' => $this->updated_at->diffForHumans(),
-                'updated_at' => $this->updated_at
+               'updated_at' => $this->updated_at->format('y-m-d h:i:s')
             ]
         ];
     }
