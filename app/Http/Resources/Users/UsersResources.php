@@ -21,7 +21,7 @@ class UsersResources extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'gender' => $this->gender,
-            'inviteFriend' => $this->invite->code_invite,
+            'inviteFriend' => $this->invite()->code_invite ?? null,
             'country' => new CountryResources($this->country),
             'fcm_token' => $this->fcm_token,
             'status' => $this->status,

@@ -9,7 +9,7 @@ class UserObserver {
         $user->invite()->create([
             'user_id' => $user->id,
             'type' => 'user',
-            'code_invite'=> $user->name . generateRandom(3),
+            'code_invite'=> str_replace(' ', '_', $user->name) . generateRandom(3),
             'data' => date('Y-m-d'),
         ]);
     }

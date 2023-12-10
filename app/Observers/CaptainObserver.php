@@ -10,7 +10,7 @@ class CaptainObserver {
         $captain->invite()->create([
             'captain_id' => $captain->id,
             'type' => 'caption',
-            'code_invite'=> $captain->name . generateRandom(3),
+            'code_invite'=> str_replace(' ', '_', $captain->name) . generateRandom(3),
             'data' => date('Y-m-d'),
         ]);
 //        $captain->captainActivity()->create(['status_captain_work' => 'waiting']);

@@ -22,7 +22,7 @@ class CaptionResources extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'gender' => $this->gender,
-            'inviteFriend' => $this->invite->code_invite,
+            'inviteFriend' =>  $this->invite()->code_invite ?? null,
             'captaincar' => new CarsCaptionResources($this->captaincar),
             'profile' => new CaptainProfileResources($this->profile),
             'country' => new CountryResources($this->country),
