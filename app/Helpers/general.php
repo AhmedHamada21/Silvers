@@ -511,6 +511,19 @@ if (!function_exists('generateRandomString')) {
     }
 }
 
+if (!function_exists('generateRandom')) {
+    function generateRandom($length = 5)
+    {
+        $characters = 'ASEGEEGUOPDNGZB0123456789';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+}
+
 
 if (!function_exists('baseUrl')) {
     function baseUrl($data)

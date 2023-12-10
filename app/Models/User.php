@@ -33,6 +33,12 @@ class User extends Authenticatable implements JWTSubject {
     }
 
 
+    public function invite(): HasOne
+    {
+        return $this->hasOne(InviteFriend::class,'user_id');
+    }
+
+
 
 
 }
