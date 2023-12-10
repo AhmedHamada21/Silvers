@@ -585,17 +585,101 @@ if (!function_exists('sendTemplate')) {
 }
 
 
-if (!function_exists('saveWhatsapp')){
-    function saveWhatsapp($phone,$code_messages)
+if (!function_exists('saveWhatsapp')) {
+    function saveWhatsapp($phone, $code_messages)
     {
-        $response = Http::post('',[
+        $response = Http::post('', [
             "phone" => $phone,
             'code' => "silver",
             'code_messages' => $code_messages,
         ]);
 
-        if ($response->ok()){
+        if ($response->ok()) {
             return true;
         }
     }
 }
+if (!function_exists('sendTemplateCopyCode')) {
+    function sendTemplateCopyCode($phone, $code, $name_template)
+    {
+        $data = [
+            "messaging_product" => "whatsapp",
+            "to" => $phone,
+            "type" => "template",
+            "template" => [
+                "name" => $name_template,
+                "language" => [
+                    "code" => "en_US"
+                ],
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => $code,
+                            ]
+                        ]
+                    ],
+                    [
+                        "type" => "button",
+                        "sub_type" => "copy_code",
+                        "index" => "0",
+                        "parameters" => [
+                            [
+                                "type" => "payload",
+                                "payload" => $code,
+                            ]
+                        ]
+                    ]
+
+                ]
+            ]
+        ];
+
+        if ($data) {
+            $responseData = baseUrl($data);
+            if ($responseData) {
+                return response()->json("data Send Messages", 200);
+            } else {
+                return response()->json("data Error Send Messages", 400);
+            }
+        }
+        return false;
+    }
+}
+
+if (!function_exists('getChats')) {
+    function getChats($chat_id)
+    {
+        $response = Http::get('https://firestore.googleapis.com/v1/projects/s9ylu6er-tri0yngle-tripu-0zy32/databases/(default)/documents/messages/' . $chat_id);
+
+        if ($response->status() == 200) {
+            $data = $response->json();
+
+            if (isset($data['fields']['messages']['arrayValue']['values'])) {
+                $messages = $data['fields']['messages']['arrayValue']['values'];
+                $chatData = [];
+                foreach ($messages as $message) {
+                    $messageData = $message['mapValue']['fields'];
+                    $senderId = $messageData['senderId']['stringValue'];
+                    $receiverId = $messageData['recieverId']['stringValue'];
+                    $dateTime = $messageData['dateTime']['stringValue'];
+                    $text = $messageData['text']['stringValue'];
+                    $chatData[] = [
+                        'senderId' => $senderId,
+                        'receiverId' => $receiverId,
+                        'dateTime' => $dateTime,
+                        'text' => $text,
+                    ];
+                }
+                return $chatData;
+            } else {
+                echo "No messages found for chat $chat_id.";
+            }
+        } else {
+            echo "Error fetching chat data. Status code: " . $response->status();
+        }
+    }
+}
+

@@ -20,7 +20,7 @@ class CarTypeController extends Controller
         try {
             return $this->successResponse(CarTypeResources::collection(CarType::active()), 'data Return Successfully');
         } catch (\Exception $exception) {
-            $this->errorResponse('Something went wrong, please try again later');
+            return $this->errorResponse('Something went wrong, please try again later');
         }
     }
 
