@@ -16,4 +16,16 @@ class InviteFriend extends Model
         'code_invite',
         'data',
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
+
+    public function captain()
+    {
+        return $this->belongsTo(Captain::class,'captain_id');
+    }
 }

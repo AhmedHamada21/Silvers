@@ -28,7 +28,7 @@ class ModifiedDayNotify extends Command
                 if (!$check) {
                     sendNotificationUser($order_day->user_id, 'هل ترغب تمديد المده ', 'تمديد الرحله', true);
                     sendNotationsFirebaseDay($order_day->id);
-                    $this->info('Created User Notification Successfuly and Push firebase');
+                    $this->info('Created User Notification Successfully and Push firebase');
                     UserSaveRend::create([
                         'order_day_id' => $order_day->id,
                         'user_id' => $order_day->user_id,
@@ -40,7 +40,7 @@ class ModifiedDayNotify extends Command
                         "type_duration" => "active",
                     ]);
                 }
-                $this->info('Created UserSaveRend Successfuly');
+                $this->info('Created UserSaveRend Successfully');
                 echo "Order ID: " . $order_day->id . " - Modified Day: " . $order_day->end_day . ' _ ' . $modifiedStartTime  . PHP_EOL;
             }
         }

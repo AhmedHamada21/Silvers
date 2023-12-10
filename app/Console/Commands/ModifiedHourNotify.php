@@ -44,7 +44,7 @@ class ModifiedHourNotify extends Command
                         'user_id' => $order_hour->user_id,
                         'notify_status' => true
                     ]);
-                    $this->info('Created UserSaveRend Successfuly');
+                    $this->info('Created UserSaveRend Successfully');
                     $order_hour_model = OrderHour::find($order_hour->id);
                     $order_hour_model->update([
                         "type_duration" => 'active',
