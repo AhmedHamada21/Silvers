@@ -82,7 +82,7 @@ if (!function_exists('sendNotificationUser')) {
 }
 
 if (!function_exists('sendNotificationUserCheck')) {
-    function sendNotificationUserCheck($fcm, $body, $title,$data, $store = false)
+    function sendNotificationUserCheck($fcm, $body, $title, $data, $store = false)
     {
         $user = User::where('id', $fcm)->first();
         $url = Http::withHeaders([
@@ -93,9 +93,10 @@ if (!function_exists('sendNotificationUserCheck')) {
             "notification" => [
                 "body" => $body,
                 "title" => $title,
-                'data'=> $data,
-
-            ]
+            ],
+            'data' => [
+                'order_code' => $data
+            ],
         ]);
 
         if ($url->ok()) {
