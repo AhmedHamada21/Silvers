@@ -48,7 +48,7 @@ class CheckOrderHours extends Command
 
                         if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
-                            sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            sendNotificationUserCheck($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله',$orders->order_code ,true);
                             $orders->update([
                                 'status' => "accepted"
                             ]);
@@ -59,7 +59,7 @@ class CheckOrderHours extends Command
                     if ($timeDifferenceInMinutes == 10) {
                         if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
-                            sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            sendNotificationUserCheck($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله',$orders->order_code ,true);
                             $orders->update([
                                 'status' => "accepted"
                             ]);
@@ -69,7 +69,7 @@ class CheckOrderHours extends Command
                     if ($timeDifferenceInMinutes == 5) {
                         if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
-                            sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            sendNotificationUserCheck($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله',$orders->order_code ,true);
                             $orders->update([
                                 'status' => "accepted"
                             ]);
@@ -79,7 +79,7 @@ class CheckOrderHours extends Command
                     if ($timeDifferenceInMinutes == 1) {
                         if (!$check) {
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_hour_id' => $orders->id]);
-                            sendNotificationUser($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            sendNotificationUserCheck($ordersSaveHour->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله',$orders->order_code ,true);
                             $orders->update([
                                 'status' => "accepted"
                             ]);

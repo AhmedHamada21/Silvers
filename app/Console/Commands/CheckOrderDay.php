@@ -46,7 +46,7 @@ class CheckOrderDay extends Command
                     if ($timeDifferenceInMinutes == 20) {
                         if(!$check){
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_day_id' => $orders->id]);
-                            sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            sendNotificationUserCheck($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله',$orders->order_code ,true);
 
                         }
                         $orders->update([
@@ -57,7 +57,7 @@ class CheckOrderDay extends Command
                     if ($timeDifferenceInMinutes == 10) {
                         if(!$check){
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_day_id' => $orders->id]);
-                            sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            sendNotificationUserCheck($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله',$orders->order_code ,true);
                         }
                         $orders->update([
                             'status' => "accepted"
@@ -66,7 +66,7 @@ class CheckOrderDay extends Command
                     if ($timeDifferenceInMinutes == 5) {
                         if(!$check){
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_day_id' => $orders->id]);
-                            sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            sendNotificationUserCheck($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله',$orders->order_code ,true);
                         }
                         $orders->update([
                             'status' => "accepted"
@@ -76,7 +76,7 @@ class CheckOrderDay extends Command
                     if ($timeDifferenceInMinutes == 1) {
                         if(!$check){
                             UserSaveRend::create(['user_id' => $orders->user_id, 'save_rent_day_id' => $orders->id]);
-                            sendNotificationUser($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله', true);
+                            sendNotificationUserCheck($ordersSaveDay->user_id, 'من فضلك قم بتأكيد الرحله', 'تأكيد الرحله',$orders->order_code ,true);
                         }
                         $orders->update([
                             'status' => "accepted"
