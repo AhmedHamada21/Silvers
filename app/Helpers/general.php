@@ -95,6 +95,7 @@ if (!function_exists('sendNotificationUserCheck')) {
                 "title" => $title,
             ],
             'data' => [
+                'saveOrder' => 'true',
                 'order_code' => $data
             ],
         ]);
