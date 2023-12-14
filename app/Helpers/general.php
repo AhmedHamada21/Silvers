@@ -94,10 +94,10 @@ if (!function_exists('sendNotificationUserCheck')) {
                 "body" => $body,
                 "title" => $title,
             ],
-            'data' => [
-                'saveOrder' => 'true',
-                'order_code' => $data
-            ],
+                'data' => [
+                    'saveOrder' => 'true',
+                    'order_code' => $data
+                ],
         ]);
 
         if ($url->ok()) {
