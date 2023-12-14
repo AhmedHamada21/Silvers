@@ -200,27 +200,81 @@
                 <!-- End Admin Managment Menu-->
 
 
-                <!-- Start Admin Managment Menu-->
+                <!-- Start Orders Managment Menu-->
                 <li class="pl-4 mt-10 mb-10 font-medium text-muted menu-title">orders</li>
 
                 <li>
                     <a href="javascript:void(0);" data-toggle="collapse" data-target="#orders">
                         <div class="pull-left">
                             <i class="ti-palette"></i>
-                            <span class="right-nav-text">orders</span></div>
+                            <span class="right-nav-text">orders</span>
+                        </div>
                         <div class="pull-right"><i class="ti-plus"></i></div>
                         <div class="clearfix"></div>
                     </a>
                     <ul id="orders" class="collapse" data-parent="#sidebarnav">
-                        <li><a href="{{route('orders.index')}}">All orders</a></li>
-                        <li><a href="{{ route('orders.index', ['status' => 'waiting']) }}">orders waiting</a></li>
-                        <li><a href="{{ route('orders.index', ['status' => 'pending']) }}">orders pending</a></li>
-                        <li><a href="{{ route('orders.index', ['status' => 'cancel']) }}">orders cancel</a></li>
-                        <li><a href="{{ route('orders.index', ['status' => 'accepted']) }}">orders accepted</a></li>
-                        <li><a href="{{ route('orders.index', ['status' => 'done']) }}">orders done</a></li>
+                        <!-- Start Hour & Day Order -->
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#order_managment">
+                            <div class="pull-left">
+                                <i class="ti-car"></i>
+                                <span class="right-nav-text">Order Hour & Day</span>
+                            </div>
+                            <div class="pull-right"><i class="ti-plus"></i></div>
+                            <div class="clearfix"></div>
+                        </a>
+                        
+                        <ul id="order_managment" class="collapse" data-parent="#sidebarnavcar">
+                            <!-- Start Order Day -->
+                            <a href="javascript:void(0);" data-toggle="collapse" data-target="#orderDay_managment">
+                                <div class="pull-left">
+                                    <i class="ti-car"></i>
+                                    <span class="right-nav-text">Order Day</span>
+                                </div>
+                                <div class="pull-right"><i class="ti-plus"></i></div>
+                                <div class="clearfix"></div>
+                            </a>
+                            <ul id="orderDay_managment" class="collapse" data-parent="#sidebarnavcar">
+                                <li><a href="{{ route('orderDay.index') }}">Order Day</a></li>
+                                <li><a href="{{ route('upcamingOrderDay.index') }}">Upcoming Order Day</a></li>
+                            </ul>
+                            <!-- End Order Day -->
+                            <!-- Start Order Hour -->
+                            <a href="javascript:void(0);" data-toggle="collapse" data-target="#orderHour_managment">
+                                <div class="pull-left">
+                                    <i class="ti-car"></i>
+                                    <span class="right-nav-text">Order Hour</span>
+                                </div>
+                                <div class="pull-right"><i class="ti-plus"></i></div>
+                                <div class="clearfix"></div>
+                            </a>
+                            <ul id="orderHour_managment" class="collapse" data-parent="#sidebarnavcar">
+                                <li><a href="{{ route('orderHour.index') }}">Order Hour</a></li>
+                                <li><a href="{{ route('upcamingOrderHour.index') }}">Upcoming Order Hour</a></li>
+                            </ul>
+                            <!-- End Order Hour -->
+                        </ul>
+                        <!-- End Hour & Day Order -->
+                        <!-- Start Normal Order -->
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#order">
+                            <div class="pull-left">
+                                <i class="ti-car"></i>
+                                <span class="right-nav-text">Orders</span>
+                            </div>
+                            <div class="pull-right"><i class="ti-plus"></i></div>
+                            <div class="clearfix"></div>
+                        </a>
+                        <ul id="order" class="collapse" data-parent="#sidebarnavcar">
+                            <li><a href="{{route('orders.index')}}">All orders</a></li>
+                            <li><a href="{{ route('orders.index', ['status' => 'waiting']) }}">orders waiting</a></li>
+                            <li><a href="{{ route('orders.index', ['status' => 'pending']) }}">orders pending</a></li>
+                            <li><a href="{{ route('orders.index', ['status' => 'cancel']) }}">orders cancel</a></li>
+                            <li><a href="{{ route('orders.index', ['status' => 'accepted']) }}">orders accepted</a></li>
+                            <li><a href="{{ route('orders.index', ['status' => 'done']) }}">orders done</a></li>
+                        </ul>
+                        <!-- End Normal Order -->
                     </ul>
                 </li>
-                <!-- End Admin Managment Menu-->
+                <!-- End Orders Managment Menu-->
 
                 <!-- Start Admin Managment Menu-->
                 <li class="pl-4 mt-10 mb-10 font-medium text-muted menu-title">Accounts</li>

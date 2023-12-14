@@ -13,7 +13,7 @@
         </div>
         <div class="col-sm-6">
             <ol class="float-left pt-0 pr-0 breadcrumb float-sm-right ">
-                <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}" class="default-color">Dasboard</a></li>
+                <li class="breadcrumb-item"><a href="{{route('dashboard')}}" class="default-color">Dasboard</a></li>
                 <li class="breadcrumb-item active">{{$title}}</li>
             </ol>
         </div>
@@ -28,13 +28,15 @@
     <div class="col-md-12 mb-30">
         <div class="card card-statistics h-100">
             <div class="card-body">
-                <!--begin::Table-->
-                {!! $dataTable->table([
-                'class' => 'dataTable table table-row-dashed table-striped table-hover table-borderd table-row-gray-300
-                align-middle gs-0 table-row-bordered gy-5',
-                'style' => 'border-collapse: collapse; border-spacing: 0; width: 100%;'
-                ]) !!}
-                <!--end::Table-->
+                <div class="table-responsive">
+                    <!--begin::Table-->
+                    {!! $dataTable->table([
+                    'class' => 'dataTable table table-row-dashed table-striped table-hover table-borderd table-row-gray-300
+                    align-middle gs-0 table-row-bordered gy-5',
+                    'style' => 'border-collapse: collapse; border-spacing: 0; width: 100%;'
+                    ]) !!}
+                    <!--end::Table-->
+                </div>
             </div>
         </div>
     </div>

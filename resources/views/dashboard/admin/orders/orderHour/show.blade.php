@@ -14,7 +14,8 @@
         </div>
         <div class="col-sm-6">
             <ol class="float-left pt-0 pr-0 breadcrumb float-sm-right ">
-                <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}" class="default-color">Dasboard</a></li>
+                <li class="breadcrumb-item"><a href="{{route('dashboard')}}" class="default-color">Dasboard</a></li>
+                <li class="breadcrumb-item"><a href="{{route('orderHour.index')}}" class="default-color">Orders Hour</a></li>
                 <li class="breadcrumb-item active">{{ucfirst($order?->order_code)}}</li>
             </ol>
         </div>
@@ -31,7 +32,7 @@
             <div class="card-body">
                 <div class="shadow accordion plus-icon">
                     <div class="acd-group">
-                        <a href="#" class="acd-heading">Order Details</a>
+                        <a href="#" class="acd-heading">Order Details - Code ( {{ucfirst($order?->order_code)}} )</a>
                         <div class="acd-des">
                             <div>
                                 <div class="col-12 d-flex">
@@ -46,25 +47,14 @@
                                                 <p class="mb-0">Trip Type: {{ucfirst($order?->trip_type?->name)}}</p>
                                                 <p class="mb-0">Price: {{ucfirst($order?->total_price)}}</p>
                                                 <p class="mb-0">From: <span class="text-danger" id="fromAddress"></span></p>
-                                                <p class="mb-0">To: <span class="text-success" id="toAddress"></span></p>
-                                                <p class="mb-0">Status: {{ucfirst($order?->status)}}</p>
+                                                <p class="mb-0">Status: {{ucfirst($order?->status())}}</p>
+                                                <p class="mb-0">Price Status: {{ucfirst($order?->status_price)}}</p>
+                                                <p class="mb-0">Car Type: {{ucfirst($order?->carType->name)}}</p>
+                                                <p class="mb-0">Type Duration: {{ucfirst($order?->type_duration)}}</p>
+                                                <p class="mb-0">Time Duration: {{ucfirst($order?->time_duration)}}</p>
                                                 <p class="mb-0">Payment: {{ !empty($order?->payments) ? ucfirst($order?->payments) :  ucfirst('No Payment For This Order') }}</p>
-                                                <p class="mb-0">Rate: {{ !empty($order->rates->rate) ? $order->rates->rate :  ucfirst('No Rate For This Order')}}</p>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="acd-group">
-                        <a href="#" class="acd-heading">Comments</a>
-                        <div class="acd-des">
-                            <div>
-                                <div class="col-12 d-flex">
-                                    <div class="card-body">
-                                        <!-- Start Comments Widget -->
-                                        <!-- End Comments Widget -->
                                     </div>
                                 </div>
                             </div>
@@ -137,77 +127,49 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
     integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        function initializeMap() {
-            const locations = {!! $data !!};
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 13
-            });
-            const bounds = new google.maps.LatLngBounds();
-            const userLocation = new google.maps.LatLng(parseFloat(locations[0].lat_user), parseFloat(locations[0].long_user));
-            const goingLocation = new google.maps.LatLng(parseFloat(locations[0].lat_going), parseFloat(locations[0].long_going));
-            const userMarker = new google.maps.Marker({
-                position: userLocation,
+
+<script>
+    function initializeMap() {
+        const locations = {!! $data !!};
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: { lat: locations[locations.length - 1].lat, lng: locations[locations.length - 1].lng },
+        });
+        const infowindow = new google.maps.InfoWindow();
+        const bounds = new google.maps.LatLngBounds();
+        for (const location of locations) {
+            const marker = new google.maps.Marker({
+                position: new google.maps.LatLng(location.lat, location.lng),
                 map: map,
-                label: 'U',
-            });
-            bounds.extend(userMarker.position);
-            const goingMarker = new google.maps.Marker({
-                position: goingLocation,
-                map: map,
-                label: 'G',
                 icon: {
-                    url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                    scaledSize: new google.maps.Size(30, 40)
+                    url: location.image,
+                    scaledSize: new google.maps.Size(32, 32)
                 }
             });
-            bounds.extend(goingMarker.position);
-            const directionsService = new google.maps.DirectionsService();
-            const directionsRenderer = new google.maps.DirectionsRenderer();
-            directionsRenderer.setMap(map);
-
-            const request = {
-                origin: userLocation,
-                destination: goingLocation,
-                travelMode: google.maps.TravelMode.DRIVING
-            };
-
-            directionsService.route(request, function (result, status) {
-                if (status == google.maps.DirectionsStatus.OK) {
-                    directionsRenderer.setDirections(result);
-                }
-            });
-            
             const geocoder = new google.maps.Geocoder();
-            geocodeLatLng(geocoder, userLocation, 'fromAddress');
-            geocodeLatLng(geocoder, goingLocation, 'toAddress');
-            
-            const userInfoWindow = new google.maps.InfoWindow({
-                content: `User ID: ${locations[0].user_id}`
-            });
-            userMarker.addListener('click', function () {
-                userInfoWindow.open(map, userMarker);
-            });
-            const goingInfoWindow = new google.maps.InfoWindow({
-                content: `Captain ID: ${locations[0].captain_id}`
-            });
-            goingMarker.addListener('click', function () {
-                goingInfoWindow.open(map, goingMarker);
-            });
-
-            map.fitBounds(bounds);
-        }
-
-        function geocodeLatLng(geocoder, latLng, elementId) {
+            const latLng = new google.maps.LatLng(location.lat, location.lng);
             geocoder.geocode({ 'location': latLng }, function (results, status) {
-                if (status === 'OK') {
-                    if (results[1]) {
-                        document.getElementById(elementId).textContent = results[1].formatted_address;
+                if (status === google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        const content = results[0].formatted_address;
+                        document.getElementById("fromAddress").innerHTML = content;
+                        google.maps.event.addListener(marker, 'click', (function (marker, location) {
+                            return function () {
+                                infowindow.setContent(content);
+                                infowindow.open(map, marker);
+                            };
+                        })(marker, location));
                     }
                 }
             });
+            bounds.extend(marker.position);
         }
+        map.fitBounds(bounds);
+    }
 
-    </script>
+    document.addEventListener('DOMContentLoaded', function () {
+        initializeMap();
+    });
+</script>
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initializeMap"></script>
 @endsection

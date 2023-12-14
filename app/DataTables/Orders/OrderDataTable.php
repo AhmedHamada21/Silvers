@@ -58,9 +58,9 @@ class OrderDataTable extends BaseDataTable {
     public function getColumns(): array {
         return [
             ['name' => 'id', 'data' => 'id', 'title' => '#', 'orderable' => false, 'searchable' => false,],
-            ['name' => 'client_name', 'data' => 'client_name', 'title' => 'User-name',],
-            ['name' => 'captain_name', 'data' => 'captain_name', 'title' => 'Captain-name',],
-            ['name' => 'status', 'data' => 'status', 'title' => 'Status',],
+            ['name' => 'client_name', 'data' => 'client_name', 'title' => 'User-name', 'searchable' => false,],
+            ['name' => 'captain_name', 'data' => 'captain_name', 'title' => 'Captain-name', 'searchable' => false,],
+            ['name' => 'status', 'data' => 'status', 'title' => 'Status', 'searchable' => false,],
             ['name' => 'created_at', 'data' => 'created_at', 'title' => 'Created_at', 'orderable' => false, 'searchable' => false,],
             ['name' => 'action', 'data' => 'action', 'title' => 'Action', 'orderable' => false, 'searchable' => false,],
         ];

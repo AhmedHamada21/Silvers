@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\Admin;
+use App\Http\Controllers\Dashboard\Admin\Order;
 use App\Http\Controllers\Dashboard\General;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -95,7 +96,7 @@ Route::group(
             Route::post('update', 'update')->name('update');
         });
         // Orders ::
-        Route::controller(Admin\OrderController::class)->prefix('orders')->as('orders.')->group(function () {
+        Route::controller(Order\OrderController::class)->prefix('orders')->as('orders.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/waiting', 'index')->name('waiting');
             Route::get('/pending', 'index')->name('pending');
@@ -103,6 +104,29 @@ Route::group(
             Route::get('/accepted', 'accepted')->name('accepted');
             Route::get('/done', 'done')->name('done');
             Route::get('/{order_code}', 'show')->name('show');
+        });
+        // Order Hour ::
+        Route::controller(Order\OrderHourController::class)->prefix('order-hour')->as('orderHour.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{order_code}', 'show')->name('show');
+        });
+        // Order Day ::
+        Route::controller(Order\OrderDayController::class)->prefix('order-day')->as('orderDay.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{order_code}', 'show')->name('show');
+        });
+        // Upcaming Order Day ::
+        Route::controller(Order\UpcamingOrderDayController::class)->prefix('upcaming-order-day')->as('upcamingOrderDay.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{order_code}', 'show')->name('show');
+            Route::post('{orderId}/update-date', [Order\UpcamingOrderDayController::class, 'updateDate'])->name('update-date');
+            Route::post('{orderId}/update-time', [Order\UpcamingOrderDayController::class, 'updateTime'])->name('update-time');
+        });
+        // Upcaming Order Hour ::
+        Route::controller(Order\UpcamingOrderHourController::class)->prefix('upcaming-order-hour')->as('upcamingOrderHour.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{order_code}', 'show')->name('show');
+            Route::post('{orderId}/update-date', [Order\UpcamingOrderHourController::class, 'updateHour'])->name('update-hour');
         });
         // Discount ::
         Route::resource('discounts', General\DiscountController::class);

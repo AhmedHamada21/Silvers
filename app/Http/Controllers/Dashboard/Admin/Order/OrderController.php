@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Dashboard\Admin;
+namespace App\Http\Controllers\Dashboard\Admin\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\Orders\OrderDataTable;
