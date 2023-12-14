@@ -241,7 +241,7 @@ class CaptainController extends Controller {
             $captain = Captain::findOrFail($id);
             $captain->captainActivity->status_captain_work = $request->input('status_captain_work');
             $captain->captainActivity->save();
-            return redirect()->route('captains.show', $this->captainService->getProfile($id))->with('success', 'captain activity status updated successfully');
+            return redirect()->back()->with('success', 'captain activity status updated successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
         }

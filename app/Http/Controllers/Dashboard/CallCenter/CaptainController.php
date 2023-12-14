@@ -188,13 +188,13 @@ class CaptainController extends Controller {
     }
 
     public function updateActivityStatus(Request $request, $id) {
-        //try {
+        try {
             $captain = Captain::findOrFail($id);
             $captain->captainActivity->status_captain_work = $request->input('status_captain_work');
             $captain->captainActivity->save();
             return back()->with('success', 'captain activity status updated successfully');
-        /*} catch (\Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
-        }*/
+        }
     }
 }
