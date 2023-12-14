@@ -1,5 +1,5 @@
 <?php
-namespace App\DataTables\Dashboard\Admin;
+namespace App\DataTables\Dashboard\Admin\Captain;
 use App\Models\Captain;
 use App\DataTables\Base\BaseDataTable;
 use Yajra\DataTables\EloquentDataTable;
@@ -37,7 +37,7 @@ class CaptainDataTable extends BaseDataTable {
 
     public function query(): QueryBuilder {
 
-        return Captain::query()->with(['profile', 'profile.orders']);
+        return Captain::query()->with(['profile', 'profile.orders', 'bouns']);
     }
 
     public function getColumns(): array {

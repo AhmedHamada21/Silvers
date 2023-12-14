@@ -1,7 +1,8 @@
 <?php
 namespace App\Services\Dashboard\Admins;
 use App\DataTables\Orders\OrderDataTable;
-use App\Models\{Captain, CaptainProfile, CarsCaption, Order};
+use App\DataTables\Dashboard\Admin\Captain\CaptainBounesDataTable;
+use App\Models\{Captain, CaptainProfile, CarsCaption, CaptionBonus};
 use App\Models\Traits\Api\ImageUploadTrait;
 
 class CaptainService {
@@ -77,10 +78,8 @@ class CaptainService {
         return $dataTable;
     }
 
-    public function getOrders($id)
-    {
-//        $captain = CaptainProfile::where('uuid',$id)->first();
-//        $orders = Order::where('captain_id',$captain->owner->id)->get();
-        return $this->dataTable()->render('dashboard.admin.captains.Orders.orders',['id' => $id]);
+    public function getBounes($captainId) {
+        $captain = CaptionBonus::findOrFail($captainId);
+        return $captain;
     }
 }

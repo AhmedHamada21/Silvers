@@ -12,6 +12,7 @@ return [
     'status'                    =>                  'status',
     'active'                    =>                  'active',
     'inactive'                  =>                  'inactive',
+    'waiting'                   =>                  'waiting',
     'close'                     =>                  'close',
     'processes'                 =>                  'processes',
     'Notification'               =>                  'Notification',

@@ -2,9 +2,9 @@
 namespace App\Http\Controllers\Dashboard\Admin;
 use App\DataTables\Orders\OrderDataTable;
 use Illuminate\Http\Request;
-use App\Models\{CaptainProfile,CarsCaptionStatus,Captain,Image, Order};
+use App\Models\{CaptainProfile,CarsCaptionStatus,Captain,Image, CaptionBonus};
 use App\Http\Controllers\Controller;
-use App\DataTables\Dashboard\Admin\CaptainDataTable;
+use App\DataTables\Dashboard\Admin\Captain\{CaptainDataTable, CaptainBounesDataTable};
 use App\Http\Requests\Dashboard\Admin\CaptionRequestValidation;
 use App\Services\Dashboard\{Admins\CaptainService, General\GeneralService};
 
@@ -77,6 +77,14 @@ class CaptainController extends Controller {
     public function notifications($captainId) {
         try {
             return $this->captainService->getNotifications($captainId);
+        } catch (\Exception $e) {
+            return redirect()->route('captains.index')->with('error', 'An error occurred while getting the captain notifications');
+        }
+    }
+
+    public function bounes($captainId) {
+        try {
+            $this->captainService->getBounes($captainId);
         } catch (\Exception $e) {
             return redirect()->route('captains.index')->with('error', 'An error occurred while getting the captain notifications');
         }
@@ -233,9 +241,23 @@ class CaptainController extends Controller {
             $captain = Captain::findOrFail($id);
             $captain->captainActivity->status_captain_work = $request->input('status_captain_work');
             $captain->captainActivity->save();
-            return back()->with('success', 'captain activity status updated successfully');
+            return redirect()->route('captains.show', $this->captainService->getProfile($id))->with('success', 'captain activity status updated successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
+        }
+    }
+
+    public function bounesUpdateStatus(Request $request, $id) {
+        try {
+            $captainBouns = CaptionBonus::where('captain_id', $id)->get();
+            foreach ($captainBouns as $boun) {
+                $boun->status = $request->input('status');
+                $boun->bout = $request->input('bout');
+                $boun->save();
+            }    
+            return redirect()->back()->with('success', 'captain bouns status updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while updating Captain bouns status');
         }
     }
 

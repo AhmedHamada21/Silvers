@@ -12,6 +12,7 @@ return [
     'select'                    =>                  'إختر',     
     'active'                    =>                  'مفعل',
     'inactive'                  =>                  'غير مفعل',
+    'waiting'                   =>                  'انتظار',
     'close'                     =>                  'إغلاق',
     'processes'                 =>                  'العمليات',
 ];
