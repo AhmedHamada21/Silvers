@@ -79,6 +79,19 @@
                         <ul id="package_managment" class="collapse" data-parent="#sidebarnavcar">
                             <li><a href="{{route('packages.index')}}">Package</a></li>
                         </ul>
+                        <!-- Start Hour -->
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#hour_managment">
+                            <div class="pull-left">
+                                <i class="ti-car"></i>
+                                <span class="right-nav-text">Hours</span>
+                            </div>
+                            <div class="pull-right"><i class="ti-plus"></i></div>
+                            <div class="clearfix"></div>
+                        </a>
+                        <ul id="hour_managment" class="collapse" data-parent="#sidebarnavcar">
+                            <li><a href="{{route('hours.index')}}">Hours</a></li>
+                        </ul>
+                        <!-- End Hour -->
                     </ul>
                 </li>
                 <!-- End Admin Managment Menu-->

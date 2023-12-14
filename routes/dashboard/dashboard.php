@@ -110,5 +110,7 @@ Route::group(
         // Packages ::
         Route::resource('packages', General\PackageController::class);
         Route::post('packages/{packageId}/update-status', [General\PackageController::class, 'updateStatus'])->name('packages.update-status');
+        // Hours ::
+        Route::resource('hours', General\HourController::class);
     });
 });
