@@ -7,9 +7,9 @@ use Illuminate\Support\Str;
 class CaptainTableSeeder extends Seeder
 {
     public function run() {
-        Schema::disableForeignKeyConstraints();
-        DB::table('captains')->truncate();
-        Captain::factory()->count(2)->create();
-        Schema::enableForeignKeyConstraints();
+//        Schema::disableForeignKeyConstraints();
+//        DB::table('captains')->truncate();
+//        Captain::factory()->count(2)->create();
+//        Schema::enableForeignKeyConstraints();
     }
 }
