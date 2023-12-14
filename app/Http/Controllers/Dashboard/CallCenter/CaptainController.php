@@ -186,4 +186,15 @@ class CaptainController extends Controller {
             return redirect()->back()->with('error', 'An error occurred while updating Captain car media status');
         }
     }
+
+    public function updateActivityStatus(Request $request, $id) {
+        //try {
+            $captain = Captain::findOrFail($id);
+            $captain->captainActivity->status_captain_work = $request->input('status_captain_work');
+            $captain->captainActivity->save();
+            return back()->with('success', 'captain activity status updated successfully');
+        /*} catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
+        }*/
+    }
 }

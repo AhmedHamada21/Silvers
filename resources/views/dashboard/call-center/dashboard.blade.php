@@ -44,10 +44,12 @@
                                         </span>
                                     </div>
                                     <div class="float-right text-right">
-                                        <p class="card-text text-dark">Captain</p>
-                                        <h4>
-                                            {{Captain::whereCountryId(get_user_data()->country_id)?->count()}}
-                                        </h4>
+                                        <a href="{{route('CallCenterCaptains.index')}}">
+                                            <p class="card-text text-dark">Captain</p>
+                                            <h4>
+                                                {{Captain::whereCountryId(get_user_data()->country_id)?->count()}}
+                                            </h4>
+                                        </a>
                                     </div>
                                 </div>
                                 <p class="pt-3 mt-2 mb-0 text-muted border-top">

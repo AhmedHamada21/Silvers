@@ -13,6 +13,7 @@ Route::group(
         Route::get('dashboard', [CallCenter\CallCenterDashboardController::class, 'index'])->name('callCenter.dashboard');
         // Captains ::
         Route::resource('CallCenterCaptains', CallCenter\CaptainController::class);
+        Route::put('/captains/{id}/updateStatus', [CallCenter\CaptainController::class, 'updateActivityStatus'])->name('CallCenterCaptains.updateActivityStatus');
         Route::post('CallCenterCaptains/upload-media', [CallCenter\CaptainController::class, 'uploadPersonalMedia'])->name('CallCenterCaptains.uploadMedia');
         Route::post('CallCenterCaptains/upload-car-media', [CallCenter\CaptainController::class, 'uploadCarMedia'])->name('CallCenterCaptains.uploadCarMedia');
         Route::post('CallCenterCaptains/update-media-status/{id}', [CallCenter\CaptainController::class, 'updatePersonalMediaStatus'])->name('CallCenterCaptains.updateMediaStatus');
