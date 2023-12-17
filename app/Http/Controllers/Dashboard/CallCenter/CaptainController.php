@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\Dashboard\CallCenter\CaptainDataTable;
 use App\Services\Dashboard\{CallCenter\CaptainService, General\GeneralService};
-use App\Models\{CaptainProfile, CarsCaptionStatus, Captain, Image};
+use App\Models\{CaptainProfile, CarsCaptionStatus, Captain, Image, Order, OrderDay, OrderHour, SaveRentHour};
 
 class CaptainController extends Controller
 {
@@ -278,11 +278,27 @@ class CaptainController extends Controller
     {
 
         try {
-            $dataIn = CaptainProfile::where('number_personal', 'like', '%' . \request()->number . '%')->get();
-            return view('dashboard.call-center.captains.search', $dataIn);
+            $dataIn = CaptainProfile::where('number_personal', 'like', '%' . $request->number . '%')->orderBy('created_at','desc')->paginate(50);
+            if ($dataIn){
+                return view('dashboard.call-center.captains.search',compact('dataIn'));
+            }
+
         } catch (\Exception $exception) {
             return redirect()->back()->with('error', 'An error occurred');
 
         }
+    }
+
+
+    public function trips($captainId)
+    {
+        $id = CaptainProfile::where('uuid',$captainId)->first()->captain_id;
+        $orders = Order::where('captain_id', $id)->orderBy('created_at','desc')->paginate(50);
+        $orderHours = OrderHour::where('captain_id', $id)->orderBy('created_at','desc')->paginate(50);
+        $orderDay = OrderDay::where('captain_id', $id)->orderBy('created_at','desc')->paginate(50);
+        $data = $orders->concat($orderHours)->concat($orderDay);
+        dd($data);
+        //return view('dashboard.call-center.captains.search', compact('data'));
+
     }
 }

@@ -30,7 +30,29 @@
                     <br>
                     <br>
 
-
+                    <table class="table table-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">name</th>
+                            <th scope="col">email</th>
+                            <th scope="col">phone</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if($dataIn->count() > 0)
+                            @foreach($dataIn as $data)
+                                <tr>
+                                    <th>{{$loop->index+1}}</th>
+                                    <td>{{$data->owner->name ?? null}}</td>
+                                    <td>{{$data->owner->email ?? null}}</td>
+                                    <td>{{$data->owner->phone ?? null}}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tbody>
+                        {!! $dataIn->render() !!}
+                    </table>
 
                 </div>
 
