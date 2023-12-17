@@ -261,6 +261,28 @@ class CaptainController extends Controller
         }
     }*/
 
+    public function updateActivityStatus(Request $request, $id) {
+        try {
+            $captain = Captain::findOrFail($id);
+            $status = $request->input('status_captain_work');
+            if ($status === 'active') {
+                $blockedCaptain = DB::table('captain_callcenter_blocks')->where('captain_id', $captain->id)->where('call_center_id', get_user_data()->id)->first();
+                if ($blockedCaptain) {
+                    DB::table('captain_callcenter_blocks')->where('captain_id', $captain->id)->where('call_center_id', get_user_data()->id)->delete();
+                }
+                $captain->captainActivity->status_captain_work = 'active';
+                $captain->captainActivity->save();
+            } else {
+                $captain->captainActivity->status_captain_work = $status;
+                $captain->captainActivity->save();
+            }
+
+            return back()->with('success', 'Captain activity status updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
+        }
+    }
+
     public function blockCaptain(Request $request, Captain $captain) {
         try {
             $captain->captainActivity->status_captain_work = 'block';

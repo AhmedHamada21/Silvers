@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('captain_callcenter_blocks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('call_center_id')->nullable()->constrained('callcenters')->cascadeOnDelete();
+            $table->foreignId('admin_id')->nullable()->constrained('admins')->cascadeOnDelete();
+            $table->foreignId('agent_id')->nullable()->constrained('agents')->cascadeOnDelete();
             $table->foreignId('captain_id')->constrained('captains')->cascadeOnDelete()->cascadeOnUpdate();
             $table->text('block_reason');
             $table->timestamps();
