@@ -141,6 +141,10 @@
                 // Add any DataTable options here
             });
         @endforeach
+        window.alert = function() {
+        // Do nothing or handle it in a custom way
+        console.log("Alerts are disabled");
+        };
     });
 </script>
 @endsection
