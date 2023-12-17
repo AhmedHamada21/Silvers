@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\DataTables\Dashboard\CallCenter\CaptainDataTable;
 use App\Services\Dashboard\{CallCenter\CaptainService, General\GeneralService};
 use App\Models\{CaptainProfile, CarsCaptionStatus, Captain, Image, Order, OrderDay, OrderHour, SaveRentHour};
+use Illuminate\Support\Facades\DB;
 
 class CaptainController extends Controller
 {
@@ -248,7 +249,7 @@ class CaptainController extends Controller
         }
     }
 
-    public function updateActivityStatus(Request $request, $id)
+    /*public function updateActivityStatus(Request $request, $id)
     {
         try {
             $captain = Captain::findOrFail($id);
@@ -258,7 +259,26 @@ class CaptainController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
         }
+    }*/
+
+    public function blockCaptain(Request $request, Captain $captain) {
+        try {
+            $captain->captainActivity->status_captain_work = 'block';
+            $captain->captainActivity->save();
+            DB::table('captain_callcenter_blocks')->insert([
+                'call_center_id' => get_user_data()->id,
+                'captain_id' => $captain->id,
+                'block_reason' => $request->input('block_reason'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return back()->with('success', 'Captain activity status updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
+        }
     }
+
 
 
     public function sendNotificationAll(Request $request)

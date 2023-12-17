@@ -56,12 +56,31 @@
                                 <option selected>Choose Captain Work Status</option>
                                 <option value="active" {{$data['captain']?->captainActivity?->status_captain_work ==
                                     'active' ? 'selected' : ''}}>Active</option>
-                                <option value="block" {{$data['captain']?->captainActivity?->status_captain_work ==
-                                    'block' ? 'selected' : ''}}>Block</option>
                                 <option value="waiting" {{$data['captain']?->captainActivity?->status_captain_work ==
                                     'waiting' ? 'selected' : ''}}>Waiting</option>
                             </select>
                         </form>
+                        <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#blockCaptainModal">
+                            Block Captain
+                        </button>
+                        @if($data['captain']?->captainActivity?->status_captain_work == 'block')
+                            @php
+                                $blockReason = DB::table('captain_callcenter_blocks')->where('captain_id', $data['captain']->id)->value('block_reason');
+                            @endphp
+                            
+                            @if ($blockReason)
+                            <div class="mt-2">
+                                <strong>Captain is Blocked:</strong> {{$blockReason}}
+                            </div>
+                            @else
+                            <div class="mt-2">
+                                <strong>Captain is Blocked, but block reason is not available.</strong>
+                            </div>
+                            @endif
+                        @endif
+                        <!-- Block Modal -->
+                        @include('dashboard.call-center.captains.btn.modals.profile.block')
+                        <!-- End Block Modal -->
                     </div>
                 </div>
             </div>
@@ -108,4 +127,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
     integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        function handleCaptainStatusChange(selectElement) {
+            if (selectElement.value === 'block') {
+                $('#blockCaptainModal').modal('show');
+            } else {
+                selectElement.form.submit();
+            }
+        }
+    </script>
 @endsection

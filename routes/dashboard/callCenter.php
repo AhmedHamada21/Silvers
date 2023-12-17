@@ -34,5 +34,7 @@ Route::group(
         Route::controller(CallCenter\CaptainController::class)->prefix('order-day')->as('callCenterOrderDay.')->group(function () {
             Route::get('/{order_code}', 'showOrderDay')->name('show');
         });
+        Route::put('/call-center-captains/block/{captain}', [CallCenter\CaptainController::class, 'blockCaptain'])->name('CallCenterCaptains.block');
+
     });
 });
