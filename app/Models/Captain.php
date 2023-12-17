@@ -109,4 +109,9 @@ class Captain extends Authenticatable implements JWTSubject
         return $this->whereStatus('active')->get();
     }
 
+    public function invite()
+    {
+        return $this->hasOne(InviteFriend::class,'captain_id');
+    }
+
 }
