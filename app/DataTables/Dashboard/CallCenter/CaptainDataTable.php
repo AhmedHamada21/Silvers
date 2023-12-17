@@ -35,7 +35,7 @@ class CaptainDataTable extends BaseDataTable {
     }
 
     public function query(): QueryBuilder {
-        return Captain::query()->orderBy('created_at')->whereCountryId(get_user_data()->country_id);
+        return Captain::query()->whereCountryId(get_user_data()->country_id)->latest();
     }
 
     public function getColumns(): array {
