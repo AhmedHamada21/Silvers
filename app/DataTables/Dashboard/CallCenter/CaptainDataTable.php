@@ -31,11 +31,11 @@ class CaptainDataTable extends BaseDataTable {
             ->editColumn('country_id', function (Captain $captain) {
                 return $captain?->country?->name;
             })
-            ->rawColumns(['action', 'created_at', 'updated_at','status', 'country_id', 'name']); 
+            ->rawColumns(['action', 'created_at', 'updated_at','status', 'country_id', 'name']);
     }
 
     public function query(): QueryBuilder {
-        return Captain::query()->whereCountryId(get_user_data()->country_id);
+        return Captain::query()->orderBy('created_at')->whereCountryId(get_user_data()->country_id);
     }
 
     public function getColumns(): array {
