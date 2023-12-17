@@ -297,8 +297,7 @@ class CaptainController extends Controller
         $orderHours = OrderHour::where('captain_id', $id)->orderBy('created_at','desc')->paginate(50);
         $orderDay = OrderDay::where('captain_id', $id)->orderBy('created_at','desc')->paginate(50);
         $data = $orders->concat($orderHours)->concat($orderDay);
-        dd($data);
-        //return view('dashboard.call-center.captains.search', compact('data'));
-
+        $types = ['Orders', 'Order Hours', 'Order Days'];
+        return view('dashboard.call-center.captains.trip.trip', compact('data', 'types'));
     }
 }
