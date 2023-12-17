@@ -7,4 +7,10 @@ class CaptainService {
             $query->where('uuid', $captainId);
         })->firstOrFail();
     }
+
+    public function create($data) {
+        $data['password'] = bcrypt($data['password']);
+        $data['callcenter_id'] = get_user_data()->id;
+        return Captain::create($data);
+    }
 }

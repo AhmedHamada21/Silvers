@@ -22,6 +22,16 @@ class CaptainController extends Controller {
         return $this->dataTable->render('dashboard.call-center.captains.index',  compact('data'));
     }
 
+    public function store(Request $request) {
+        try {
+            $requestData = $request->all();
+            $this->captainService->create($requestData);
+            return redirect()->route('CallCenterCaptains.index')->with('success', 'captain created successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while creating the captain');
+        }
+    }
+
     public function show($captainId) {
         try {
             $data = [
