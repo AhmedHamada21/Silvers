@@ -46,15 +46,20 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 text-left align-self-center">
-                        <form id="toggleForm{{ $data['captain']->id }}" method="POST" action="{{ route('CallCenterCaptains.updateActivityStatus',$data['captain']?->id) }}">
+                        <form id="toggleForm{{ $data['captain']->id }}" method="POST"
+                            action="{{ route('CallCenterCaptains.updateActivityStatus',$data['captain']?->id) }}">
                             @csrf
                             @method('PUT')
                             <label>Captain Work Status</label>
-                            <select class="form-control p-2" name="status_captain_work" style="outline-style:none;" onchange="this.form.submit();">
+                            <select class="form-control p-2" name="status_captain_work" style="outline-style:none;"
+                                onchange="this.form.submit();">
                                 <option selected>Choose Captain Work Status</option>
-                                <option value="active" {{$data['captain']?->captainActivity?->status_captain_work == 'active' ? 'selected' : ''}}>Active</option>
-                                <option value="block" {{$data['captain']?->captainActivity?->status_captain_work == 'block' ? 'selected' : ''}}>Block</option>
-                                <option value="waiting" {{$data['captain']?->captainActivity?->status_captain_work == 'waiting' ? 'selected' : ''}}>Waiting</option>
+                                <option value="active" {{$data['captain']?->captainActivity?->status_captain_work ==
+                                    'active' ? 'selected' : ''}}>Active</option>
+                                <option value="block" {{$data['captain']?->captainActivity?->status_captain_work ==
+                                    'block' ? 'selected' : ''}}>Block</option>
+                                <option value="waiting" {{$data['captain']?->captainActivity?->status_captain_work ==
+                                    'waiting' ? 'selected' : ''}}>Waiting</option>
                             </select>
                         </form>
                     </div>

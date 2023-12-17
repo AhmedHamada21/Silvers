@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Dashboard\CallCenter;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\CallCenter;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Http\Controllers\Dashboard\Admin\Order;
 
 Route::group(
     [
@@ -22,6 +23,16 @@ Route::group(
 
         Route::post('captains/sendNotification/All/callCenter', [CallCenter\CaptainController::class, 'sendNotificationAll'])->name('captains.sendNotification_callCenter');
         Route::get('captains_searchNumber', [CallCenter\CaptainController::class, 'captains_searchNumber'])->name('captains.searchNumber');
-
+        Route::controller(CallCenter\CaptainController::class)->prefix('orders')->as('callCenterOrders.')->group(function () {
+            Route::get('/{order_code}', 'showOrder')->name('show');
+        });
+        // Order Hour ::
+        Route::controller(CallCenter\CaptainController::class)->prefix('order-hour')->as('callCenterOrderHour.')->group(function () {
+            Route::get('/{order_code}', 'showOrderHour')->name('show');
+        });
+        // Order Day ::
+        Route::controller(CallCenter\CaptainController::class)->prefix('order-day')->as('callCenterOrderDay.')->group(function () {
+            Route::get('/{order_code}', 'showOrderDay')->name('show');
+        });
     });
 });

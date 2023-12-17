@@ -300,4 +300,57 @@ class CaptainController extends Controller
         $types = ['Orders', 'Order Hours', 'Order Days'];
         return view('dashboard.call-center.captains.trip.trip', compact('data', 'types'));
     }
+
+    public function showOrder($orderCode) {
+        $order = Order::where('order_code', $orderCode)->first();
+        $orderTracking = Order::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id','id', 'lat_user', 'long_user', 'lat_going', 'long_going']);
+        $locations = [];
+        foreach ($orderTracking as $orderTrack) {
+            $locations[] = [
+                'id' => $orderTrack->id,
+                'lat_user' => $orderTrack->lat_user,
+                'long_user' => $orderTrack->long_user,
+                'lat_going' => $orderTrack->lat_going,
+                'long_going' => $orderTrack->long_going,
+                'user_id' => $orderTrack->user->name,
+                'captain_id' => $orderTrack->captain->name,
+                'trip_type_id' => $orderTrack->trip_type->name,
+            ];
+        }
+        return view('dashboard.call-center.orders.showOrder', ['order' => $order, 'data' => json_encode($locations)]);
+    }
+
+    public function showOrderDay($orderCode) {
+        $order = OrderDay::where('order_code', $orderCode)->first();
+        $orderTracking = OrderDay::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id','id', 'lat_user', 'long_user', 'status_price', 'car_type_day_id', 'type_duration', 'start_day', 'end_day', 'number_day', 'start_time']);
+        $locations = [];
+        foreach ($orderTracking as $orderTrack) {
+            $locations[] = [
+                'id' => $orderTrack->id,
+                'lat' => $orderTrack->lat_user,
+                'lng' => $orderTrack->long_user,
+                'user_id' => $orderTrack->user->name,
+                'captain_id' => $orderTrack->captain->name,
+                'trip_type_id' => $orderTrack->trip_type->name,
+            ];
+        }
+        return view('dashboard.call-center.orders.showOrderDay', ['order' => $order, 'data' => json_encode($locations)]);
+    }
+
+    public function showOrderHour($orderCode) {
+        $order = OrderHour::where('order_code', $orderCode)->first();
+        $orderTracking = OrderHour::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id','id', 'lat_user', 'long_user', 'status_price', 'car_type_id', 'type_duration', 'time_duration']);
+        $locations = [];
+        foreach ($orderTracking as $orderTrack) {
+            $locations[] = [
+                'id' => $orderTrack->id,
+                'lat' => $orderTrack->lat_user,
+                'lng' => $orderTrack->long_user,
+                'user_id' => $orderTrack->user->name,
+                'captain_id' => $orderTrack->captain->name,
+                'trip_type_id' => $orderTrack->trip_type->name,
+            ];
+        }
+        return view('dashboard.call-center.orders.showOrderHour', ['order' => $order, 'data' => json_encode($locations)]);
+    }
 }

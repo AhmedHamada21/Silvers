@@ -59,7 +59,9 @@
                                                 <th>ID</th>
                                                 <th>Order Code</th>
                                                 <th>User</th>
+                                                <th>Total Price</th>
                                                 <th>Created At</th>
+                                                <th>Details</th>
                                                 <!-- Add more columns as needed -->
                                             </tr>
                                         </thead>
@@ -70,7 +72,17 @@
                                                 <td>{{ $item->id }}</td>
                                                 <td>{{ $item->order_code }}</td>
                                                 <td>{{ $item->user->name }}</td>
+                                                <td>{{ $item->total_price }}</td>
                                                 <td>{{ $item->created_at }}</td>
+                                                <td>
+                                                    <a href="{{ route('callCenterOrders.show', $item->order_code) }}" class="modal-effect btn btn-sm btn-dark dropdown-item"
+                                                        style="text-align: center !important">
+                                                        <span class="icon text-info text-dark">
+                                                            <i class="fa fa-eye"></i>
+                                                            Show Details
+                                                        </span>
+                                                    </a>
+                                                </td>
                                                 <!-- Add more cells for additional columns -->
                                             </tr>
                                             @elseif($type == 'Order Hours' && $item instanceof \App\Models\OrderHour)
@@ -79,7 +91,17 @@
                                                 <td>{{ $item->id }}</td>
                                                 <td>{{ $item->order_code }}</td>
                                                 <td>{{ $item->user->name }}</td>
+                                                <td>{{ $item->total_price }}</td>
                                                 <td>{{ $item->created_at }}</td>
+                                                <td>
+                                                    <a href="{{ route('callCenterOrderHour.show', $item->order_code) }}"
+                                                        class="modal-effect btn btn-sm btn-dark dropdown-item" style="text-align: center !important">
+                                                        <span class="icon text-info text-dark">
+                                                            <i class="fa fa-eye"></i>
+                                                            Show Details
+                                                        </span>
+                                                    </a>
+                                                </td>
                                                 <!-- Add more cells for additional columns -->
                                             </tr>
                                             @elseif($type == 'Order Days' && $item instanceof \App\Models\OrderDay)
@@ -88,7 +110,17 @@
                                                 <td>{{ $item->id }}</td>
                                                 <td>{{ $item->order_code }}</td>
                                                 <td>{{ $item->user->name }}</td>
+                                                <td>{{ $item->total_price }}</td>
                                                 <td>{{ $item->created_at }}</td>
+                                                <td>
+                                                    <a href="{{ route('callCenterOrderDay.show', $item->order_code) }}"
+                                                        class="modal-effect btn btn-sm btn-dark dropdown-item" style="text-align: center !important">
+                                                        <span class="icon text-info text-dark">
+                                                            <i class="fa fa-eye"></i>
+                                                            Show Details
+                                                        </span>
+                                                    </a>
+                                                </td>
                                                 <!-- Add more cells for additional columns -->
                                             </tr>
                                             @endif
