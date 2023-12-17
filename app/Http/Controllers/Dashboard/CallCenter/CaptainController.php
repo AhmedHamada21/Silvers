@@ -1,28 +1,34 @@
 <?php
 
 namespace App\Http\Controllers\Dashboard\CallCenter;
+
+use App\DataTables\Dashboard\CallCenter\CaptainSearchDataTable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\Dashboard\CallCenter\CaptainDataTable;
-use App\Services\Dashboard\{CallCenter\CaptainService,General\GeneralService};
-use App\Models\{CaptainProfile,CarsCaptionStatus,Captain,Image};
+use App\Services\Dashboard\{CallCenter\CaptainService, General\GeneralService};
+use App\Models\{CaptainProfile, CarsCaptionStatus, Captain, Image};
 
-class CaptainController extends Controller {
-    public function __construct(protected CaptainDataTable $dataTable, protected CaptainService $captainService, protected GeneralService $generalService) {
+class CaptainController extends Controller
+{
+    public function __construct(protected CaptainDataTable $dataTable, protected CaptainService $captainService, protected GeneralService $generalService)
+    {
         $this->dataTable = $dataTable;
         $this->captainService = $captainService;
         $this->generalService = $generalService;
     }
-    
-    public function index() {
+
+    public function index()
+    {
         $data = [
             'title' => 'Captions',
             'countries' => $this->generalService->getCountries(),
         ];
-        return $this->dataTable->render('dashboard.call-center.captains.index',  compact('data'));
+        return $this->dataTable->render('dashboard.call-center.captains.index', compact('data'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         try {
             $requestData = $request->all();
             $this->captainService->create($requestData);
@@ -32,7 +38,8 @@ class CaptainController extends Controller {
         }
     }
 
-    public function show($captainId) {
+    public function show($captainId)
+    {
         try {
             $data = [
                 'title' => 'Captain Details',
@@ -44,7 +51,8 @@ class CaptainController extends Controller {
         }
     }
 
-    public function uploadPersonalMedia(Request $request) {
+    public function uploadPersonalMedia(Request $request)
+    {
         if ($request->hasFile('personal_avatar'))
             $this->storeImage($request, 'personal_avatar', $request->get('imageable_id'), $request->get('type'));
         if ($request->hasFile('id_photo_front'))
@@ -60,7 +68,8 @@ class CaptainController extends Controller {
         return redirect()->back()->with('success', 'Upload Personal Media Succesfully');
     }
 
-    public function uploadCarMedia(Request $request) {
+    public function uploadCarMedia(Request $request)
+    {
         if ($request->hasFile('car_license_front'))
             $this->storeImage($request, 'car_license_front', $request->get('imageable_id'), $request->get('type'));
         if ($request->hasFile('car_license_back'))
@@ -78,78 +87,110 @@ class CaptainController extends Controller {
         return redirect()->back()->with('success', 'Upload Car Media Succesfully');
     }
 
-    private function storeImage(Request $request, $field, $imageable, $type) {
-        $image = new Image();
-        $image->photo_type = $field;
-        $image->imageable_type = 'App\Models\Captain';
-        $imageable = json_decode($imageable);
-        if ($request->file($field)->isValid()) {
-            $captainProfile = CaptainProfile::whereCaptainId($imageable->id)->select('uuid')->first();
-            if ($captainProfile) {
-                $nameWithoutSpaces = str_replace(' ', '_', $imageable->name);
-                $request->file($field)->storeAs(
-                    $nameWithoutSpaces . '_' . $captainProfile->uuid . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR,
-                    $field . '.' . $request->file($field)->getClientOriginalExtension(),
-                    'upload_image'
-                );
-                $image->photo_status = 'accept';
-                $image->type = $type;
-                $image->filename = $field . '.' . $request->file($field)->getClientOriginalExtension();
-                $image->imageable_id = $imageable->id;
-                $image->created_by_callcenter_id = get_user_data()->id;
-                $image->created_at_callcenter = now();
-                $image->save();
+    private function storeImage(Request $request, $field, $imageable, $type)
+    {
+
+        $checkImage = Image::where('imageable_type', 'App\Models\Captain')->where('imageable_id', json_decode($imageable)->id)->where('photo_type', $field)->first();
+        if (!$checkImage) {
+            $image = new Image();
+            $image->photo_type = $field;
+            $image->imageable_type = 'App\Models\Captain';
+            $imageable = json_decode($imageable);
+            if ($request->file($field)->isValid()) {
+                $captainProfile = CaptainProfile::whereCaptainId($imageable->id)->select('uuid')->first();
+                if ($captainProfile) {
+                    $nameWithoutSpaces = str_replace(' ', '_', $imageable->name);
+                    $request->file($field)->storeAs(
+                        $nameWithoutSpaces . '_' . $captainProfile->uuid . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR,
+                        $field . '.' . $request->file($field)->getClientOriginalExtension(),
+                        'upload_image'
+                    );
+                    $image->photo_status = 'accept';
+                    $image->type = $type;
+                    $image->filename = $field . '.' . $request->file($field)->getClientOriginalExtension();
+                    $image->imageable_id = $imageable->id;
+                    $image->created_by_callcenter_id = get_user_data()->id;
+                    $image->created_at_callcenter = now();
+                    $image->save();
+                }
+            }
+        } else {
+
+            $checkImage->photo_type = $field;
+            $checkImage->imageable_type = 'App\Models\Captain';
+            $checkImageAble = json_decode($imageable);
+            if ($request->file($field)->isValid()) {
+                $captainProfile = CaptainProfile::whereCaptainId($checkImageAble->id)->select('uuid')->first();
+                if ($captainProfile) {
+                    $nameWithoutSpaces = str_replace(' ', '_', $checkImageAble->name);
+                    $request->file($field)->storeAs(
+                        $nameWithoutSpaces . '_' . $captainProfile->uuid . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR,
+                        $field . '.' . $request->file($field)->getClientOriginalExtension(),
+                        'upload_image'
+                    );
+                    $checkImage->photo_status = 'accept';
+                    $checkImage->type = $type;
+                    $checkImage->filename = $field . '.' . $request->file($field)->getClientOriginalExtension();
+                    $checkImage->imageable_id = json_decode($imageable)->id;
+                    $checkImage->created_by_callcenter_id = get_user_data()->id;
+                    $checkImage->created_at_callcenter = now();
+                    $checkImage->save();
+                }
             }
         }
+
+
     }
 
-    public function updatePersonalMediaStatus(Request $request, $id) {
+    public function updatePersonalMediaStatus(Request $request, $id)
+    {
+
         try {
             $columns = [
                 'personal_avatar' => [
-                    'ar'=> 'الصوره الشخصية',
-                    'en'=> 'personal avatar',
+                    'ar' => 'الصوره الشخصية',
+                    'en' => 'personal avatar',
                 ],
                 'id_photo_front' => [
-                    'ar'=> 'صوره الهوية امام',
-                    'en'=> 'Nationality ID front',
+                    'ar' => 'صوره الهوية امام',
+                    'en' => 'Nationality ID front',
                 ],
                 'id_photo_back' => [
-                    'ar'=> 'صوره الهوية خلف',
-                    'en'=> 'Nationality ID back',
+                    'ar' => 'صوره الهوية خلف',
+                    'en' => 'Nationality ID back',
                 ],
                 'criminal_record' => [
-                    'ar'=> 'السجل الجنائى',
-                    'en'=> 'Criminal Record',
+                    'ar' => 'السجل الجنائى',
+                    'en' => 'Criminal Record',
                 ],
                 'captain_license_front' => [
-                    'ar'=> 'رخصة السائق امام',
-                    'en'=> 'captain license front',
+                    'ar' => 'رخصة السائق امام',
+                    'en' => 'captain license front',
                 ],
                 'captain_license_back' => [
-                    'ar'=> 'رخصة السائق خلف',
-                    'en'=> 'captain license back',
+                    'ar' => 'رخصة السائق خلف',
+                    'en' => 'captain license back',
                 ],
             ];
 
 
             $messages = [
                 'Reject' => [
-                    'ar'=> 'مرفوضه',
-                    'en'=> 'Reject',
+                    'ar' => 'مرفوضه',
+                    'en' => 'Reject',
                 ],
                 'Accept' => [
-                    'ar'=> 'مقبول',
-                    'en'=> 'Accept',
+                    'ar' => 'مقبول',
+                    'en' => 'Accept',
                 ],
             ];
             $image = Image::find($id);
             $captain = Captain::findOrfail($request->imageable_id);
-            $accept = array_key_exists('Accept',$messages) ? $messages['Accept']['ar'] : null;
-            $reject = array_key_exists('Reject',$messages) ? $messages['Reject']['ar'] : null;
-          
-            $specificName = array_key_exists($image->photo_type,$columns) ? $columns[$image->photo_type]['ar'] : null;
-            if (!$image) 
+            $accept = array_key_exists('Accept', $messages) ? $messages['Accept']['ar'] : null;
+            $reject = array_key_exists('Reject', $messages) ? $messages['Reject']['ar'] : null;
+
+            $specificName = array_key_exists($image->photo_type, $columns) ? $columns[$image->photo_type]['ar'] : null;
+            if (!$image)
                 return redirect()->back()->with('error', 'Image not found');
             $updateData = [];
             if ($request->has('photo_status')) {
@@ -157,21 +198,31 @@ class CaptainController extends Controller {
                 $updateData['updated_by_callcenter_id'] = get_user_data()->id;
                 $updateData['updated_at_callcenter'] = now();
             }
-            
+
             if ($request->has('reject_reson'))
                 $updateData['reject_reson'] = $request->input('reject_reson');
-            
+
+
             $image->update($updateData);
-            $body = ($request->input('photo_status') === 'accept') ? 'Good Your ' . $specificName . ' Successfully' : 'Sorry this image ' .$specificName;
-            $title = ($request->input('photo_status') === 'accept') ? $accept . ' ' .$specificName :  ' ' .$reject .' ' . $specificName;
-            //sendNotificationCaptain($captain->fcm_token,$body, $title, false);
+            $body = ($request->input('photo_status') === 'accept') ? 'Good Your ' . $specificName . ' Successfully' : 'Sorry this image ' . $specificName;
+            $title = ($request->input('photo_status') === 'accept') ? $accept . ' ' . $specificName : ' ' . $reject . ' ' . $specificName;
+
+
+            if ($request->photo_status == "accept") {
+                sendNotificationCaptain($request->imageable_id, 'تم الموافقه على الورق', '');
+            } else {
+                sendNotificationCaptain($request->imageable_id, 'هناك خظأ ما', $request->input('reject_reson'));
+            }
+
+
             return redirect()->back()->with('success', 'Image ' . ucfirst(str_replace('_', ' ', $image->photo_type)) . ' updated status successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred during the update: ' . $e->getMessage());
         }
     }
 
-    public function updateCarStatus(Request $request, $id) {
+    public function updateCarStatus(Request $request, $id)
+    {
         try {
             $captainId = $request->input('captain_id');
             $fieldName = $request->input('field_name');
@@ -197,7 +248,8 @@ class CaptainController extends Controller {
         }
     }
 
-    public function updateActivityStatus(Request $request, $id) {
+    public function updateActivityStatus(Request $request, $id)
+    {
         try {
             $captain = Captain::findOrFail($id);
             $captain->captainActivity->status_captain_work = $request->input('status_captain_work');
@@ -205,6 +257,32 @@ class CaptainController extends Controller {
             return back()->with('success', 'captain activity status updated successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
+        }
+    }
+
+
+    public function sendNotificationAll(Request $request)
+    {
+        try {
+            sendNotificatioAll($request->type, $request->body, $request->title);
+            return redirect()->back();
+
+        } catch (\Exception $exception) {
+            return redirect()->back()->with('error', 'An error occurred');
+
+        }
+    }
+
+
+    public function captains_searchNumber(Request $request)
+    {
+
+        try {
+            $dataIn = CaptainProfile::where('number_personal', 'like', '%' . \request()->number . '%')->get();
+            return view('dashboard.call-center.captains.search', $dataIn);
+        } catch (\Exception $exception) {
+            return redirect()->back()->with('error', 'An error occurred');
+
         }
     }
 }

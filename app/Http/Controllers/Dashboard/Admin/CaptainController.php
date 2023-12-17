@@ -254,7 +254,7 @@ class CaptainController extends Controller {
                 $boun->status = $request->input('status');
                 $boun->bout = $request->input('bout');
                 $boun->save();
-            }    
+            }
             return redirect()->back()->with('success', 'captain bouns status updated successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while updating Captain bouns status');
@@ -275,7 +275,7 @@ class CaptainController extends Controller {
     public function sendNotification(Request $request) {
         try {
             sendNotificationCaptain($request->fcm_token_captain, $request->body, $request->title);
-            return redirect()->route('captains.index')->with('success', 'Successfully Send Notifications');
+            return redirect()->back();
 
         } catch (\Exception $exception) {
             return redirect()->route('captains.index')->with('error', 'An error occurred');

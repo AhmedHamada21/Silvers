@@ -55,7 +55,6 @@ Route::group(
         Route::post('/captains/update-media-status/{id}', [Admin\CaptainController::class, 'updatePersonalMediaStatus'])->name('captains.updateMediaStatus');
         Route::post('captains/update-status/{id}', [Admin\CaptainController::class, 'updateStatus'])->name('captains.updateStatus');
         Route::post('captains/update-car-status/{id}', [Admin\CaptainController::class, 'updateCarStatus'])->name('captains.updateCarStatus');
-        Route::post('captains/sendNotification/All', [Admin\CaptainController::class, 'sendNotificationAll'])->name('captains.sendNotificationAll');
         Route::post('captains/sendNotification', [Admin\CaptainController::class, 'sendNotification'])->name('captains.sendNotification');
 
         // Captains Bounes::
@@ -139,6 +138,6 @@ Route::group(
         Route::resource('hours', General\HourController::class);
         // Subscriptions ::
         Route::resource('subscriptions', Admin\SubscriptionController::class);
-        
+
     });
 });

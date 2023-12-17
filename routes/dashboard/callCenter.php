@@ -18,5 +18,9 @@ Route::group(
         Route::post('CallCenterCaptains/upload-car-media', [CallCenter\CaptainController::class, 'uploadCarMedia'])->name('CallCenterCaptains.uploadCarMedia');
         Route::post('CallCenterCaptains/update-media-status/{id}', [CallCenter\CaptainController::class, 'updatePersonalMediaStatus'])->name('CallCenterCaptains.updateMediaStatus');
         Route::post('CallCenterCaptains/update-car-status/{id}', [CallCenter\CaptainController::class, 'updateCarStatus'])->name('CallCenterCaptains.updateCarStatus');
+
+        Route::post('captains/sendNotification/All/callCenter', [CallCenter\CaptainController::class, 'sendNotificationAll'])->name('captains.sendNotification_callCenter');
+        Route::get('captains_searchNumber', [CallCenter\CaptainController::class, 'captains_searchNumber'])->name('captains.searchNumber');
+
     });
 });

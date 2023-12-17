@@ -34,7 +34,8 @@ class CaptainDataTable extends BaseDataTable {
             ->rawColumns(['action', 'created_at', 'updated_at','status', 'country_id', 'name']);
     }
 
-    public function query(): QueryBuilder {
+    public function query() {
+
         return Captain::query()->whereCountryId(get_user_data()->country_id)->latest();
     }
 

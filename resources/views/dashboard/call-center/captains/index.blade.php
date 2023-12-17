@@ -28,10 +28,30 @@
     <div class="col-md-12 mb-30">
         <div class="card card-statistics h-100">
             <div class="card-body">
+
+
+
+
+                <div class="input-group mb-3">
+                    <form action="{{route('captains.searchNumber')}}" method="get">
+                        @csrf
+                    <input type="text" class="form-control" name="number" placeholder="number" required>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success" type="submit" >Button</button>
+                    </div>
+                    </form>
+                </div>
+
+
                 <a data-target="#create{{$data['title']}}" data-toggle="modal"  data-effect="effect-scale" class="btn btn-success btn-sm" role="button">
                     <i class="fa fa-plus"></i>
                     Add New {{$data['title']}}
                 </a>
+
+
+
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Push Notification All  {{$data['title']}}</button>
+
                 <br>
                 <br>
                 <!--begin::Table-->
@@ -43,6 +63,7 @@
                 <!--end::Table-->
             </div>
             @include('dashboard.call-center.captains.btn.modals.create')
+            @include('dashboard.call-center.captains.notification')
         </div>
     </div>
 </div>

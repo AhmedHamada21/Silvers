@@ -120,7 +120,6 @@ if (!function_exists('sendNotificationCaptain')) {
     function sendNotificationCaptain($fcm, $body, $title, $store = false)
     {
         $captain = Captain::where('id', $fcm)->first();
-
         $url = Http::withHeaders([
             "Content-Type" => "application/json",
             "Authorization" => "key=AAAAX2bL0C0:APA91bEckQ5zvMGKvt2FulWNsq9rsEe5qhphBKK_tVsvMozsOGMTZc4m5lwlkwZ8XFRHbMvItsxaZLnDvA0bEi3CsoxZ1w6bBEJNYYhhvksMTmBbJqgARVCNHkRKWxb43JGDS0WUeL7s"

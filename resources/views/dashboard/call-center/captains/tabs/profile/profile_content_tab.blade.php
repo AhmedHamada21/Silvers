@@ -68,6 +68,7 @@
                                                                 <input type="hidden" name="imageable_id"
                                                                     value="{{ $data['captain'] }}">
                                                                 <input type="hidden" name="type" value="personal">
+
                                                                 <div class="row p-1">
                                                                     <div class="col-6">
                                                                         <div class="custom-file">
