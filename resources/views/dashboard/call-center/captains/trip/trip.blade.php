@@ -51,12 +51,14 @@
                                 <div class="tab-pane fade {{ $key == 0 ? 'show active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $type)) }}"
                                     role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ', '_', $type)) }}-tab">
                                     <h4>{{ $type }} Trips</h4>
-                            
-                                    <table class="table">
+                                    <div id="datatable-container-{{ strtolower(str_replace(' ', '_', $type)) }}" class="table-responsive">
+                                    <table id=""
+                                        class="table table-{{ strtolower(str_replace(' ', '_', $type)) }} table-hover table-sm table-bordered p-0" data-page-length="10" style="text-align: center">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Order Code</th>
+                                                <th>User</th>
                                                 <th>Created At</th>
                                                 <!-- Add more columns as needed -->
                                             </tr>
@@ -67,6 +69,7 @@
                                             <tr>
                                                 <td>{{ $item->id }}</td>
                                                 <td>{{ $item->order_code }}</td>
+                                                <td>{{ $item->user->name }}</td>
                                                 <td>{{ $item->created_at }}</td>
                                                 <!-- Add more cells for additional columns -->
                                             </tr>
@@ -75,6 +78,7 @@
                                             <tr>
                                                 <td>{{ $item->id }}</td>
                                                 <td>{{ $item->order_code }}</td>
+                                                <td>{{ $item->user->name }}</td>
                                                 <td>{{ $item->created_at }}</td>
                                                 <!-- Add more cells for additional columns -->
                                             </tr>
@@ -83,6 +87,7 @@
                                             <tr>
                                                 <td>{{ $item->id }}</td>
                                                 <td>{{ $item->order_code }}</td>
+                                                <td>{{ $item->user->name }}</td>
                                                 <td>{{ $item->created_at }}</td>
                                                 <!-- Add more cells for additional columns -->
                                             </tr>
@@ -90,7 +95,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                            
+                                    </div>
                                 </div>
                                 @endforeach
                             </div>
@@ -107,5 +112,35 @@
 <!-- row closed -->
 @endsection
 @section('js')
+{{--<script>
+    $(document).ready(function () {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    var targetTableId = $(e.target).attr("href");
+    $(targetTableId + ' table').DataTable().ajax.reload();
+    });
+    
+    // Initialize DataTables for each table
+    @foreach($types as $type)
+    $('#datatable-{{ strtolower(str_replace(' ', '_', $type)) }}').DataTable({
+    // Add any DataTable options here
+    });
+    @endforeach
+    });
+</script>--}}
 
+<script>
+    $(document).ready(function () {
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var targetTableId = $(e.target).attr("href");
+            $(targetTableId).DataTable().ajax.reload();
+        });
+        
+        // Initialize DataTables for each table
+        @foreach($types as $type)
+            $('.table-{{ strtolower(str_replace(' ', '_', $type)) }}').DataTable({
+                // Add any DataTable options here
+            });
+        @endforeach
+    });
+</script>
 @endsection
