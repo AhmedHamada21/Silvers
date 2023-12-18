@@ -23,6 +23,23 @@
                     </ul>
                 </li>
                 <!-- End Admin Managment Menu-->
+
+                <!-- Start Ticket Managment Menu-->
+                <li class="pl-4 mt-10 mb-10 font-medium text-muted menu-title">Tickets Managment</li>
+                <li>
+                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#tickets_managment">
+                        <div class="pull-left">
+                            <i class="ti-palette"></i>
+                            <span class="right-nav-text">Tickets</span>
+                        </div>
+                        <div class="pull-right"><i class="ti-plus"></i></div>
+                        <div class="clearfix"></div>
+                    </a>
+                    <ul id="tickets_managment" class="collapse" data-parent="#sidebarnav">
+                        <li><a href="{{--route('ticket.index')--}}">Tickets</a></li>
+                    </ul>
+                </li>
+                <!-- End Ticket Managment Menu-->
             </ul>
         </div>
     </div>

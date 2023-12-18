@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 text-left align-self-center">
+                    <div class="col-md-5 text-left align-self-center">
                         <form id="toggleForm{{ $data['captain']->id }}" method="POST"
                             action="{{ route('CallCenterCaptains.updateActivityStatus',$data['captain']?->id) }}">
                             @csrf
@@ -63,10 +63,23 @@
                         <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#blockCaptainModal">
                             Block Captain
                         </button>
+                        @php
+                            $blocks = DB::table('captain_callcenter_blocks')
+                                    ->join('callcenters', 'captain_callcenter_blocks.call_center_id', '=', 'callcenters.id')
+                                    ->where('captain_callcenter_blocks.captain_id', $data['captain']->id)
+                                    ->select('captain_callcenter_blocks.*', 'callcenters.name AS call_center_name')
+                                    ->get();
+                        @endphp
+                        
+                        @if ($data['captain']?->captainActivity?->status_captain_work == 'block')
+                            <button type="button" class="btn btn-warning mt-2" data-toggle="modal" data-target="#showBlockCaptainModal">
+                                Show Blocks
+                            </button>
+                        @endif
                         <button type="button" class="btn btn-success mt-2" data-toggle="modal" data-target="#addProfileDetail{{$data['captain']?->id}}">
                             Add Profile Details
                         </button>
-                        <button type="button" class="btn btn-success mt-2" data-toggle="modal" data-target="#addCar">
+                        <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#addCar">
                             Add Car
                         </button>
                         @if($data['captain']?->captainActivity?->status_captain_work == 'block')
@@ -86,6 +99,7 @@
                         @endif
                         <!-- Block Modal -->
                         @include('dashboard.call-center.captains.btn.modals.profile.block')
+                        @include('dashboard.call-center.captains.btn.modals.profile.blockDetails')
                         @include('dashboard.call-center.captains.btn.modals.profile.details')
                         @include('dashboard.call-center.captains.btn.modals.profile.addCar')
                         <!-- End Block Modal -->

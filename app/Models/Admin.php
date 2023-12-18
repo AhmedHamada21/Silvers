@@ -29,4 +29,9 @@ class Admin extends Authenticatable implements JWTSubject {
     public function scopeActive() {
         return $this->whereStatus('active')->get();
     }
+
+    public function assignedTickets()
+    {
+        return $this->hasMany(Ticket::class, 'assign_to_admin');
+    }
 }
