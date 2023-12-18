@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-{{ $data->first()->captain->name . ' Trips' }}
+{{ $data?->first()?->captain?->name . ' Trips' }}
 @stop
 @endsection
 @section('page-header')
@@ -9,13 +9,13 @@
 <div class="page-title">
     <div class="row">
         <div class="col-sm-6">
-            <h4 class="mb-0">{{ $data->first()->captain->name . ' Trips' }}</h4>
+            <h4 class="mb-0">{{ $data?->first()?->captain?->name . ' Trips' }}</h4>
         </div>
         <div class="col-sm-6">
             <ol class="float-left pt-0 pr-0 breadcrumb float-sm-right ">
                 <li class="breadcrumb-item"><a href="{{route('callCenter.dashboard')}}"
                         class="default-color">Dasboard</a></li>
-                <li class="breadcrumb-item active">{{ $data->first()->captain->name . ' Trips' }}</li>
+                <li class="breadcrumb-item active">{{ $data?->first()?->captain?->name . ' Trips' }}</li>
             </ol>
         </div>
     </div>
