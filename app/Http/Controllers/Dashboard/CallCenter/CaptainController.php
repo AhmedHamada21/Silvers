@@ -249,7 +249,7 @@ class CaptainController extends Controller
         }
     }
 
-    /*public function updateActivityStatus(Request $request, $id)
+    public function updateActivityStatus(Request $request, $id)
     {
         try {
             $captain = Captain::findOrFail($id);
@@ -259,9 +259,9 @@ class CaptainController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
         }
-    }*/
+    }
 
-    public function updateActivityStatus(Request $request, $id) {
+    /*public function updateActivityStatus(Request $request, $id) {
         try {
             $captain = Captain::findOrFail($id);
             $status = $request->input('status_captain_work');
@@ -281,7 +281,7 @@ class CaptainController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
         }
-    }
+    }*/
 
     public function blockCaptain(Request $request, Captain $captain) {
         try {

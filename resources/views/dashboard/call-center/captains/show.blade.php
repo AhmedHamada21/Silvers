@@ -66,6 +66,9 @@
                         <button type="button" class="btn btn-success mt-2" data-toggle="modal" data-target="#addProfileDetail{{$data['captain']?->id}}">
                             Add Profile Details
                         </button>
+                        <button type="button" class="btn btn-success mt-2" data-toggle="modal" data-target="#addCar">
+                            Add Car
+                        </button>
                         @if($data['captain']?->captainActivity?->status_captain_work == 'block')
                             @php
                                 $blockReason = DB::table('captain_callcenter_blocks')->where('captain_id', $data['captain']->id)->value('block_reason');
@@ -84,6 +87,7 @@
                         <!-- Block Modal -->
                         @include('dashboard.call-center.captains.btn.modals.profile.block')
                         @include('dashboard.call-center.captains.btn.modals.profile.details')
+                        @include('dashboard.call-center.captains.btn.modals.profile.addCar')
                         <!-- End Block Modal -->
                     </div>
                 </div>
