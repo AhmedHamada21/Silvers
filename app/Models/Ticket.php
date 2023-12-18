@@ -9,7 +9,7 @@ class Ticket extends Model {
     use HasFactory;
     protected $table = "tickets";
 
-    protected $fillable = ['title', 'subject', 'priority', 'assign_to_admin', 'assign_to_callcenter'];
+    protected $fillable = ['title', 'callcenter_id', 'order_code', 'ticket_code', 'status', 'subject', 'priority', 'assign_to_admin', 'assign_to_callcenter'];
 
     public function assignedToAdmin()
     {
@@ -19,5 +19,10 @@ class Ticket extends Model {
     public function assignedToCallCenter()
     {
         return $this->belongsTo(CallCenter::class, 'assign_to_callcenter');
+    }
+
+    public function callCenter()
+    {
+        return $this->belongsTo(CallCenter::class, 'callcenter_id');
     }
 }

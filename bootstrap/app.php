@@ -51,5 +51,5 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
-$app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware(Tests\Feature\test\php\test\CheckDomain::class);
+//$app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware(Tests\Feature\test\php\test\CheckDomain::class);
 return $app;

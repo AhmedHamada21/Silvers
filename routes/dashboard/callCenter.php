@@ -36,6 +36,7 @@ Route::group(
             Route::get('/{order_code}', 'showOrderDay')->name('show');
         });
         Route::put('/call-center-captains/block/{captain}', [CallCenter\CaptainController::class, 'blockCaptain'])->name('CallCenterCaptains.block');
-
+        // Tickets ::
+        Route::resource('CallCenterTickets', CallCenter\TicketController::class);
     });
 });

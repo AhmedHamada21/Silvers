@@ -36,7 +36,7 @@
                         <div class="clearfix"></div>
                     </a>
                     <ul id="tickets_managment" class="collapse" data-parent="#sidebarnav">
-                        <li><a href="{{--route('ticket.index')--}}">Tickets</a></li>
+                        <li><a href="{{ route('CallCenterTickets.index') }}">Tickets</a></li>
                     </ul>
                 </li>
                 <!-- End Ticket Managment Menu-->
