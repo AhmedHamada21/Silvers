@@ -395,4 +395,23 @@ class CaptainController extends Controller
         }
         return view('dashboard.call-center.orders.showOrderHour', ['order' => $order, 'data' => json_encode($locations)]);
     }
+
+
+    public function updateProfile(Request $request, $id) {
+        try {
+            $address = $request->input('address');
+            $bio = $request->input('bio');
+            $number_personal = $request->input('number_personal');
+            DB::table('captain_profiles')
+                ->where('captain_id', $id)
+                ->update([
+                    'address' => $address,
+                    'bio' => $bio,
+                    'number_personal' => $number_personal,
+                ]);
+            return redirect()->back()->with('success', 'Profile updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while updating Captain profile');
+        }
+    }
 }
