@@ -20,7 +20,7 @@ class Captain extends Authenticatable implements JWTSubject
         'agent_id',
         'company_id',
         'password',
-        'employee_id', 'fcm_token', 'status'];
+        'employee_id', 'fcm_token', 'status','callcenter_id'];
     protected $hidden = ['password', 'remember_token',];
     protected $casts = ['email_verified_at' => 'datetime', 'password' => 'hashed',];
 
@@ -97,21 +97,27 @@ class Captain extends Authenticatable implements JWTSubject
 
     public function carCaptions()
     {
-        return $this->hasMany(CarsCaption::class,'captain_id');
+        return $this->hasMany(CarsCaption::class, 'captain_id');
     }
 
     public function bouns()
     {
-        return $this->hasMany(CaptionBonus::class,'captain_id');
+        return $this->hasMany(CaptionBonus::class, 'captain_id');
     }
 
-    public function scopeActive() {
+    public function scopeActive()
+    {
         return $this->whereStatus('active')->get();
     }
 
     public function invite()
     {
-        return $this->hasOne(InviteFriend::class,'captain_id');
+        return $this->hasOne(InviteFriend::class, 'captain_id');
     }
 
+
+    public function callcenter()
+    {
+        return $this->belongsTo(Callcenter::class,'callcenter_id');
+    }
 }
