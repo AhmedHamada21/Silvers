@@ -44,8 +44,8 @@ class CaptainController extends Controller
 
 //        try {
             $data = [
-                'title' => 'Captain Details',
                 'captain' => $this->captainService->getProfile($captainId),
+                'title' => 'Captain Details',
             ];
 
             return view('dashboard.call-center.captains.show', compact('data'));
