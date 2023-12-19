@@ -10,7 +10,8 @@ class CaptainService
     public function getProfile($captainId)
     {
 
-        $findCaptions = CaptainProfile::findOrfail($captainId);
+        $findCaptions = CaptainProfile::findorfail($captainId);
+        dd($findCaptions);
         $check = Captain::where('id', $findCaptions->captain_id)->first();
         dd($check);
         if ($check->callcenter_id) {
