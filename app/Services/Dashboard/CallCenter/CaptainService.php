@@ -30,7 +30,7 @@ class CaptainService
                 })->firstOrFail();
             } else {
 
-                return redirect()->route('CallCenterCaptains.index')->withErrors([
+                return redirect()->route('callCenter.dashboard')->withErrors([
                     'error' => 'You are not authorized to view this captain\'s profile.'
                 ]);
             }
