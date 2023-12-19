@@ -47,14 +47,14 @@ class CaptainController extends Controller
                 'title' => 'Captain Details',
                 'captain' => $this->captainService->getProfile($captainId),
             ];
-            $findCaptions = CaptainProfile::findOrfail($captainId);
-            $check = Captain::where('id',$findCaptions->captain_id)->first();
-            if ($check->callcenter_id == true){
-                return redirect()->back()->with('error', 'Register the captain with another call center');
-            }
-            $check->update([
-                'callcenter_id' => auth('call-center')->id(),
-            ]);
+//            $findCaptions = CaptainProfile::findOrfail($captainId);
+//            $check = Captain::where('id',$findCaptions->captain_id)->first();
+//            if ($check->callcenter_id == true){
+//                return redirect()->back()->with('error', 'Register the captain with another call center');
+//            }
+//            $check->update([
+//                'callcenter_id' => auth('call-center')->id(),
+//            ]);
             return view('dashboard.call-center.captains.show', compact('data'));
 //        } catch (\Exception $e) {
 //            return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while getting the captain details');
