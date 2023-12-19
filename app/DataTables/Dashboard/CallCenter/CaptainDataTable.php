@@ -31,7 +31,10 @@ class CaptainDataTable extends BaseDataTable {
             ->editColumn('country_id', function (Captain $captain) {
                 return $captain?->country?->name;
             })
-            ->rawColumns(['action', 'created_at', 'updated_at','status', 'country_id', 'name']);
+            ->editColumn('callcenter', function (Captain $captain) {
+                return $captain?->callcenter?->name;
+            })
+            ->rawColumns(['action', 'created_at', 'updated_at','status', 'country_id', 'name','callcenter']);
     }
 
     public function query() {
@@ -45,7 +48,7 @@ class CaptainDataTable extends BaseDataTable {
             ['name' => 'name', 'data' => 'name', 'title' => 'Name',],
             ['name' => 'email', 'data' => 'email', 'title' => 'Email',],
             ['name' => 'phone', 'data' => 'phone', 'title' => 'Phone',],
-            ['name' => 'callcenter', 'data' => 'callcenter.name', 'title' => 'Phone',],
+            ['name' => 'callcenter', 'data' => 'callcenter', 'title' => 'callcenter',],
             ['name' => 'country_id', 'data' => 'country_id', 'title' => 'Country',],
             ['name' => 'status', 'data' => 'status', 'title' => 'Status',],
             ['name' => 'created_at', 'data' => 'created_at', 'title' => 'Created_at', 'orderable' => false, 'searchable' => false,],
