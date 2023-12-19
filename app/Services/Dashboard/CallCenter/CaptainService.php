@@ -29,8 +29,9 @@ class CaptainService
                         $query->where('uuid', $captainId);
                     })->firstOrFail();
                 } else {
-                    dd('asdasdsadasdsadads');
-                    return redirect()->route('CallCenterCaptains.index')->with('error', 'Register the captain with another call center');
+//                    dd('asdasdsadasdsadads');
+                    return to_route('CallCenterCaptains.index');
+//                    return redirect()->route('CallCenterCaptains.index')->with('error', 'Register the captain with another call center');
                 }
 
             } else {
