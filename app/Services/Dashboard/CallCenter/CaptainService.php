@@ -10,43 +10,44 @@ class CaptainService
     public function getProfile($captainId)
     {
         $findCaptions = CaptainProfile::where('uuid', $captainId)->first();
-
         $check = Captain::where('id', optional($findCaptions)->captain_id)->first();
 
         if ($check) {
             $checkStatus = optional(get_user_data())->type == "manager";
+
             if ($checkStatus) {
                 return Captain::with(['profile'])->whereHas('profile', function ($query) use ($captainId) {
                     $query->where('uuid', $captainId);
                 })->firstOrFail();
             }
 
-            if ($check->callcenter_id) {
-                $checkUser = $check->callcenter_id == optional(get_user_data())->id;
+            $userCallCenterId = optional(get_user_data())->id;
+            $captainCallCenterId = $check->callcenter_id;
 
-                if ($checkUser == true) {
-                    return Captain::with(['profile'])->whereHas('profile', function ($query) use ($captainId) {
-                        $query->where('uuid', $captainId);
-                    })->firstOrFail();
-                } else {
-//                    dd('asdasdsadasdsadads');
-                    return to_route('CallCenterCaptains.index');
-//                    return redirect()->route('CallCenterCaptains.index')->with('error', 'Register the captain with another call center');
-                }
-
-            } else {
-
-                $check->update([
-                    'callcenter_id' => auth('call-center')->id(),
-                ]);
-
+            if ($captainCallCenterId && $captainCallCenterId == $userCallCenterId) {
                 return Captain::with(['profile'])->whereHas('profile', function ($query) use ($captainId) {
                     $query->where('uuid', $captainId);
                 })->firstOrFail();
+            } else {
+                // Redirect to the captain's home page if it's not the user's call center
+                return redirect()->route('CaptainHome')->with('error', 'You are not authorized to view this captain\'s profile.');
             }
+        } else {
+            // If there is no captain profile, register a new captain
+            $check->update([
+                'callcenter_id' => auth('call-center')->id(),
+            ]);
+
+            return Captain::with(['profile'])->whereHas('profile', function ($query) use ($captainId) {
+                $query->where('uuid', $captainId);
+            })->firstOrFail();
         }
+
+        // Redirect to the main page if there is a problem
         return redirect()->route('CallCenterCaptains.index')->with('error', 'There is a problem. Please try again later');
     }
+
+
 
 
     public function create($data)
