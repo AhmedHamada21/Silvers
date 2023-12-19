@@ -10,14 +10,14 @@ class CaptainService
     public function getProfile($captainId)
     {
 
-        $findCaptions = CaptainProfile::findOrfail($captainId);
-        $check = Captain::where('id', $findCaptions->captain_id)->first();
-        if ($check->callcenter_id == true) {
-            return redirect()->back()->with('error', 'Register the captain with another call center');
-        }
-        $check->update([
-            'callcenter_id' => auth('call-center')->id(),
-        ]);
+//        $findCaptions = CaptainProfile::findOrfail($captainId);
+//        $check = Captain::where('id', $findCaptions->captain_id)->first();
+//        if ($check->callcenter_id == true) {
+//            return redirect()->back()->with('error', 'Register the captain with another call center');
+//        }
+//        $check->update([
+//            'callcenter_id' => auth('call-center')->id(),
+//        ]);
 
        return Captain::with(['profile'])->whereHas('profile', function ($query) use ($captainId) {
             $query->where('uuid', $captainId);
