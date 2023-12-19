@@ -36,7 +36,7 @@ class CaptainDataTable extends BaseDataTable {
 
     public function query() {
 
-        return Captain::query()->whereCountryId(get_user_data()->country_id)->latest();
+        return Captain::with('callcenter')->query()->whereCountryId(get_user_data()->country_id)->latest();
     }
 
     public function getColumns(): array {
