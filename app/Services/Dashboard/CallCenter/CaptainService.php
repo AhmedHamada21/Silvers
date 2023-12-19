@@ -27,8 +27,8 @@ class CaptainService
             if ($check->callcenter_id) {
 
                 $checkUser = $check->callcenter_id == get_user_data()->id;
-                dd($checkUser);
-                if ($checkUser) {
+
+                if ($checkUser == true) {
                     return Captain::with(['profile'])->whereHas('profile', function ($query) use ($captainId) {
                         $query->where('uuid', $captainId);
                     })->firstOrFail();
