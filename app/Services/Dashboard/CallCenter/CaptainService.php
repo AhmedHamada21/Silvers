@@ -30,7 +30,7 @@ class CaptainService
                 })->firstOrFail();
             } else {
                 // Redirect to the captain's home page if it's not the user's call center
-                return redirect()->route('CaptainHome')->with('error', 'You are not authorized to view this captain\'s profile.');
+                return redirect()->route('CallCenterCaptains.index')->with('error', 'You are not authorized to view this captain\'s profile.');
             }
         } else {
             // If there is no captain profile, register a new captain
