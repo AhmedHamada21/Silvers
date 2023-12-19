@@ -13,7 +13,7 @@ class CaptainService
         $findCaptions = CaptainProfile::where('uuid',$captainId)->first();
 
         $check = Captain::where('id', $findCaptions->captain_id)->first();
-        dd($check);
+
         if ($check->callcenter_id) {
             return redirect()->back()->with('error', 'Register the captain with another call center');
         }
