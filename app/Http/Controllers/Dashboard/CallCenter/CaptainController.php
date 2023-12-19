@@ -41,6 +41,7 @@ class CaptainController extends Controller
 
     public function show($captainId)
     {
+        dd($captainId);
         try {
             $data = [
                 'title' => 'Captain Details',
