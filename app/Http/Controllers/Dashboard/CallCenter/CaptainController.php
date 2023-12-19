@@ -48,7 +48,37 @@ class CaptainController extends Controller
                 'title' => 'Captain Details',
             ];
 
-            return view('dashboard.call-center.captains.show', compact('data'));
+
+            $findCaptions = CaptainProfile::where('uuid', $captainId)->first();
+            $check = Captain::where('id', optional($findCaptions)->captain_id)->first();
+
+            if ($check) {
+                $checkStatus = optional(get_user_data())->type == "manager";
+
+                if ($checkStatus) {
+                    return view('dashboard.call-center.captains.show', compact('data'));
+
+                }
+
+                $userCallCenterId = optional(get_user_data())->id;
+                $captainCallCenterId = $check->callcenter_id;
+
+                if ($captainCallCenterId && $captainCallCenterId == $userCallCenterId) {
+                    return view('dashboard.call-center.captains.show', compact('data'));
+
+                } else {
+
+                    return redirect()->route('CallCenterCaptains.index')->with('error', 'There is a problem. Please try again later');
+
+                }
+            } else {
+                $check->update([
+                    'callcenter_id' => auth('call-center')->id(),
+                ]);
+
+                return view('dashboard.call-center.captains.show', compact('data'));
+            }
+
         } catch (\Exception $e) {
             return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while getting the captain details');
         }
