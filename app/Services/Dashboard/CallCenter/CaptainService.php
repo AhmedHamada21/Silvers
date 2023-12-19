@@ -35,7 +35,6 @@ class CaptainService
                 ]);
             }
         } else {
-            // If there is no captain profile, register a new captain
             $check->update([
                 'callcenter_id' => auth('call-center')->id(),
             ]);
@@ -45,7 +44,6 @@ class CaptainService
             })->firstOrFail();
         }
 
-        // Redirect to the main page if there is a problem
         return redirect()->route('CallCenterCaptains.index')->with('error', 'There is a problem. Please try again later');
     }
 

@@ -42,16 +42,16 @@ class CaptainController extends Controller
     public function show($captainId)
     {
 
-//        try {
+        try {
             $data = [
                 'captain' => $this->captainService->getProfile($captainId),
                 'title' => 'Captain Details',
             ];
 
             return view('dashboard.call-center.captains.show', compact('data'));
-//        } catch (\Exception $e) {
-//            return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while getting the captain details');
-//        }
+        } catch (\Exception $e) {
+            return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while getting the captain details');
+        }
     }
 
     public function uploadPersonalMedia(Request $request)
