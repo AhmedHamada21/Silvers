@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\Dashboard\CallCenter\TicketDataTable;
 use App\Services\Dashboard\{CallCenter\TicketService};
-use App\Models\{Ticket};
+use App\Models\{Callcenter, Ticket};
 use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller {
@@ -26,13 +26,25 @@ class TicketController extends Controller {
     public function store(Request $request)
     {
         try {
-            $requestData = $request->all();
-            $requestData = array_merge($requestData, ['callcenter_id' => get_user_data()->id]);
-            //dd($requestData);
-            $this->ticketService->create($requestData);
-            return redirect()->route('CallCenterTickets.index')->with('success', 'Ticket created successfully');
+            $checkData = Ticket::where('order_code',$request->order_code)->first();
+            if (!$checkData){
+                $requestData = $request->all();
+                $requestData = array_merge($requestData, ['callcenter_id' => get_user_data()->id]);
+                //dd($requestData);
+                $this->ticketService->create($requestData);
+                return redirect()->route('CallCenterTickets.index')->with('success', 'Ticket created successfully');
+
+            }
+            return redirect()->route('CallCenterTickets.index')->with('error', 'An error occurred while creating the Ticket');
+
         } catch (\Exception $e) {
             return redirect()->route('CallCenterTickets.index')->with('error', 'An error occurred while creating the Ticket');
         }
+    }
+
+
+    public function show($id)
+    {
+        dd($id);
     }
 }

@@ -22,13 +22,17 @@ class TicketDataTable extends BaseDataTable {
             ->editColumn('updated_at', function (Ticket $ticket) {
                 return $this->formatBadge($this->formatDate($ticket->updated_at));
             })
+
+            ->editColumn('title', function (Ticket $ticket) {
+                return '<a href="'.route('CallCenterTickets.show', $ticket->ticket_code).'">'.$ticket->title.'</a>';
+            })
             ->editColumn('status', function (Ticket $ticket) {
                 return $this->formatStatus($ticket->status);
             })
             ->editColumn('callcenter_id', function (Ticket $ticket) {
                 return $ticket?->callCenter?->name;
             })
-        ->rawColumns(['action', 'created_at', 'updated_at','status', 'callcenter_id']);
+        ->rawColumns(['title','action', 'created_at', 'updated_at','status', 'callcenter_id']);
     }
 
     public function query() {
