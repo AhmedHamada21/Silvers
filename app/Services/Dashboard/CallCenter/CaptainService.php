@@ -13,4 +13,6 @@ class CaptainService {
         $data['callcenter_id'] = get_user_data()->id;
         return Captain::create($data);
     }
+
+
 }

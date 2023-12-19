@@ -41,12 +41,20 @@ class CaptainController extends Controller
 
     public function show($captainId)
     {
-        dd($captainId);
+
         try {
             $data = [
                 'title' => 'Captain Details',
                 'captain' => $this->captainService->getProfile($captainId),
             ];
+            $findCaptions = CaptainProfile::findOrfail($captainId);
+            $check = Captain::where('id',$findCaptions->captain_id)->first();
+            if ($check->callcenter_id == true){
+                return redirect()->back()->with('error', 'Register the captain with another call center');
+            }
+            $check->update([
+                'callcenter_id' => auth('call-center')->id(),
+            ]);
             return view('dashboard.call-center.captains.show', compact('data'));
         } catch (\Exception $e) {
             return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while getting the captain details');
@@ -284,7 +292,8 @@ class CaptainController extends Controller
         }
     }*/
 
-    public function blockCaptain(Request $request, Captain $captain) {
+    public function blockCaptain(Request $request, Captain $captain)
+    {
         try {
             $captain->captainActivity->status_captain_work = 'block';
             $captain->captainActivity->save();
@@ -301,7 +310,6 @@ class CaptainController extends Controller
             return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
         }
     }
-
 
 
     public function sendNotificationAll(Request $request)
@@ -321,9 +329,9 @@ class CaptainController extends Controller
     {
 
         try {
-            $dataIn = CaptainProfile::where('number_personal', 'like', '%' . $request->number . '%')->orderBy('created_at','desc')->paginate(50);
-            if ($dataIn){
-                return view('dashboard.call-center.captains.search',compact('dataIn'));
+            $dataIn = CaptainProfile::where('number_personal', 'like', '%' . $request->number . '%')->orderBy('created_at', 'desc')->paginate(50);
+            if ($dataIn) {
+                return view('dashboard.call-center.captains.search', compact('dataIn'));
             }
 
         } catch (\Exception $exception) {
@@ -335,18 +343,19 @@ class CaptainController extends Controller
 
     public function trips($captainId)
     {
-        $id = CaptainProfile::where('uuid',$captainId)->first()->captain_id;
-        $orders = Order::where('captain_id', $id)->orderBy('created_at','desc')->paginate(50);
-        $orderHours = OrderHour::where('captain_id', $id)->orderBy('created_at','desc')->paginate(50);
-        $orderDay = OrderDay::where('captain_id', $id)->orderBy('created_at','desc')->paginate(50);
+        $id = CaptainProfile::where('uuid', $captainId)->first()->captain_id;
+        $orders = Order::where('captain_id', $id)->orderBy('created_at', 'desc')->paginate(50);
+        $orderHours = OrderHour::where('captain_id', $id)->orderBy('created_at', 'desc')->paginate(50);
+        $orderDay = OrderDay::where('captain_id', $id)->orderBy('created_at', 'desc')->paginate(50);
         $data = $orders->concat($orderHours)->concat($orderDay);
         $types = ['Orders', 'Order Hours', 'Order Days'];
         return view('dashboard.call-center.captains.trip.trip', compact('data', 'types'));
     }
 
-    public function showOrder($orderCode) {
+    public function showOrder($orderCode)
+    {
         $order = Order::where('order_code', $orderCode)->first();
-        $orderTracking = Order::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id','id', 'lat_user', 'long_user', 'lat_going', 'long_going']);
+        $orderTracking = Order::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id', 'id', 'lat_user', 'long_user', 'lat_going', 'long_going']);
         $locations = [];
         foreach ($orderTracking as $orderTrack) {
             $locations[] = [
@@ -363,9 +372,10 @@ class CaptainController extends Controller
         return view('dashboard.call-center.orders.showOrder', ['order' => $order, 'data' => json_encode($locations)]);
     }
 
-    public function showOrderDay($orderCode) {
+    public function showOrderDay($orderCode)
+    {
         $order = OrderDay::where('order_code', $orderCode)->first();
-        $orderTracking = OrderDay::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id','id', 'lat_user', 'long_user', 'status_price', 'car_type_day_id', 'type_duration', 'start_day', 'end_day', 'number_day', 'start_time']);
+        $orderTracking = OrderDay::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id', 'id', 'lat_user', 'long_user', 'status_price', 'car_type_day_id', 'type_duration', 'start_day', 'end_day', 'number_day', 'start_time']);
         $locations = [];
         foreach ($orderTracking as $orderTrack) {
             $locations[] = [
@@ -380,9 +390,10 @@ class CaptainController extends Controller
         return view('dashboard.call-center.orders.showOrderDay', ['order' => $order, 'data' => json_encode($locations)]);
     }
 
-    public function showOrderHour($orderCode) {
+    public function showOrderHour($orderCode)
+    {
         $order = OrderHour::where('order_code', $orderCode)->first();
-        $orderTracking = OrderHour::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id','id', 'lat_user', 'long_user', 'status_price', 'car_type_id', 'type_duration', 'time_duration']);
+        $orderTracking = OrderHour::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id', 'id', 'lat_user', 'long_user', 'status_price', 'car_type_id', 'type_duration', 'time_duration']);
         $locations = [];
         foreach ($orderTracking as $orderTrack) {
             $locations[] = [
@@ -398,7 +409,8 @@ class CaptainController extends Controller
     }
 
 
-    public function updateProfile(Request $request, $id) {
+    public function updateProfile(Request $request, $id)
+    {
         try {
             $address = $request->input('address');
             $bio = $request->input('bio');
