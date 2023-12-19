@@ -24,28 +24,28 @@ class CaptainService
             }
 
 
-            $checkUser = ($check->callcenter_id == true) == get_user_data()->id;
-dd($checkUser);
+            if ($check->callcenter_id == true) {
+                $checkUser = $check->callcenter_id == get_user_data()->id;
+                if ($checkUser) {
+                    return Captain::with(['profile'])->whereHas('profile', function ($query) use ($captainId) {
+                        $query->where('uuid', $captainId);
+                    })->firstOrFail();
+                } else {
+                    return redirect()->route('CallCenterCaptains.index')->with('error', 'Register the captain with another call center');
+                }
+            }else{
+                $check->update([
+                    'callcenter_id' => auth('call-center')->id(),
+                ]);
 
-            if ($checkUser) {
                 return Captain::with(['profile'])->whereHas('profile', function ($query) use ($captainId) {
                     $query->where('uuid', $captainId);
                 })->firstOrFail();
-            } else {
-                return redirect()->route('CallCenterCaptains.index')->with('error', 'Register the captain with another call center');
             }
 
-
         }
+        return redirect()->route('CallCenterCaptains.index')->with('error', 'There is a problem. Please try again later');
 
-
-        $check->update([
-            'callcenter_id' => auth('call-center')->id(),
-        ]);
-
-        return Captain::with(['profile'])->whereHas('profile', function ($query) use ($captainId) {
-            $query->where('uuid', $captainId);
-        })->firstOrFail();
     }
 
     public function create($data)
