@@ -25,8 +25,9 @@ class CaptainService
 
 
             if ($check->callcenter_id) {
-                dd('asdsadasdasdsad');
+
                 $checkUser = $check->callcenter_id == get_user_data()->id;
+                dd($checkUser);
                 if ($checkUser) {
                     return Captain::with(['profile'])->whereHas('profile', function ($query) use ($captainId) {
                         $query->where('uuid', $captainId);
@@ -46,7 +47,6 @@ class CaptainService
 
         }
         return redirect()->route('CallCenterCaptains.index')->with('error', 'There is a problem. Please try again later');
-
     }
 
     public function create($data)
