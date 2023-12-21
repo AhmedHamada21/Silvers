@@ -47,12 +47,17 @@
                     <i class="fa fa-plus"></i>
                     Add New {{$data['title']}}
                 </a>
-
-
-
                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Push Notification All  {{$data['title']}}</button>
+                <br><br>
+                <div class="mb-3 mt-2 text-center">
+                    <p class="text-bold">
+                        <span class="mr-3 text-bold text-white p-1" style="background-color: #808080; border-radius: 5px;">Gray For Not Active Media</span>
+                        <span class="mr-3 text-bold text-white p-1" style="background-color:  #FF7F7F; border-radius: 5px;">Light Red For Rejected Media Media</span>
+                        <span class="mr-3 text-bold text-white p-1" style="background-color:  #ffc107; border-radius: 5px;">Warning No Have any Media</span>
+                        <span class="mr-3 text-bold text-white p-1" style="background-color:  #28a745; border-radius: 5px;">Success All Is Accepted</span>
+                    </p>
+                </div>
 
-                <br>
                 <br>
                 <!--begin::Table-->
                 {!! $dataTable->table([

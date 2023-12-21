@@ -14,12 +14,16 @@ class CaptainService
         })->firstOrFail();
     }
 
-    public function create($data)
-    {
+    /*public function create($data) {
         $data['password'] = bcrypt($data['password']);
         $data['callcenter_id'] = get_user_data()->id;
         return Captain::create($data);
+    }*/
+
+    public function create($data) {
+        $data['password'] = bcrypt($data['password']);
+        $data['callcenter_id'] = get_user_data()->id;
+        $captain = Captain::create($data);
+        return $captain;
     }
-
-
 }

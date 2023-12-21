@@ -27,17 +27,27 @@ class CaptainController extends Controller
         ];
         return $this->dataTable->render('dashboard.call-center.captains.index', compact('data'));
     }
-
-    public function store(Request $request)
-    {
+    
+    public function store(Request $request) {
         try {
             $requestData = $request->all();
-            $this->captainService->create($requestData);
+            $captain = $this->captainService->create($requestData);
+            $captain->profile()->create([]);
+            $captain->car()->create([]);
+            $inviteData = [
+                'captain_id' => $captain->id,
+                'type' => 'caption',
+                'code_invite' => str_replace(' ', '_', $captain->name) . generateRandom(3),
+                'data' => date('Y-m-d'),
+            ];
+            $captain->invite()->create($inviteData);
+
             return redirect()->route('CallCenterCaptains.index')->with('success', 'captain created successfully');
         } catch (\Exception $e) {
             return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while creating the captain');
         }
     }
+
 
     public function show($captainId)
     {
