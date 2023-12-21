@@ -72,9 +72,12 @@
                             <option selected disabled>Select <span class="text-primary">{{$callCenter->name}}</span>
                                 Type...
                             </option>
-                            <option value="manager" {{ (old('type', $callCenter->type) == 'manager') ? 'selected' : ''}}>
-                                Manager
-                            </option>
+                            @if(auth('admin')->check())
+                                <option value="manager" {{ (old('type', $callCenter->type) == 'manager') ? 'selected' : ''}}>
+                                    Manager
+                                </option>
+                            @endif
+
                             <option value="callcenter" {{ (old('type', $callCenter->type) == 'callcenter') ? 'selected' : '' }}>
                                 Call-Center
                             </option>

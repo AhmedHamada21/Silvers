@@ -80,7 +80,7 @@
                         <select name="type" class="form-control">
                             <option selected disabled>Select {{$data['title']}} Type...</option>
                             @if(auth('admin')->check())
-                                <option value="manager" {{ old('type')=='manager' ? 'selected' : '' }}>
+                                <option value="manager" {{ old('type') == 'manager' ? 'selected' : '' }}>
                                     Manager
                                 </option>
                             @endif
