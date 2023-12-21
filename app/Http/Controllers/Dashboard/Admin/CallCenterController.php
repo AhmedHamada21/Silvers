@@ -40,7 +40,8 @@ class CallCenterController extends Controller {
     public function store(CallCenterRequestValidation $request) {
         try {
             $requestData = $request->validated();
-            $this->callCenterService->create($requestData);
+            $callCenter = $this->callCenterService->create($requestData);
+            $callCenter->profile()->firstOrCreate(['callcenter_id' => $callCenter->id]);
             return redirect()->route('callCenters.index')->with('success', 'Call-Center created successfully');
         } catch (\Exception $e) {
             return redirect()->route('callCenters.index')->with('error', 'An error occurred while creating the call-center');
