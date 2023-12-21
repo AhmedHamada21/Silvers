@@ -39,7 +39,29 @@
                         <li><a href="{{ route('CallCenterTickets.index') }}">Tickets</a></li>
                     </ul>
                 </li>
-                <!-- End Ticket Managment Menu-->
+
+                @if(auth('call-center')->user()->type == "manager")
+                    <!-- Start Call Center Management Menu -->
+                    <li class="pl-4 mt-10 mb-10 font-medium text-muted menu-title">Call-Center Managment</li>
+                    <li>
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#callcenters_managment">
+                            <div class="pull-left">
+                                <i class="ti-palette"></i>
+                                <span class="right-nav-text">Call-Center Managment</span>
+                            </div>
+                            <div class="pull-right"><i class="ti-plus"></i></div>
+                            <div class="clearfix"></div>
+                        </a>
+                        <ul id="callcenters_managment" class="collapse" data-parent="#sidebarnav">
+                            <li><a href="{{route('callCenters.index')}}">Call-Centers</a></li>
+                            <li><a href="{{route('callCenters.activity')}}">Call-Centers Activity</a></li>
+                            <li><a href="{{route('attendances.index')}}">Call-Centers Attendance</a></li>
+                        </ul>
+                    </li>
+                    <!-- End Call Center Management Menu -->
+                    <!-- End Ticket Managment Menu-->
+                @endif
+
             </ul>
         </div>
     </div>
