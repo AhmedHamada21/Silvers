@@ -290,7 +290,7 @@ class DriverAuthController extends Controller
     public function checkPhone(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|numeric|exists:users,phone',
+            'phone' => 'required|numeric|exists:captains,phone',
         ]);
 
         if ($validator->fails()) {
