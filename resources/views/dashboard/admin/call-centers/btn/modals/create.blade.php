@@ -79,9 +79,12 @@
                         <label for="type">Type</label>
                         <select name="type" class="form-control">
                             <option selected disabled>Select {{$data['title']}} Type...</option>
-                            <option value="manager" {{ old('type')=='manager' ? 'selected' : '' }}>
-                                Manager
-                            </option>
+                          @if(auth('admin')->check())
+                                <option value="manager" {{ old('type')=='manager' ? 'selected' : '' }}>
+                                    Manager
+                                </option>
+                          @endif
+
                             <option value="callcenter" {{ old('type')=='callcenter' ?'selected' : '' }}>
                                 Call-Center
                             </option>
