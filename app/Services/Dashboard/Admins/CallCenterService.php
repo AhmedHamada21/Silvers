@@ -5,7 +5,7 @@ use App\Models\Callcenter;
 class CallCenterService {
     public function create($data) {
         $data['password'] = bcrypt($data['password']);
-        $data['admin_id'] = get_user_data()->id;
+        $data['callcenter_id'] = get_user_data()->id;
         return Callcenter::create($data);
     }
 
