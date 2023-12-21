@@ -1,15 +1,20 @@
 <?php
+
 namespace App\Services\Dashboard\Admins;
+
 use App\Models\Callcenter;
 
-class CallCenterService {
-    public function create($data) {
+class CallCenterService
+{
+    public function create($data)
+    {
         $data['password'] = bcrypt($data['password']);
-        $data['callcenter_id'] = get_user_data()->id;
+        $data['admin_id'] = 1;
         return Callcenter::create($data);
     }
 
-    public function getProfile($callCenterId) {
+    public function getProfile($callCenterId)
+    {
         $relations = [
             'profile',
             'country',
@@ -19,7 +24,8 @@ class CallCenterService {
         })->firstOrFail();
     }
 
-    public function update($callCenterId, $data) {
+    public function update($callCenterId, $data)
+    {
         $data['admin_id'] = get_user_data()->id;
         $callCenter = Callcenter::findOrFail($callCenterId);
         $callCenter->fill($data);
@@ -27,27 +33,31 @@ class CallCenterService {
         return $callCenter;
     }
 
-    public function delete($callCenterId) {
+    public function delete($callCenterId)
+    {
         $callCenter = Callcenter::findOrFail($callCenterId);
         $callCenter->delete();
         return $callCenter;
     }
 
-    public function updatePassword($callCenterId, $password) {
+    public function updatePassword($callCenterId, $password)
+    {
         $callCenter = Callcenter::findOrFail($callCenterId);
         $callCenter->password = bcrypt($password);
         $callCenter->save();
         return $callCenter;
     }
 
-    public function updateStatus($callCenterId, $status) {
+    public function updateStatus($callCenterId, $status)
+    {
         $callCenter = Callcenter::findOrFail($callCenterId);
         $callCenter->status = $status;
         $callCenter->save();
         return $callCenter;
     }
 
-    public function updateType($callCenterId, $type) {
+    public function updateType($callCenterId, $type)
+    {
         $callCenter = Callcenter::findOrFail($callCenterId);
         $callCenter->type = $type;
         $callCenter->save();
