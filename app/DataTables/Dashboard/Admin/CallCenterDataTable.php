@@ -36,7 +36,7 @@ class CallCenterDataTable extends BaseDataTable {
     }
 
     public function query(): QueryBuilder {
-        return Callcenter::query()->with(['profile']);
+        return Callcenter::query()->with(['profile'])->latest();
     }
 
     public function getColumns(): array {
