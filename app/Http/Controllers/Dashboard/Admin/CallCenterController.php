@@ -26,15 +26,18 @@ class CallCenterController extends Controller {
     }
 
     public function show($callCenterId) {
-        try {
+        //try {
             $data = [
                 'title' => 'Call-Center Details',
                 'callCenter' => $this->callCenterService->getProfile($callCenterId),
+                'tabs' => ['captains' , 'tickets'],
+                'captains' => $this->callCenterService->getCaptains($callCenterId),
+                'tickets' => $this->callCenterService->getCaptains($callCenterId),
             ];
             return view('dashboard.admin.call-centers.show', compact('data'));
-        } catch (\Exception $e) {
+        /*} catch (\Exception $e) {
             return redirect()->route('callCenters.index')->with('error', 'An error occurred while getting the callCenters details');
-        }
+        }*/
     }
 
     public function store(CallCenterRequestValidation $request) {
@@ -70,7 +73,7 @@ class CallCenterController extends Controller {
     public function updateStatus(Request $request, $callCenterId) {
         try {
             $this->callCenterService->updateStatus($callCenterId, $request->status);
-            return redirect()->route('callCenters.index')->with('success', 'Call-Center password updated status successfully');
+            return redirect()->route('callCenters.index')->with('success', 'Call-Center updated status successfully');
         } catch (\Exception $e) {
             return redirect()->route('callCenters.index')->with('error', 'An error occurred while updating the Call-Center status');
         }

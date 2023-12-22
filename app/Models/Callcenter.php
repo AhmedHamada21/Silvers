@@ -51,4 +51,8 @@ class Callcenter extends Authenticatable implements JWTSubject  {
     {
         return $this->hasMany(Ticket::class, 'assign_to_callcenter');
     }
+
+    public function captains() {
+        return $this->hasMany(Captain::class);
+    }
 }

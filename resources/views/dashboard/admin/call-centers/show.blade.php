@@ -71,6 +71,33 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Start Tabs -->
+                    <div class="tab round shadow mt-4">
+                        <ul class="nav nav-tabs" role="tablist">
+                            @foreach($data['tabs'] as $index => $tab)
+                            <li class="nav-item">
+                                <a class="nav-link {{ $index === 0 ? 'active show' : '' }}" id="{{ $tab }}-tab" data-toggle="tab" href="#{{ $tab }}"
+                                    role="tab" aria-controls="{{ $tab }}" aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
+                                    <i class="fa fa-{{ $tab === 'captains' ? 'users' : 'envelope-open-o' }}"></i>
+                                    {{ ucfirst($tab)  }}
+                                        @if(isset($data[$tab]))
+                                            <span class="badge badge-{{ $index === 0 ? 'success' : 'primary' }}">{{ count($data[$tab]) }}</span>
+                                        @endif
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                        <div class="tab-content">
+                            @foreach($data['tabs'] as $index => $tab)
+                            <div class="tab-pane fade {{ $index === 0 ? 'active show' : '' }}" id="{{ $tab }}" role="tabpanel"
+                                aria-labelledby="{{ $tab }}-tab">
+                                @includeWhen($tab === 'captains', 'dashboard.admin.call-centers.tabs.captains')
+                                @includeUnless($tab === 'captains', 'dashboard.admin.call-centers.tabs.callCenter_ticket')
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    <!-- End Tabs -->
                 </div>
             </div>
         </div>

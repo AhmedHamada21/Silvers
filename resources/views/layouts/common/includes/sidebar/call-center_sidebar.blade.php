@@ -20,6 +20,9 @@
                     </a>
                     <ul id="call-centers_managment" class="collapse" data-parent="#sidebarnav">
                         <li><a href="{{route('CallCenterCaptains.index')}}">Captain</a></li>
+                        @if(auth('call-center')->user()->type == "manager")
+                            <li><a href="{{route('callCenters.index')}}">Call-Centers</a></li>
+                        @endif
                     </ul>
                 </li>
                 <!-- End Admin Managment Menu-->
@@ -40,7 +43,7 @@
                     </ul>
                 </li>
 
-                @if(auth('call-center')->user()->type == "manager")
+                {{--@if(auth('call-center')->user()->type == "manager")
                     <!-- Start Call Center Management Menu -->
                     <li class="pl-4 mt-10 mb-10 font-medium text-muted menu-title">Call-Center Managment</li>
                     <li>
@@ -59,7 +62,7 @@
                     </li>
                     <!-- End Call Center Management Menu -->
                     <!-- End Ticket Managment Menu-->
-                @endif
+                @endif--}}
 
             </ul>
         </div>
