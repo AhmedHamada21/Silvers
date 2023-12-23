@@ -39,5 +39,6 @@ Route::group(
         // Tickets ::
         Route::resource('CallCenterTickets', CallCenter\TicketController::class);
         Route::post('CallCenterTickets/{id}/addReply', [CallCenter\TicketController::class, 'addReply'])->name('CallCenterTickets.addReply');
+        Route::post('/update-ticket-status/{ticketId}', [CallCenter\TicketController::class, 'updateTicketStatus'])->name('update-ticket-status');
     });
 });

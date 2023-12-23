@@ -26,8 +26,7 @@ class Ticket extends Model {
         return $this->belongsTo(CallCenter::class, 'callcenter_id');
     }
 
-    public function replies()
-    {
+    public function replies() {
         return $this->hasMany(ReplyTicket::class, 'ticket_id');
     }
 }

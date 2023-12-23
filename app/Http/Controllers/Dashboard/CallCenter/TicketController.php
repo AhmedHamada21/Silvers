@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\DataTables\Dashboard\CallCenter\TicketDataTable;
 use App\Services\Dashboard\{CallCenter\TicketService};
 use App\Models\{Callcenter, ReplyTicket, Ticket};
-use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
@@ -60,41 +59,43 @@ class TicketController extends Controller
         }
     }
 
+
     public function addReply(Request $request, $ticketId) {
-        $request->validate([
-            'message' => 'required',
-        ]);
-        $latestReply = ReplyTicket::where('ticket_id', $ticketId)->latest()->first();
-        if ($latestReply) {
-            if (auth('admin')->check()) {
-                $latestReply->update([
-                    'messages' => $request->input('message'),
-                    'status' => 'read',
-                    'admin_id' => auth('admin')->user()->id,
-                ]);
-            } elseif (auth('call-center')->check() && get_user_data()->type == 'manager') {
-                $latestReply->update([
-                    'messages' => $request->input('message'),
-                    'status' => 'read',
-                    'callcenter_id' => $latestReply->ticket->callcenter_id,
-                    'manager_id' => auth('call-center')->user()->id,
-                ]);
-                $latestReply->ticket->assign_to_callcenter = get_user_data()->id;
-                $latestReply->ticket->save();
+        try {
+            $latestReply = ReplyTicket::where('ticket_id', $ticketId)->first();
+            if (!$latestReply) {
+                throw new \Exception('ReplyTicket not found for the given ticket ID.');
             }
-        } else {
+            $callcenter = $latestReply->ticket->assign_to_callcenter;
+            $request->validate([
+                'message' => 'required',
+            ]);
             $reply = new ReplyTicket();
             $reply->ticket_id = $ticketId;
             if (auth('admin')->check()) {
                 $reply->admin_id = auth('admin')->user()->id;
-            } elseif (auth('call-center')->check()) {
-                $reply->callcenter_id = auth('call-center')->user()->id;
+            } elseif (auth('call-center')->check() && get_user_data()->type == 'manager') {
+                $reply->manager_id = auth('call-center')->user()->id;
+                $reply->callcenter_id = $callcenter;
+            } elseif (auth('call-center')->check() && get_user_data()->type == 'callcenter') {
+                $reply->callcenter_id = get_user_data()->id;
             }
             $reply->messages = $request->input('message');
-            $reply->status = 'waiting';
+            $reply->status = 'read';
             $reply->save();
+            $ticket = Ticket::whereId($ticketId)->first();
+            return redirect()->route('CallCenterTickets.show', $ticket->ticket_code);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
-        $ticket = Ticket::whereId($ticketId)->first();
-        return redirect()->route('CallCenterTickets.show', $ticket->ticket_code);
+    }
+
+    public function updateTicketStatus(Request $request, $ticketId) {
+        $newStatus = $request->input('status') === 'on' ? 'open' : 'close';
+        Ticket::whereId($ticketId)->update(['status' => $newStatus]);
+        if ($newStatus === 'close') {
+            ReplyTicket::where('ticket_id', $ticketId)->update(['status' => 'completed']);
+        }
+        return redirect()->back()->with('success', 'Ticket Updated Status successfully');
     }
 }
