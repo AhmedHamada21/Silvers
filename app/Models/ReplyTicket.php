@@ -13,6 +13,7 @@ class ReplyTicket extends Model
         'ticket_id',
         'admin_id',
         'callcenter_id',
+        'manager_id',
         'messages',
         'status',
     ];
@@ -31,5 +32,10 @@ class ReplyTicket extends Model
     public function callcenter()
     {
         return $this->belongsTo(Callcenter::class,'callcenter_id');
+    }
+
+    public function manager()
+    {
+        return $this->belongsTo(Callcenter::class,'manager_id');
     }
 }

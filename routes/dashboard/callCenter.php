@@ -38,5 +38,6 @@ Route::group(
         Route::put('/call-center-captains/block/{captain}', [CallCenter\CaptainController::class, 'blockCaptain'])->name('CallCenterCaptains.block');
         // Tickets ::
         Route::resource('CallCenterTickets', CallCenter\TicketController::class);
+        Route::post('CallCenterTickets/{id}/addReply', [CallCenter\TicketController::class, 'addReply'])->name('CallCenterTickets.addReply');
     });
 });

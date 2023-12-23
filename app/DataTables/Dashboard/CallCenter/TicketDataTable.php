@@ -13,9 +13,6 @@ class TicketDataTable extends BaseDataTable {
 
     public function dataTable($query): EloquentDataTable {
         return (new EloquentDataTable($query))
-            ->addColumn('action', function (Ticket $ticket) {
-                return view('dashboard.call-center.tickets.btn.actions', compact('ticket'));
-            })
             ->editColumn('created_at', function (Ticket $ticket) {
                 return $this->formatBadge($this->formatDate($ticket->created_at));
             })
@@ -32,7 +29,7 @@ class TicketDataTable extends BaseDataTable {
             ->editColumn('callcenter_id', function (Ticket $ticket) {
                 return $ticket?->callCenter?->name;
             })
-        ->rawColumns(['title','action', 'created_at', 'updated_at','status', 'callcenter_id']);
+        ->rawColumns(['title','created_at', 'updated_at','status', 'callcenter_id']);
     }
 
     public function query() {
@@ -51,11 +48,10 @@ class TicketDataTable extends BaseDataTable {
             ['name' => 'ticket_code', 'data' => 'ticket_code', 'title' => 'Ticket Code',],
             ['name' => 'subject', 'data' => 'subject', 'title' => 'Subject',],
             ['name' => 'priority', 'data' => 'priority', 'title' => 'Priority',],
-            ['name' => 'callcenter_id', 'data' => 'callcenter_id', 'title' => 'Call Center',],
+            ['name' => 'callcenter_id', 'data' => 'callcenter_id', 'title' => 'Call Center', 'orderable' => false, 'searchable' => false,],
             ['name' => 'status', 'data' => 'status', 'title' => 'Status',],
             ['name' => 'created_at', 'data' => 'created_at', 'title' => 'Created_at', 'orderable' => false, 'searchable' => false,],
             ['name' => 'updated_at', 'data' => 'updated_at', 'title' => 'Update_at', 'orderable' => false, 'searchable' => false,],
-            ['name' => 'action', 'data' => 'action', 'title' => 'Action', 'orderable' => false, 'searchable' => false,],
         ];
     }
 }
