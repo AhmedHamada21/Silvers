@@ -105,3 +105,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('hours',[Api\Setting\MainSettingController::class, 'hours']);
 });
 
+
+
+
