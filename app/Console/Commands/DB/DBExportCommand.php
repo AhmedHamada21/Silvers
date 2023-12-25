@@ -3,9 +3,8 @@ namespace App\Console\Commands\DB;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
 use ZipArchive;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\DB\DatabaseExported;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\{File, Mail};
 class DBExportCommand extends Command {
     protected $signature = 'app:db-export';
     protected $description = 'Exporting Database';
@@ -33,14 +32,18 @@ class DBExportCommand extends Command {
             $this->error('Failed to export the database. ' . $mysqldumpProcess->getErrorOutput());
             return;
         }
+        $this->compressAndSendBackup($backupFile, $zipFilePath);
+        $this->info('Database exported, compressed, and email sent successfully.');
+        File::delete($zipFilePath);
+        $this->info('Backup folder deleted.');
+    }
+
+    private function compressAndSendBackup($backupFile, $zipFilePath) {
         $zip = new ZipArchive();
         $zip->open($zipFilePath, ZipArchive::CREATE);
         $zip->addFile($backupFile, basename($backupFile));
         $zip->close();
         unlink($backupFile);
         Mail::to('backup@tripu.net')->send(new DatabaseExported($zipFilePath));
-        $this->info('Database exported, compressed, and email sent successfully.');
-        File::delete($zipFilePath);
-        $this->info('Backup folder deleted.');
     }
 }
