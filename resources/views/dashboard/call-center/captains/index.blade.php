@@ -52,7 +52,7 @@
                 <div class="mb-3 mt-2 text-center">
                     <p class="text-bold">
                         <span class="mr-3 text-bold text-white p-1" style="background-color: #808080; border-radius: 5px;">Gray For Not Active Media</span>
-                        <span class="mr-3 text-bold text-white p-1" style="background-color:  #FF7F7F; border-radius: 5px;">Light Red For Rejected Media Media</span>
+                        <span class="mr-3 text-bold text-white p-1" style="background-color:  #8A2BE2; border-radius: 5px;">Purple For Rejected Media</span>
                         <span class="mr-3 text-bold text-white p-1" style="background-color:  #ffc107; border-radius: 5px;">Warning No Have any Media</span>
                         <span class="mr-3 text-bold text-white p-1" style="background-color:  #28a745; border-radius: 5px;">Success All Is Accepted</span>
                     </p>

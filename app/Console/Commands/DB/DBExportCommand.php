@@ -5,6 +5,7 @@ use Symfony\Component\Process\Process;
 use ZipArchive;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DB\DatabaseExported;
+use Illuminate\Support\Facades\File;
 class DBExportCommand extends Command {
     protected $signature = 'app:db-export';
     protected $description = 'Exporting Database';
@@ -37,7 +38,9 @@ class DBExportCommand extends Command {
         $zip->addFile($backupFile, basename($backupFile));
         $zip->close();
         unlink($backupFile);
-        Mail::to('info@tripu.net')->send(new DatabaseExported($zipFilePath));
+        Mail::to('backup@tripu.net')->send(new DatabaseExported($zipFilePath));
         $this->info('Database exported, compressed, and email sent successfully.');
+        File::delete($zipFilePath);
+        $this->info('Backup folder deleted.');
     }
 }

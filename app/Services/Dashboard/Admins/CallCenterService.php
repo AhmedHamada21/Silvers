@@ -96,7 +96,7 @@ class CallCenterService
                     $backgroundColor = '#28a745'; // success
                     $textColorClass = 'text-white';
                 } elseif ($rejectedImagesExist) {
-                    $backgroundColor = '#FF7F7F'; // if captain media has a rejected photo
+                    $backgroundColor = '#8A2BE2'; // if captain media has a rejected photo
                     $textColorClass = 'text-white';
                 } elseif ($notActiveImagesExist) {
                     $backgroundColor = 'gray'; // لون رمادي
