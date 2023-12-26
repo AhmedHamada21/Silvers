@@ -21,7 +21,8 @@ class CallCenterActivityDataTable extends BaseDataTable {
                 return $this->formatBadge($this->formatDate($activity->updated_at));
             })
             ->editColumn('call_center_id', function (ImagesActivity $activity) {
-                return '<a href="'.route('callCenters.show', $activity->callCenter->profile->uuid).'">'. $activity->callCenter->name.'</a>';
+                return $activity->callCenter->name;
+                //return $activity->callCenter->profile->uuid;
             })
             ->editColumn('photo_type', function (ImagesActivity $activity) {
                 return ucwords(str_replace('_', ' ', $activity->photo_type));
@@ -36,13 +37,13 @@ class CallCenterActivityDataTable extends BaseDataTable {
                 return ucwords(str_replace('_', ' ', $activity->change_value_to));
             })
             ->editColumn('image_id', function (ImagesActivity $activity) {
-                return '<a href="'.route('captains.show', $activity->image->captainProfile->uuid).'">'. $activity->image->captainProfile->owner->name .'</a>';
+                return $activity->image->captainProfile->owner->name;
             })
             ->rawColumns(['action', 'created_at', 'updated_at', 'call_center_id', 'photo_type', 'changed_column', 'change_value_from', 'change_value_to', 'image_id']);
     }
 
     public function query(): QueryBuilder {
-        return ImagesActivity::query()->with(['admin', 'image', 'callCenter']);
+        return ImagesActivity::query()->whereNotNull(['change_value_from'])->with(['admin', 'image', 'callCenter', 'image']);
     }
 
     public function getColumns(): array {
