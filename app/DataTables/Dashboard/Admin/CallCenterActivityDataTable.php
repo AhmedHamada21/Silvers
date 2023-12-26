@@ -43,7 +43,7 @@ class CallCenterActivityDataTable extends BaseDataTable {
     }
 
     public function query(): QueryBuilder {
-        return ImagesActivity::query()->whereNotNull(['change_value_from'])->with(['admin', 'image', 'callCenter', 'image']);
+        return ImagesActivity::query()->whereNotNull(['change_value_from'])->with(['admin', 'image', 'callCenter']);
     }
 
     public function getColumns(): array {
