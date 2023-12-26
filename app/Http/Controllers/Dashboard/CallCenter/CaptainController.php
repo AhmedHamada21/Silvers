@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\Dashboard\CallCenter\CaptainDataTable;
 use App\Services\Dashboard\{CallCenter\CaptainService, General\GeneralService};
-use App\Models\{CaptainProfile, CarsCaptionStatus, Captain, Image, Order, OrderDay, OrderHour, SaveRentHour};
+use App\Models\{CaptainProfile, CarsCaptionStatus, Captain, Image, Order, OrderDay, OrderHour, CarMake, CarModel, CarType, CategoryCar};
 use Illuminate\Support\Facades\DB;
 
 class CaptainController extends Controller
@@ -24,30 +24,20 @@ class CaptainController extends Controller
         $data = [
             'title' => 'Captions',
             'countries' => $this->generalService->getCountries(),
+            'captains' => Captain::active(),
+            'carMakes' => CarMake::with(['carModel' => function ($query) {
+                $query->where('status', true);
+            }])->whereStatus(true)->select('id', 'name')->get()->toArray(),
+            'carTypes' => CarType::active(),
+            'carCategories' => CategoryCar::active(),
         ];
         return $this->dataTable->render('dashboard.call-center.captains.index', compact('data'));
     }
 
-//    public function store(Request $request) {
-//        try {
-//            $requestData = $request->all();
-//            $captain = $this->captainService->create($requestData);
-////            $captain->profile()->create([]);
-////            $captain->car()->create([]);
-////            $inviteData = [
-////                'captain_id' => $captain->id,
-////                'type' => 'caption',
-////                'code_invite' => str_replace(' ', '_', $captain->name) . generateRandom(3),
-////                'data' => date('Y-m-d'),
-////            ];
-////            $captain->invite()->create($inviteData);
-//
-//            return redirect()->route('CallCenterCaptains.index')->with('success', 'captain created successfully');
-//        } catch (\Exception $e) {
-//            return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while creating the captain');
-//        }
-//    }
-
+    public function getCarModelsByMakeId($carMakeId) {
+        $carModels = CarModel::where('car_make_id', $carMakeId)->where('status', true)->pluck('id', 'name');
+        return response()->json($carModels);
+    }
 
     public function store(Request $request) {
         try {
@@ -324,28 +314,6 @@ class CaptainController extends Controller
         }
     }
 
-    /*public function updateActivityStatus(Request $request, $id) {
-        try {
-            $captain = Captain::findOrFail($id);
-            $status = $request->input('status_captain_work');
-            if ($status === 'active') {
-                $blockedCaptain = DB::table('captain_callcenter_blocks')->where('captain_id', $captain->id)->where('call_center_id', get_user_data()->id)->first();
-                if ($blockedCaptain) {
-                    DB::table('captain_callcenter_blocks')->where('captain_id', $captain->id)->where('call_center_id', get_user_data()->id)->delete();
-                }
-                $captain->captainActivity->status_captain_work = 'active';
-                $captain->captainActivity->save();
-            } else {
-                $captain->captainActivity->status_captain_work = $status;
-                $captain->captainActivity->save();
-            }
-
-            return back()->with('success', 'Captain activity status updated successfully');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred while updating Captain activity status');
-        }
-    }*/
-
     public function blockCaptain(Request $request, Captain $captain)
     {
         try {
@@ -480,5 +448,9 @@ class CaptainController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while updating Captain profile');
         }
+    }
+
+    public function createNewCar(Request $request) {
+
     }
 }

@@ -47,6 +47,10 @@
                     <i class="fa fa-plus"></i>
                     Add New {{$data['title']}}
                 </a>
+                <a data-target="#create_new_car" data-toggle="modal"  data-effect="effect-scale" class="btn btn-dark text-white btn-sm" role="button">
+                    <i class="fa fa-plus"></i>
+                    Add New Car
+                </a>
                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Push Notification All  {{$data['title']}}</button>
                 <br><br>
                 <div class="mb-3 mt-2 text-center">
@@ -68,6 +72,7 @@
                 <!--end::Table-->
             </div>
             @include('dashboard.call-center.captains.btn.modals.create')
+            @include('dashboard.call-center.captains.btn.modals.createNewCar')
             @include('dashboard.call-center.captains.notification')
         </div>
     </div>
@@ -79,4 +84,42 @@
     integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {!! $dataTable->scripts() !!}
+<script>
+    $(document).ready(function () {
+        $('#car_make_id').change(function () {
+            var carMakeId = $(this).val();
+            console.log(carMakeId);
+            $.ajax({
+                url: '/callCenter/get-car-models/' + carMakeId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#car_model_id').empty();
+                    $.each(data, function (name, id) {
+                        $('#car_model_id').append('<option value="' + id + '">' + name + '</option>');
+                    });
+                    if (Object.keys(data).length > 0) {
+                        $('#car_model_id').parent().show();
+                    } else {
+                        $('#car_model_id').parent().hide();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    const colorPreview = document.getElementById('colorPreview');
+    colorInput.addEventListener('change', function() {
+        const selectedColor = colorInput.value;
+        colorPreview.style.backgroundColor = selectedColor;
+        colorPreview.style.display = 'block';
+    });
+</script>
+
+
 @endsection
