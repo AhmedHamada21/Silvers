@@ -35,7 +35,7 @@ class CaptainController extends Controller
     }
 
     public function getCarModelsByMakeId($carMakeId) {
-        $carModels = CarModel::where('car_make_id', $carMakeId)->where('status', true)->pluck('id', 'name');
+        $carModels = CarModel::where('car_make_id', $carMakeId)->whereStatus(true)->pluck('id', 'name');
         return response()->json($carModels);
     }
 
