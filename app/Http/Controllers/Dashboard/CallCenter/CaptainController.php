@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\Dashboard\CallCenter\CaptainDataTable;
 use App\Services\Dashboard\{CallCenter\CaptainService, General\GeneralService};
-use App\Models\{CaptainProfile, CarsCaptionStatus, Captain, Image, Order, OrderDay, OrderHour, CarMake, CarModel, CarType, CategoryCar};
+use App\Models\{CaptainProfile, CarsCaptionStatus, Captain, Image, Order, OrderDay, OrderHour, CarMake, CarModel, CarType, CategoryCar, CarsCaption};
 use Illuminate\Support\Facades\DB;
 
 class CaptainController extends Controller
@@ -451,6 +451,13 @@ class CaptainController extends Controller
     }
 
     public function createNewCar(Request $request) {
+        try {
+            $requestData = $request->all();
+            CarsCaption::create($requestData);
+            return redirect()->route('CallCenterCaptains.index')->with('success', 'captain car created successfully');
 
+        } catch (\Exception $e) {
+            return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while creating the captain car');
+        }
     }
 }

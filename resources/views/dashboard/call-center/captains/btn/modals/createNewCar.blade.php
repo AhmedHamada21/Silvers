@@ -9,8 +9,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" method="POST" enctype="multipart/form-data">
+                <form action="{{route('createNewCar')}}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('POST')
                     <div class="row">
                         <!-- Start Captain Selected -->
                         <div class="form-group col-4">
@@ -105,7 +106,7 @@
                             @enderror
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="type">Car Color</label>
+                            <label for="car_color">Car Color</label>
                             <input type="color" name="car_color" class="form-control p-1" value="">
                             @error('car_color')
                             <div class="alert alert-danger">{{ $message }}</div>
