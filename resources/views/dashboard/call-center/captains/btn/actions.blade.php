@@ -19,5 +19,15 @@
                 My Trips
             </span>
         </a>
+
+        <button type="button" class="modal-effect btn btn-sm btn-success dropdown-item"
+                    style="text-align: center !important" data-toggle="modal" data-target="#newCar{{$captain->id}}"
+                    data-effect="effect-scale">
+            <span class="icon text-dark text-bold">
+                <i class="fa fa-edit"></i>
+                New Car
+            </span>
+        </button>
     </div>
 </div>
+@include('dashboard.call-center.captains.btn.modals.newCar')

@@ -198,6 +198,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
         'Country' => App\Models\Country::class,
         'CarMake' => App\Models\CarMake::class,
+        'CarType' => App\Models\CarType::class,
         'Captain' => App\Models\Captain::class,
         'CaptainBouns' => \App\Models\CaptionBonus::class,
         'Hour'          =>  \App\Models\Hour::class,

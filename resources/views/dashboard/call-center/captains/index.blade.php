@@ -109,8 +109,12 @@
                 }
             });
         });
+
+        
     });
 </script>
+
+
 
 <script>
     const colorPreview = document.getElementById('colorPreview');

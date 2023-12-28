@@ -1,6 +1,6 @@
 <?php
 namespace App\DataTables\Dashboard\CallCenter;
-use App\Models\Captain;
+use App\Models\{Captain, CarMake, CarType, CategoryCar};
 use App\DataTables\Base\BaseDataTable;
 use Yajra\DataTables\EloquentDataTable;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
