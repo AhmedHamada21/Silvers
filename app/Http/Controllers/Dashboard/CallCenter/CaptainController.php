@@ -447,7 +447,6 @@ class CaptainController extends Controller
             $requestData = $request->all();
             CarsCaption::create($requestData);
             return redirect()->route('CallCenterCaptains.index')->with('success', 'captain car created successfully');
-
         } catch (\Exception $e) {
             return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while creating the captain car');
         }
