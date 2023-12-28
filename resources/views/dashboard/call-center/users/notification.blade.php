@@ -12,7 +12,7 @@
                 <form action="{{route('users.sendNotification_callCenter')}}" method="post">
                     @csrf
 
-                    <input type="hidden" name="type" value="all_drivers">
+                    <input type="hidden" name="type" value="all_users">
 
                     <div class="row">
                         <div class="col">
