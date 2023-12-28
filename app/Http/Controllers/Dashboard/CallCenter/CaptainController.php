@@ -334,8 +334,7 @@ class CaptainController extends Controller
     }
 
 
-    public function sendNotificationAll(Request $request)
-    {
+    public function sendNotificationAll(Request $request) {
         try {
             sendNotificatioAll($request->type, $request->body, $request->title);
             return redirect()->back();
@@ -347,9 +346,7 @@ class CaptainController extends Controller
     }
 
 
-    public function captains_searchNumber(Request $request)
-    {
-
+    public function captains_searchNumber(Request $request) {
         try {
             $dataIn = CaptainProfile::where('number_personal', 'like', '%' . $request->number . '%')->orderBy('created_at', 'desc')->paginate(50);
             if ($dataIn) {
@@ -363,8 +360,7 @@ class CaptainController extends Controller
     }
 
 
-    public function trips($captainId)
-    {
+    public function trips($captainId) {
         $id = CaptainProfile::where('uuid', $captainId)->first()->captain_id;
         $orders = Order::where('captain_id', $id)->orderBy('created_at', 'desc')->paginate(50);
         $orderHours = OrderHour::where('captain_id', $id)->orderBy('created_at', 'desc')->paginate(50);
@@ -374,8 +370,7 @@ class CaptainController extends Controller
         return view('dashboard.call-center.captains.trip.trip', compact('data', 'types'));
     }
 
-    public function showOrder($orderCode)
-    {
+    public function showOrder($orderCode) {
         $order = Order::where('order_code', $orderCode)->first();
         $orderTracking = Order::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id', 'id', 'lat_user', 'long_user', 'lat_going', 'long_going']);
         $locations = [];
@@ -394,8 +389,7 @@ class CaptainController extends Controller
         return view('dashboard.call-center.orders.showOrder', ['order' => $order, 'data' => json_encode($locations)]);
     }
 
-    public function showOrderDay($orderCode)
-    {
+    public function showOrderDay($orderCode) {
         $order = OrderDay::where('order_code', $orderCode)->first();
         $orderTracking = OrderDay::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id', 'id', 'lat_user', 'long_user', 'status_price', 'car_type_day_id', 'type_duration', 'start_day', 'end_day', 'number_day', 'start_time']);
         $locations = [];
@@ -412,8 +406,7 @@ class CaptainController extends Controller
         return view('dashboard.call-center.orders.showOrderDay', ['order' => $order, 'data' => json_encode($locations)]);
     }
 
-    public function showOrderHour($orderCode)
-    {
+    public function showOrderHour($orderCode) {
         $order = OrderHour::where('order_code', $orderCode)->first();
         $orderTracking = OrderHour::where('id', $order->id)->get(['user_id', 'captain_id', 'trip_type_id', 'id', 'lat_user', 'long_user', 'status_price', 'car_type_id', 'type_duration', 'time_duration']);
         $locations = [];
@@ -431,8 +424,7 @@ class CaptainController extends Controller
     }
 
 
-    public function updateProfile(Request $request, $id)
-    {
+    public function updateProfile(Request $request, $id) {
         try {
             $address = $request->input('address');
             $bio = $request->input('bio');

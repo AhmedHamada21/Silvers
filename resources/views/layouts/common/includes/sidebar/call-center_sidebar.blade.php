@@ -23,6 +23,7 @@
                         @if(auth('call-center')->user()->type == "manager")
                             <li><a href="{{route('callCenters.index')}}">Call-Centers</a></li>
                         @endif
+                        <li><a href="{{route('CallCenterUsers.index')}}">Users</a></li>
                     </ul>
                 </li>
                 <!-- End Admin Managment Menu-->
