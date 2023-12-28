@@ -30,11 +30,13 @@
             <div class="card-body">
                 <br><br>
                 <!--begin::Table-->
-                {!! $dataTable->table([
-                'class' => 'dataTable table table-row-dashed table-striped table-hover table-borderd table-row-gray-300
-                align-middle gs-0 table-row-bordered gy-5',
-                'style' => 'border-collapse: collapse; border-spacing: 0; width: 100%;'
-                ]) !!}
+                <div class="table-responsive">
+                    {!! $dataTable->table([
+                    'class' => 'dataTable table table-row-dashed table-striped table-hover table-borderd table-row-gray-300
+                    align-middle gs-0 table-row-bordered gy-5',
+                    'style' => 'border-collapse: collapse; border-spacing: 0; width: 100%;'
+                    ]) !!}
+                </div>
                 <!--end::Table-->
             </div>
         </div>

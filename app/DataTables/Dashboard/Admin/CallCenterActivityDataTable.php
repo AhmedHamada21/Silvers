@@ -37,13 +37,13 @@ class CallCenterActivityDataTable extends BaseDataTable {
                 return ucwords(str_replace('_', ' ', $activity->change_value_to));
             })
             ->editColumn('image_id', function (ImagesActivity $activity) {
-                return $activity->image->captainProfile->owner->name;
+                return $activity->image->captainProfile?->owner->name;
             })
             ->rawColumns(['action', 'created_at', 'updated_at', 'call_center_id', 'photo_type', 'changed_column', 'change_value_from', 'change_value_to', 'image_id']);
     }
 
     public function query(): QueryBuilder {
-        return ImagesActivity::query()->whereNotNull(['change_value_from'])->with(['admin', 'image', 'callCenter']);
+        return ImagesActivity::query()->whereNotNull(['change_value_from'])->with(['admin', 'image', 'image.captainProfile', 'callCenter']);
     }
 
     public function getColumns(): array {
