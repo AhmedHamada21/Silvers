@@ -76,8 +76,7 @@
                                                                                 name="personal_avatar"
                                                                                 id="personal_avatar" />
                                                                             <label class="custom-file-label"
-                                                                                for="personal_avatar">Choose Presonal
-                                                                                Avatar Image</label>
+                                                                                for="personal_avatar">Choose Presonal Avatar Image (الصوره الشخصية)</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-6">
@@ -86,8 +85,7 @@
                                                                                 name="id_photo_front"
                                                                                 id="id_photo_front" />
                                                                             <label class="custom-file-label"
-                                                                                for="id_photo_front">Choose ID Front
-                                                                                Side Image</label>
+                                                                                for="id_photo_front">Choose ID Front Side Image (الهوية امام)</label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -99,8 +97,7 @@
                                                                                 name="id_photo_back"
                                                                                 id="id_photo_back" />
                                                                             <label class="custom-file-label"
-                                                                                for="id_photo_back">Choose ID Back Side
-                                                                                Image</label>
+                                                                                for="id_photo_back">Choose ID Back Side Image (الهوية خلف)</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-6">
@@ -109,8 +106,7 @@
                                                                                 name="criminal_record"
                                                                                 id="criminal_record" />
                                                                             <label class="custom-file-label"
-                                                                                for="criminal_record">Choose Criminal
-                                                                                Record Image</label>
+                                                                                for="criminal_record">Choose Criminal Record Image (الصحيفة الجنائية)</label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -122,8 +118,7 @@
                                                                                 name="captain_license_front"
                                                                                 id="captain_license_front" />
                                                                             <label class="custom-file-label"
-                                                                                for="captain_license_front">Choose
-                                                                                Captain License Front Image</label>
+                                                                                for="captain_license_front">Choose Captain License Front (رخصة القياده امام)</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-6">
@@ -132,8 +127,7 @@
                                                                                 name="captain_license_back"
                                                                                 id="captain_license_back" />
                                                                             <label class="custom-file-label"
-                                                                                for="captain_license_back">
-                                                                                Choose Captain License Back Image
+                                                                                for="captain_license_back"> Choose Captain License Back Image (رخصة القياده خلف)
                                                                             </label>
                                                                         </div>
                                                                     </div>
@@ -168,7 +162,7 @@
                                                                                 id="car_license_front" />
                                                                             <label class="custom-file-label"
                                                                                 for="car_license_front">Choose Car
-                                                                                License Front Image</label>
+                                                                                License Front Image (رخصة السياره امام)</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-6">
@@ -178,7 +172,7 @@
                                                                                 id="car_license_back" />
                                                                             <label class="custom-file-label"
                                                                                 for="car_license_back">Choose Car
-                                                                                License Back Image</label>
+                                                                                License Back Image (رخصة السياره خلف)</label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -190,7 +184,7 @@
                                                                                 name="car_front" id="car_front" />
                                                                             <label class="custom-file-label"
                                                                                 for="car_front">Choose Car Front
-                                                                                Image</label>
+                                                                                Image ( السياره امام)</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-6">
@@ -199,7 +193,7 @@
                                                                                 name="car_back" id="car_back" />
                                                                             <label class="custom-file-label"
                                                                                 for="car_back">Choose Car Back
-                                                                                Image</label>
+                                                                                Image ( السياره خلف)</label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -211,7 +205,7 @@
                                                                                 name="car_right" id="car_right" />
                                                                             <label class="custom-file-label"
                                                                                 for="car_right">Choose Car Right
-                                                                                Image</label>
+                                                                                Image ( السياره يمين)</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-4">
@@ -220,7 +214,7 @@
                                                                                 name="car_left" id="car_left" />
                                                                             <label class="custom-file-label"
                                                                                 for="car_left">Choose Car Left
-                                                                                Image</label>
+                                                                                Image ( السياره يسار)</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-4">
@@ -229,7 +223,7 @@
                                                                                 name="car_inside" id="car_inside" />
                                                                             <label class="custom-file-label"
                                                                                 for="car_inside">Choose Car Inside
-                                                                                Image</label>
+                                                                                Image ( السياره من الداخل)</label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
