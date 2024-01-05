@@ -169,6 +169,32 @@ class DriverAuthController extends Controller
         return $this->login_phone($request);
     }
 
+
+    public function registerWhatSapp(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|between:2,100',
+            'email' => 'required|string|email|max:100|unique:captains',
+            'phone' => 'required|numeric|unique:captains',
+            'gender' => 'required|in:male,female',
+            'country_id' => 'required|exists:countries,id',
+            'password' => 'required|string|min:6',
+
+        ]);
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 400);
+        }
+        $user = Captain::create(array_merge(
+            $validator->validated(),
+            [
+                'password' => bcrypt($request->password),
+                'admin_id' => 1,
+            ]
+        ));
+
+        return true;
+    }
+
     /**
      * Log the user out (Invalidate the token).
      *
