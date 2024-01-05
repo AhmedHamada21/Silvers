@@ -28,7 +28,7 @@ class DriverAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:captain-api', ['except' => ['refresh', 'checkPhone', 'login', 'register', 'login_phone', 'restPassword']]);
+        $this->middleware('auth:captain-api', ['except' => ['refresh', 'checkPhone', 'login', 'register', 'login_phone', 'restPassword','registerWhatSapp']]);
     }
 
     /**
