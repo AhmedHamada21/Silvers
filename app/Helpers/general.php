@@ -94,10 +94,10 @@ if (!function_exists('sendNotificationUserCheck')) {
                 "body" => $body,
                 "title" => $title,
             ],
-                'data' => [
-                    'saveOrder' => 'true',
-                    'order_code' => $data
-                ],
+            'data' => [
+                'saveOrder' => 'true',
+                'order_code' => $data
+            ],
         ]);
 
         if ($url->ok()) {
@@ -583,18 +583,6 @@ if (!function_exists('sendTemplate')) {
             ],
             "components" =>
                 [
-                    [
-                        "type" => "header",
-                        "parameters" => [
-                            [
-                                "type" => "image",
-                                "image" => [
-                                    "link" => "https://tripu.net/finshWebsite/images/%D8%A7%D9%84%D8%AA%D8%B3%D9%84%D9%8A%D9%85/%D8%A7%D9%84%D8%AA%D8%B3%D9%84%D9%8A%D9%85/%D9%85%D9%88%D9%83%D8%A7%D8%A8/noBackground.png"
-                                ]
-                            ]
-                        ]
-
-                    ],
                     "type" => "body",
                     "parameters" => [
                         [
@@ -602,7 +590,18 @@ if (!function_exists('sendTemplate')) {
                             "text" => $code,
                         ]
                     ]
+                ],
+            [
+                "type" => "button",
+                "sub_type" => "copy_code",
+                "index" => "0",
+                "parameters" => [
+                    [
+                        "type" => "payload",
+                        "payload" => $code
+                    ]
                 ]
+            ]
 
         ];
 
