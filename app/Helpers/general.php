@@ -580,30 +580,30 @@ if (!function_exists('sendTemplate')) {
                 "name" => "otpsend",
                 "language" => [
                     "code" => "en_US"
-                ]
-            ],
-            "components" =>
-                [
-                    "type" => "body",
-                    "parameters" => [
-                        [
-                            "type" => "text",
-                            "text" => $code,
+                ],
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => $code,
+                            ]
+                        ]
+                    ],
+                    [
+                        "type" => "button",
+                        "sub_type" => "copy_code",
+                        "index" => "0",
+                        "parameters" => [
+                            [
+                                "type" => "payload",
+                                "payload" => $code
+                            ]
                         ]
                     ]
-                ],
-            [
-                "type" => "button",
-                "sub_type" => "copy_code",
-                "index" => "0",
-                "parameters" => [
-                    [
-                        "type" => "payload",
-                        "payload" => $code
-                    ]
                 ]
-            ]
-
+            ],
         ];
 
         if ($data) {
