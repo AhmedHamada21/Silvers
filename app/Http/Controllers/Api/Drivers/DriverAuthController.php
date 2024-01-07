@@ -28,7 +28,8 @@ class DriverAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:captain-api', ['except' => ['refresh', 'checkPhone', 'login', 'register', 'login_phone', 'restPassword','registerWhatSapp']]);
+        $this->middleware('auth:captain-api', ['except' => ['sendOtp',
+'checkPhoneMessages','refresh', 'checkPhone', 'login', 'register', 'login_phone', 'restPassword','registerWhatSapp']]);
     }
 
     /**
@@ -387,7 +388,7 @@ class DriverAuthController extends Controller
 
             if ($data) {
                 sendTemplate($data->phone, $data->code);
-                saveWhatsapp($data->phone, $data->code);
+                // saveWhatsapp($data->phone, $data->code);
                 return $this->successResponse('', 'Send Messages successfully');
             }
 
