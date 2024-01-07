@@ -557,7 +557,6 @@ if (!function_exists('baseUrl')) {
             "Content-Type" => "application/json",
         ])->withBody(json_encode($data), 'application/json')->post('https://graph.facebook.com/v17.0/204784666051870/messages');
 
-        dd($response);
         if ($response->status() == 200) {
             return response()->json("data Send", 200);
         } else {
