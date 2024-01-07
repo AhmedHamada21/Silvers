@@ -553,9 +553,9 @@ if (!function_exists('baseUrl')) {
         $response = Http::withOptions([
             'verify' => false,
         ])->withHeaders([
-            "Authorization" => "Bearer " . env('TOKEN_WHATSAPP'),
+            "Authorization" => "Bearer EAADavnuaw5wBO7xRC2584F7ZCpe1VN7YNZCKyRNsp2XimEXGtWVGvb8cBcqS4X2TQZCBYfUAcNAaanBA48RHkNkQzGrn4u2nLDv5Y9ozzOA5EVFcmc4oRq2XtdRCBBpIZC7DQWnx6ZCnwIVf6NZCQzhTZAiNelZB0xbAZCKOmtyxqqAqyil1ctEuaTyZCeXAdOr4nIRja0AYVnW0gsXH3L",
             "Content-Type" => "application/json",
-        ])->withBody(json_encode($data), 'application/json')->post('https://graph.facebook.com/' . env('VERSION_WHATSAPP') . '/' . env('PHONE_ID_WHATSAPP') . '/messages');
+        ])->withBody(json_encode($data), 'application/json')->post('https://graph.facebook.com/v17.0/204784666051870/messages');
 
         if ($response->status() == 200) {
             return response()->json("data Send", 200);
@@ -576,7 +576,7 @@ if (!function_exists('sendTemplate')) {
             "to" => $phone,
             "type" => "template",
             "template" => [
-                "name" => env('NAME_TEMPLATE'),
+                "name" => "otpsend",
                 "language" => [
                     "code" => "en_US"
                 ]
