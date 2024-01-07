@@ -558,6 +558,7 @@ if (!function_exists('baseUrl')) {
         ])->withBody(json_encode($data), 'application/json')->post('https://graph.facebook.com/' . env('VERSION_WHATSAPP') . '/' . env('PHONE_ID_WHATSAPP') . '/messages');
 
         if ($response->status() == 200) {
+            dd('asdasdsad');
             return response()->json("data Send", 200);
         } else {
             return response()->json("data Error Send Messages", 400);
