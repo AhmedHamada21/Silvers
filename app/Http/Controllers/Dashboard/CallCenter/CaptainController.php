@@ -445,7 +445,16 @@ class CaptainController extends Controller
     public function createNewCar(Request $request) {
         try {
             $requestData = $request->all();
-            CarsCaption::create($requestData);
+//            CarsCaption::create($requestData);
+            CarsCaption::where('captain_id',$request->captain_id)->update([
+                'car_make_id' => $request->car_makeId,
+                'car_model_id' => $request->car_modelId,
+                'car_type_id' => $request->car_type_id,
+                'category_car_id' => $request->category_car_id,
+                'number_car' => $request->number_car,
+                'color_car' => $request->color_car,
+                'year_car' => $request->year_car,
+            ]);
             return redirect()->route('CallCenterCaptains.index')->with('success', 'captain car created successfully');
         } catch (\Exception $e) {
             return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while creating the captain car');
