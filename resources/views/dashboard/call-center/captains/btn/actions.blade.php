@@ -20,14 +20,22 @@
             </span>
         </a>
 
-        <button type="button" class="modal-effect btn btn-sm btn-success dropdown-item"
+        <a href="{{ route('CallCenterCaptains.captainNewCar',  $captain->id) }}"
+            class="modal-effect btn btn-sm btn-dark dropdown-item" style="text-align: center !important">
+            <span class="icon text-info text-dark">
+                <i class="fa fa-edit"></i>
+                New Car
+            </span>
+        </a>
+
+        {{--<button type="button" class="modal-effect btn btn-sm btn-success dropdown-item"
                     style="text-align: center !important" data-toggle="modal" data-target="#newCar{{$captain->id}}"
                     data-effect="effect-scale">
             <span class="icon text-dark text-bold">
                 <i class="fa fa-edit"></i>
                 New Car
             </span>
-        </button>
+        </button>--}}
     </div>
 </div>
 @include('dashboard.call-center.captains.btn.modals.newCar')

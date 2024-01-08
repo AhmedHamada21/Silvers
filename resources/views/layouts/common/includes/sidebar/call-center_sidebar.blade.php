@@ -64,7 +64,20 @@
                     <!-- End Call Center Management Menu -->
                     <!-- End Ticket Managment Menu-->
                 @endif--}}
-
+                {{--<li class="pl-4 mt-10 mb-10 font-medium text-muted menu-title">Colors Managment</li>
+                <li>
+                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#colors_managment">
+                        <div class="pull-left">
+                            <i class="ti-palette"></i>
+                            <span class="right-nav-text">Colors</span>
+                        </div>
+                        <div class="pull-right"><i class="ti-plus"></i></div>
+                        <div class="clearfix"></div>
+                    </a>
+                    <ul id="colors_managment" class="collapse" data-parent="#sidebarnav">
+                        <li><a href="{{ route('Colors.index') }}">Colors</a></li>
+                    </ul>
+                </li>--}}
             </ul>
         </div>
     </div>

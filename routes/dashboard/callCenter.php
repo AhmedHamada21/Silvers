@@ -44,8 +44,12 @@ Route::group(
         // Car Model ::
         Route::get('/get-car-models/{carMakeId}', [CallCenter\CaptainController::class, 'getCarModelsByMakeId']);
         Route::post('createNewCar', [CallCenter\CaptainController::class, 'createNewCar'])->name('createNewCar');
+        Route::get('{captain}/new-car', [CallCenter\CaptainController::class, 'newCar'])->name('CallCenterCaptains.captainNewCar');
         // Users ::
         Route::resource('CallCenterUsers', CallCenter\UserController::class);
         Route::post('users/sendNotification/All/callCenter', [CallCenter\UserController::class, 'sendNotificationAll'])->name('users.sendNotification_callCenter');
+    
+        // Colors ::
+        Route::resource('Colors', CallCenter\ColorController::class);
     });
 });

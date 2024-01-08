@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\Dashboard\CallCenter\CaptainDataTable;
 use App\Services\Dashboard\{CallCenter\CaptainService, General\GeneralService};
-use App\Models\{CaptainProfile, CarsCaptionStatus, Captain, Image, Order, OrderDay, OrderHour, CarMake, CarModel, CarType, CategoryCar, CarsCaption};
+use App\Models\{Color, CaptainProfile, CarsCaptionStatus, Captain, Image, Order, OrderDay, OrderHour, CarMake, CarModel, CarType, CategoryCar, CarsCaption};
 use Illuminate\Support\Facades\DB;
 
 class CaptainController extends Controller
@@ -450,5 +450,20 @@ class CaptainController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('CallCenterCaptains.index')->with('error', 'An error occurred while creating the captain car');
         }
+    }
+
+    public function newCar($captainId) {
+        $captain = Captain::find($captainId);
+        $data = [
+            'carMakes' => CarMake::with(['carModel' => function ($query) {
+                $query->where('status', true);
+            }])->whereStatus(true)->select('id', 'name')->get()->toArray(),
+            'carTypes' => CarType::active(),
+            'carCategories' => CategoryCar::active(),
+            'colors' => Color::pluck('name', 'id'),
+            'title' => 'New Car',
+        ];
+        //dd($data);
+        return view('dashboard.call-center.captains.new_car', compact('captain', 'data'));
     }
 }
